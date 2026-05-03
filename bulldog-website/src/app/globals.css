@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #1a3a5c;
+  --color-primary-light: #24537f;
+  --color-primary-dark: #122940;
+  --color-accent: #f0a500;
+  --color-accent-light: #f7c04a;
+  --color-bg: #f8f8f6;
+  --color-surface: #ffffff;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-playfair), serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-accent hover:bg-accent-dark text-primary font-bold px-6 py-3 rounded-xl transition-all duration-200 shadow-soft hover:shadow-hover hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-primary font-semibold px-6 py-3 rounded-xl border-2 border-primary/20 hover:border-primary/40 transition-all duration-200;
+  }
+
+  .btn-outline-white {
+    @apply inline-flex items-center gap-2 bg-transparent hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-xl border-2 border-white/60 hover:border-white transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1 p-6;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-bold text-primary leading-tight;
+  }
+
+  .section-subtitle {
+    @apply text-lg text-gray-600 leading-relaxed;
+  }
+
+  .accent-bar {
+    @apply block w-12 h-1 bg-accent rounded-full mb-4;
+  }
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+
+/* Decorative paw pattern */
+.paw-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%231a3a5c' fill-opacity='0.04'%3E%3Cellipse cx='15' cy='12' rx='5' ry='6'/%3E%3Cellipse cx='30' cy='8' rx='5' ry='6'/%3E%3Cellipse cx='45' cy='12' rx='5' ry='6'/%3E%3Cellipse cx='8' cy='26' rx='4' ry='5'/%3E%3Cpath d='M30 20 C18 20 10 30 12 40 C14 48 22 54 30 54 C38 54 46 48 48 40 C50 30 42 20 30 20Z'/%3E%3C/g%3E%3C/svg%3E");
+}

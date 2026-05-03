@@ -46,7 +46,7 @@ export default function AanvragenPage() {
       {/* Hero */}
       <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/aanvragen.png" alt="Bulldog" fill className="object-cover opacity-15" />
+          <Image src="/aanvragen.png" alt="Bulldog" fill className="object-cover opacity-50" />
         </div>
         <div className="absolute inset-0 paw-bg opacity-10" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6">

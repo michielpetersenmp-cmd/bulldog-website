@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Heart } from "lucide-react";
 
@@ -41,9 +42,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-soft group-hover:bg-primary-light transition-colors">
-              <span className="text-accent text-xl">🐾</span>
-            </div>
+            <Image src="/logo.png" alt="Stichting Bulldog Steunfonds Nederland" width={44} height={44} className="rounded-full shadow-soft" />
             <div className="hidden sm:block">
               <div className="font-display font-bold text-primary text-sm leading-tight">
                 Stichting Bulldog

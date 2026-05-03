@@ -25,6 +25,10 @@ export const metadata: Metadata = {
     "Financiële steun voor eigenaren van buldoggen die veterinaire kosten niet kunnen betalen. Samen zorgen we voor onze vierpootige vrienden.",
   keywords: ["bulldog", "steunfonds", "veterinaire kosten", "stichting", "doneren", "buldoggen"],
   authors: [{ name: "Stichting Bulldog Steunfonds Nederland" }],
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "nl_NL",
@@ -33,6 +37,7 @@ export const metadata: Metadata = {
     title: "Stichting Bulldog Steunfonds Nederland",
     description:
       "Financiële steun voor eigenaren van buldoggen die veterinaire kosten niet kunnen betalen.",
+    images: ["/logo.png"],
   },
 };
 

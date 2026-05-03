@@ -1,20 +1,17 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 
-// PUT post updaten
-export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export async function GET() {
   try {
-    const body = await request.json();
-    const admin = getSupabaseAdmin();
-    const { data, error } = await admin
+    const { data, error } = await supabase
       .from("posts")
-      .update(body)
-      .eq("id", params.id)
-      .select()
-      .single();
+      .select("*")
+      .order("created_at", { ascending: false });
     if (error) throw error;
     return NextResponse.json(data);
   } catch (e: any) {
@@ -22,16 +19,16 @@ export async function PUT(
   }
 }
 
-// DELETE post verwijderen
-export async function DELETE(
-  _request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(request: Request) {
   try {
-    const admin = getSupabaseAdmin();
-    const { error } = await admin.from("posts").delete().eq("id", params.id);
+    const body = await request.json();
+    const { data, error } = await supabase
+      .from("posts")
+      .insert([body])
+      .select()
+      .single();
     if (error) throw error;
-    return NextResponse.json({ ok: true });
+    return NextResponse.json(data);
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }

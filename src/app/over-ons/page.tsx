@@ -143,7 +143,7 @@ export default function OverOnsPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Medisch adviseur</p>
-                  <p className="text-gray-700 text-sm">Yvette de Groot</p>
+                  <p className="text-gray-700 text-sm">AniCura Dierenkliniek Sleeuwijk</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Herplaatsing &amp; Opvang</p>

@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 
-// GET alle posts
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
 export async function GET() {
   try {
-    const admin = getSupabaseAdmin();
-    const { data, error } = await admin
+    const { data, error } = await supabase
       .from("posts")
       .select("*")
       .order("created_at", { ascending: false });
@@ -16,12 +19,10 @@ export async function GET() {
   }
 }
 
-// POST nieuwe post aanmaken
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const admin = getSupabaseAdmin();
-    const { data, error } = await admin
+    const { data, error } = await supabase
       .from("posts")
       .insert([body])
       .select()

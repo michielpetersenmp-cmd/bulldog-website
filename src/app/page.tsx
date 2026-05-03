@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, FileText, Shield, ChevronRight, AlertTriangle, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -31,9 +32,11 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
-        <div className="absolute inset-0 paw-bg opacity-30" />
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-light/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+        <div className="absolute inset-0">
+          <Image src="/hero.png" alt="Bulldogs" fill className="object-cover opacity-25" priority />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/60" />
+        <div className="absolute inset-0 paw-bg opacity-10" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">
           <div className="max-w-2xl">
@@ -254,6 +257,32 @@ export default function HomePage() {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* Fotogalerij */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <span className="accent-bar mx-auto" />
+            <h2 className="section-title mb-2">Onze bulldogs</h2>
+            <p className="section-subtitle">Elk met een eigen verhaal, elk de moeite waard</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1 col-span-2">
+              <Image src="/foto1.png" alt="Bulldog rustend" fill className="object-cover" />
+            </div>
+            <div className="relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1">
+              <Image src="/foto2.png" alt="Bulldog spelend" fill className="object-cover" />
+            </div>
+            <div className="relative h-48 md:h-64 rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300 hover:-translate-y-1">
+              <Image src="/vito.png" alt="Vito" fill className="object-cover" />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-primary/80 to-transparent p-3">
+                <span className="text-white text-xs font-bold">💛 Vito</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

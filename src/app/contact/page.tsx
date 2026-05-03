@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Mail, Clock, MapPin, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -12,7 +13,10 @@ export default function ContactPage() {
     <>
       {/* Hero */}
       <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
-        <div className="absolute inset-0 paw-bg opacity-20" />
+        <div className="absolute inset-0">
+          <Image src="/contact.png" alt="Bulldog" fill className="object-cover opacity-15" />
+        </div>
+        <div className="absolute inset-0 paw-bg opacity-10" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
             <span className="inline-block bg-accent/15 text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4 border border-accent/20">

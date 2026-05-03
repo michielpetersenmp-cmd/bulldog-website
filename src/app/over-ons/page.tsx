@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -38,7 +39,10 @@ export default function OverOnsPage() {
       {/* Verhaal */}
       <section className="py-20 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid md:grid-cols-3 gap-10 items-start">
+            <div className="relative h-72 rounded-2xl overflow-hidden shadow-hover">
+              <Image src="/over-ons.png" alt="Bulldog met baasje" fill className="object-cover" />
+            </div>
             <div>
               <span className="accent-bar" />
               <h2 className="section-title mb-4">Ons verhaal</h2>
@@ -143,7 +147,7 @@ export default function OverOnsPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Medisch adviseur</p>
-                  <p className="text-gray-700 text-sm">AniCura Dierenkliniek Sleeuwijk</p>
+                  <p className="text-gray-700 text-sm">Dierenarts Praktijk Sleeuwijk</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Herplaatsing &amp; Opvang</p>

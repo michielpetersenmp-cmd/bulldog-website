@@ -95,7 +95,7 @@ export default function AnbiPage() {
               </div>
               <div className="bg-bg rounded-xl p-4">
                 <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Medisch adviseur</p>
-                <p className="text-sm text-gray-700">Yvette de Groot</p>
+                <p className="text-sm text-gray-700">AniCura Dierenkliniek Sleeuwijk</p>
               </div>
               <div className="bg-bg rounded-xl p-4">
                 <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Herplaatsing &amp; Opvang</p>

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Nunito, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import HeaderWrapper from "@/components/HeaderWrapper";
+import FooterWrapper from "@/components/FooterWrapper";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -49,9 +49,9 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${nunito.variable} ${playfair.variable}`}>
       <body className="font-sans bg-bg text-gray-800 antialiased">
-        <Header />
-        <main>{children}</main>
-        <Footer />
+   <HeaderWrapper />
+<main>{children}</main>
+<FooterWrapper />
       </body>
     </html>
   );

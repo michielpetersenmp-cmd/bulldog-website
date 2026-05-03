@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export const revalidate = 60; // elke minuut opnieuw ophalen
 
 export default async function BlogPage() {
-  let posts = [];
+  let posts: any[] = [];
   try {
     posts = await getPosts("blog");
   } catch {

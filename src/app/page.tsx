@@ -33,9 +33,9 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/hero.png" alt="Bulldogs" fill className="object-cover opacity-25" priority />
+          <Image src="/hero.png" alt="Bulldogs" fill className="object-cover opacity-50" priority />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-primary/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary/40" />
         <div className="absolute inset-0 paw-bg opacity-10" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">

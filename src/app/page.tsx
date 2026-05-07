@@ -32,7 +32,7 @@ const steps = [
 ];
 
 export default async function HomePage() {
-  let featuredPosts = [];
+ let featuredPosts: any[] = [];
   try {
     featuredPosts = await getFeaturedPosts(3);
   } catch {

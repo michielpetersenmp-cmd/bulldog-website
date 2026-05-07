@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, Heart } from "lucide-react";
 
@@ -9,9 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
-                <span className="text-accent text-xl">🐾</span>
-              </div>
+             <Image src="/logo.png" alt="Stichting Bulldog Steunfonds Nederland" width={44} height={44} className="rounded-full" />
               <div>
                 <div className="font-display font-bold text-white text-sm leading-tight">
                   Stichting Bulldog

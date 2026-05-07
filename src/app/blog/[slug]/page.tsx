@@ -3,38 +3,25 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { getPostBySlug, getPosts, formatDate } from "@/lib/supabase";
-import { Calendar, Tag, ChevronLeft, Heart } from "lucide-react";
+import { Calendar, ChevronLeft, Heart } from "lucide-react";
 
 export const revalidate = 60;
 
 export async function generateStaticParams() {
   try {
-    const posts = await getPosts("blog");
+    const posts = await getPosts("update");
     return posts.map((p) => ({ slug: p.slug }));
   } catch {
     return [];
   }
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
-  if (!post) return { title: "Blog niet gevonden" };
-  return {
-    title: post.title,
-    description: post.excerpt || undefined,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt || undefined,
-      images: post.image_url ? [post.image_url] : [],
-    },
-  };
+  if (!post) return { title: "Update niet gevonden" };
+  return { title: post.title, description: post.excerpt || undefined };
 }
 
-// Simpele markdown → HTML renderer (zonder extra dependencies)
 function renderMarkdown(content: string): string {
   return content
     .replace(/^### (.+)$/gm, '<h3 class="font-display font-bold text-primary text-xl mt-8 mb-3">$1</h3>')
@@ -50,58 +37,33 @@ function renderMarkdown(content: string): string {
     });
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function UpdatePostPage({ params }: { params: { slug: string } }) {
   const post = await getPostBySlug(params.slug);
-  if (!post) notFound();
+  if (!post || post.category !== "update") notFound();
 
   const html = renderMarkdown(post.content);
 
   return (
     <>
-      {/* Hero met afbeelding */}
       <section className="pt-20 bg-primary relative overflow-hidden">
         {post.image_url && (
           <div className="absolute inset-0">
-           <Image
-  src={post.image_url}
-  alt={post.title}
-  width={800}
-  height={500}
-  className="w-full h-auto"
-/>
+            <Image src={post.image_url} alt={post.title} width={800} height={500} className="w-full h-auto opacity-20" priority />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/80 to-primary" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1 text-white/60 hover:text-white text-sm mb-6 transition-colors"
-          >
-            <ChevronLeft size={16} /> Terug naar blog
+          <Link href="/updates" className="inline-flex items-center gap-1 text-white/60 hover:text-white text-sm mb-6 transition-colors">
+            <ChevronLeft size={16} /> Terug naar updates
           </Link>
-
-          <div className="flex items-center gap-3 mb-4">
-            <span className="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">
-              Blog
-            </span>
-            {post.tags?.map((tag) => (
-              <span key={tag} className="flex items-center gap-1 text-white/60 text-xs">
-                <Tag size={11} /> {tag}
-              </span>
-            ))}
+          <div className="mb-4">
+            <span className="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">Update</span>
           </div>
-
           <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
             {post.title}
           </h1>
-
           <div className="flex items-center gap-2 text-white/60 text-sm">
-            <Calendar size={14} />
-            {formatDate(post.created_at)}
+            <Calendar size={14} /> {formatDate(post.created_at)}
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
@@ -111,54 +73,31 @@ export default async function BlogPostPage({
         </div>
       </section>
 
-      {/* Content */}
       <section className="py-12 bg-bg">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          {/* Uitgelichte afbeelding */}
           {post.image_url && (
-          <div className="rounded-2xl overflow-hidden shadow-hover mb-10">
-  <Image
-    src={post.image_url}
-    alt={post.title}
-    width={900}
-    height={900}
-    className="w-full h-auto"
-  />
-</div>
+            <div className="rounded-2xl overflow-hidden shadow-hover mb-10">
+              <Image src={post.image_url} alt={post.title} width={900} height={900} className="w-full h-auto" />
+            </div>
           )}
-
-          {/* Artikel content */}
           <article className="bg-white rounded-3xl shadow-card p-8 md:p-10">
             {post.excerpt && (
               <p className="text-lg text-gray-700 font-medium leading-relaxed mb-8 pb-8 border-b border-gray-100">
                 {post.excerpt}
               </p>
             )}
-            <div
-              className="prose-content"
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
+            <div dangerouslySetInnerHTML={{ __html: html }} />
           </article>
-
-          {/* CTA */}
           <div className="mt-8 bg-primary rounded-2xl p-6 text-center text-white">
             <p className="font-semibold mb-3">Steun ons werk voor bulldogs in nood</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/doneren" className="btn-primary text-sm">
-                <Heart size={14} /> Doneer nu
-              </Link>
-              <Link href="/aanvragen" className="btn-outline-white text-sm">
-                Hulp aanvragen
-              </Link>
+              <Link href="/doneren" className="btn-primary text-sm"><Heart size={14} /> Doneer nu</Link>
+              <Link href="/aanvragen" className="btn-outline-white text-sm">Hulp aanvragen</Link>
             </div>
           </div>
-
           <div className="mt-6 text-center">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-1 text-primary hover:text-primary-light font-semibold text-sm transition-colors"
-            >
-              <ChevronLeft size={16} /> Alle blogs
+            <Link href="/updates" className="inline-flex items-center gap-1 text-primary hover:text-primary-light font-semibold text-sm transition-colors">
+              <ChevronLeft size={16} /> Alle updates
             </Link>
           </div>
         </div>

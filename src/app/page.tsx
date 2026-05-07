@@ -2,12 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, FileText, Shield, ChevronRight, AlertTriangle, ExternalLink } from "lucide-react";
+import { getFeaturedPosts } from "@/lib/supabase";
+import PostCard from "@/components/PostCard";
 
 export const metadata: Metadata = {
   title: "Home",
   description:
     "Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs in nood met noodzakelijke medische zorg en financiële hulp. Eerlijk, transparant en met ons hart bij de hond.",
 };
+
+export const revalidate = 60;
 
 const steps = [
   {
@@ -27,15 +31,22 @@ const steps = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  let featuredPosts = [];
+  try {
+    featuredPosts = await getFeaturedPosts(3);
+  } catch {
+    // Supabase nog niet geconfigureerd
+  }
+
   return (
     <>
       {/* Hero */}
       <section className="relative min-h-[90vh] flex items-center bg-primary overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/hero.png" alt="Bulldogs" fill className="object-cover opacity-50" priority />
+          <Image src="/hero.png" alt="Bulldogs" fill className="object-cover opacity-40" priority />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 via-primary/60 to-primary/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/75 to-primary/50" />
         <div className="absolute inset-0 paw-bg opacity-10" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-24 pb-16">
@@ -51,8 +62,8 @@ export default function HomePage() {
             </h1>
 
             <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
-              Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs die medische zorg nodig hebben, 
-              terwijl de eigenaar het (tijdelijk) niet kan betalen. Eerlijk, transparant en met ons hart 
+              Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs die medische zorg nodig hebben,
+              terwijl de eigenaar het (tijdelijk) niet kan betalen. Eerlijk, transparant en met ons hart
               bij de hond én het baasje.
             </p>
 
@@ -76,7 +87,7 @@ export default function HomePage() {
             className="flex items-center gap-3 bg-red-600/90 backdrop-blur-sm text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-lg hover:bg-red-700 transition-colors"
           >
             <AlertTriangle size={16} />
-            Spoed? Mail direct naar hulpaanvraag@stichtingbulldogsteunfondsnederland.nl met onderwerp SPOED
+            Spoed? Mail direct naar hulpaanvraag@stichtingbulldogsteunfondsnederland.nl
           </a>
         </div>
 
@@ -98,14 +109,13 @@ export default function HomePage() {
                 Stichting Bulldog Steunfonds Nederland is ontstaan uit liefde voor bulldogs.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                We zien regelmatig honden die hulp nodig hebben, terwijl de eigenaar het (tijdelijk) 
-                niet kan betalen. Dan willen wij er zijn: eerlijk, transparant en met ons hart bij de 
+                We zien regelmatig honden die hulp nodig hebben, terwijl de eigenaar het (tijdelijk)
+                niet kan betalen. Dan willen wij er zijn: eerlijk, transparant en met ons hart bij de
                 hond én het baasje.
               </p>
               <p className="text-gray-600 leading-relaxed mb-8">
-                Dankzij donateurs, acties en onze shop kunnen wij bijdragen aan operaties, onderzoeken 
-                en andere medische behandelingen die simpelweg niet kunnen wachten. Geen grote organisatie 
-                met dure kantoren — maar een betrokken team van vrijwilligers.
+                Dankzij donateurs, acties en onze shop kunnen wij bijdragen aan operaties, onderzoeken
+                en andere medische behandelingen die simpelweg niet kunnen wachten.
               </p>
               <Link href="/over-ons" className="btn-secondary">
                 Lees meer over ons <ChevronRight size={16} />
@@ -114,10 +124,10 @@ export default function HomePage() {
 
             <div className="space-y-4">
               {[
-                { icon: "🏥", title: "Spoedoperaties", desc: "Bij maagtorsie, keizersnede of een andere spoedoperatie kijken wij mee wat we kunnen bijdragen als er geen financiële ruimte is." },
-                { icon: "🔬", title: "Onderzoeken & scans", desc: "Röntgenfoto's, echo's en bloedonderzoek zijn vaak duur maar noodzakelijk. Ook daarbij kan het steunfonds helpen." },
-                { icon: "💊", title: "Herstel & nazorg", desc: "Na een behandeling zijn soms controles, medicijnen of extra zorg nodig. Waar mogelijk kijken we mee naar ondersteuning." },
-                { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring betalen wij direct aan de dierenarts. Zo weten we zeker dat de steun terechtkomt waar die nodig is." },
+                { icon: "🏥", title: "Spoedoperaties", desc: "Bij maagtorsie, keizersnede of een andere spoedoperatie kijken wij mee wat we kunnen bijdragen." },
+                { icon: "🔬", title: "Onderzoeken & scans", desc: "Röntgenfoto's, echo's en bloedonderzoek zijn vaak duur maar noodzakelijk." },
+                { icon: "💊", title: "Herstel & nazorg", desc: "Na een behandeling zijn soms controles, medicijnen of extra zorg nodig." },
+                { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring betalen wij direct aan de dierenarts." },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300">
                   <div className="text-2xl shrink-0">{item.icon}</div>
@@ -143,32 +153,18 @@ export default function HomePage() {
                   Help Vito — samen zorgen we dat hij krijgt wat hij nodig heeft
                 </h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Vito is een lieve bulldog die door omstandigheden extra ondersteuning nodig heeft. 
-                  Zijn baasje kwam onverwacht in een situatie terecht waarin de kosten voor zorg niet 
+                  Vito is een lieve bulldog die door omstandigheden extra ondersteuning nodig heeft.
+                  Zijn baasje kwam onverwacht in een situatie terecht waarin de kosten voor zorg niet
                   langer te dragen waren.
-                </p>
-                <p className="text-gray-600 leading-relaxed mb-6">
-                  Vanuit de stichting ondersteunen wij Vito met het juiste voer en, waar nodig, met 
-                  de medicatie die hij nodig heeft om zich goed te blijven voelen. Zo zorgen we dat 
-                  Vito thuis kan blijven, in zijn vertrouwde omgeving.
                 </p>
                 <blockquote className="border-l-4 border-accent pl-4 italic text-gray-600 mb-6">
                   "Dat is waar wij voor staan: helpen waar het nodig is, met aandacht voor zowel hond als mens."
                 </blockquote>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="https://tikkie.me/pay/Stichti4535/meUy1FHvYzrfr7pdxEbL8r"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-primary"
-                  >
-                    <Heart size={16} />
-                    Doneer via Tikkie
-                    <ExternalLink size={14} />
+                  <a href="https://tikkie.me/pay/Stichti4535/meUy1FHvYzrfr7pdxEbL8r" target="_blank" rel="noopener noreferrer" className="btn-primary">
+                    <Heart size={16} /> Doneer via Tikkie <ExternalLink size={14} />
                   </a>
-                  <Link href="/doneren" className="btn-secondary">
-                    Naar donatiepagina
-                  </Link>
+                  <Link href="/doneren" className="btn-secondary">Naar donatiepagina</Link>
                 </div>
               </div>
               <div className="bg-white rounded-2xl shadow-card p-6">
@@ -221,49 +217,36 @@ export default function HomePage() {
 
           <div className="text-center mt-10">
             <Link href="/aanvragen" className="btn-primary">
-              <FileText size={18} />
-              Hulp aanvragen
+              <FileText size={18} /> Hulp aanvragen
             </Link>
           </div>
         </div>
       </section>
 
-      {/* What you can do */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <span className="accent-bar mx-auto" />
-            <h2 className="section-title mb-3">Wat u kunt doen</h2>
-            <p className="section-subtitle">Elke bijdrage, groot of klein, helpt ons om bulldogs de zorg te geven die ze verdienen.</p>
+      {/* Uitgelichte posts */}
+      {featuredPosts.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-12">
+              <span className="accent-bar mx-auto" />
+              <h2 className="section-title mb-3">Uitgelicht</h2>
+              <p className="section-subtitle">Laatste nieuws en verhalen van de stichting</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {featuredPosts.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+            <div className="text-center mt-8 flex gap-4 justify-center">
+              <Link href="/blog" className="btn-secondary">Alle blogs</Link>
+              <Link href="/updates" className="btn-secondary">Alle updates</Link>
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons medische hulpfonds. Elke euro gaat direct naar bulldogs in nood.", href: "/doneren", cta: "Doneer nu" },
-              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken, merchandise en andere artikelen — gekocht via onze shop steun je direct de stichting.", href: "https://stichtingbulldogsteunfondsnederland.nl/shop.html", cta: "Naar de shop", external: true },
-              { icon: "📣", title: "Delen", desc: "Vertel anderen over onze stichting en acties. Meer bekendheid betekent meer steun voor meer bulldogs.", href: "/over-ons", cta: "Lees meer" },
-            ].map((item) => (
-              <div key={item.title} className="card text-center">
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="font-display font-bold text-primary text-xl mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm mb-5 leading-relaxed">{item.desc}</p>
-                {item.external ? (
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm">
-                    {item.cta} <ExternalLink size={14} />
-                  </a>
-                ) : (
-                  <Link href={item.href} className="btn-secondary text-sm">
-                    {item.cta} <ChevronRight size={14} />
-                  </Link>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+        </section>
+      )}
 
       {/* Fotogalerij */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <span className="accent-bar mx-auto" />
@@ -287,6 +270,39 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* What you can do */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <span className="accent-bar mx-auto" />
+            <h2 className="section-title mb-3">Wat u kunt doen</h2>
+            <p className="section-subtitle">Elke bijdrage, groot of klein, helpt ons om bulldogs de zorg te geven die ze verdienen.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons medische hulpfonds.", href: "/doneren", cta: "Doneer nu" },
+              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "https://stichtingbulldogsteunfondsnederland.nl/shop.html", cta: "Naar de shop", external: true },
+              { icon: "📣", title: "Delen", desc: "Vertel anderen over onze stichting. Meer bekendheid betekent meer steun.", href: "/over-ons", cta: "Lees meer" },
+            ].map((item) => (
+              <div key={item.title} className="card text-center">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="font-display font-bold text-primary text-xl mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm mb-5 leading-relaxed">{item.desc}</p>
+                {item.external ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm">
+                    {item.cta} <ExternalLink size={14} />
+                  </a>
+                ) : (
+                  <Link href={item.href} className="btn-secondary text-sm">
+                    {item.cta} <ChevronRight size={14} />
+                  </Link>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Banner */}
       <section className="py-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 paw-bg opacity-20" />
@@ -295,18 +311,15 @@ export default function HomePage() {
             Samen maken we het verschil
           </h2>
           <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
-            Zonder donateurs, acties en mensen die onze stichting delen, kunnen we niets. 
-            Met elkaar kunnen we juist heel veel: rekeningen betalen, levens redden en eigenaren 
-            een beetje lucht geven in een moeilijke periode.
+            Zonder donateurs, acties en mensen die onze stichting delen, kunnen we niets.
+            Met elkaar kunnen we juist heel veel.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/doneren" className="btn-primary">
-              <Heart size={18} />
-              Steun ons
+              <Heart size={18} /> Steun ons
             </Link>
             <Link href="/aanvragen" className="btn-outline-white">
-              <FileText size={18} />
-              Hulp aanvragen
+              <FileText size={18} /> Hulp aanvragen
             </Link>
           </div>
         </div>

@@ -116,14 +116,15 @@ export default async function BlogPostPage({
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {/* Uitgelichte afbeelding */}
           {post.image_url && (
-            <div className="relative h-auto rounded-2xl overflow-hidden shadow-hover mb-10">
-              <Image
-                src={post.image_url}
-                alt={post.title}
-                fill
-                className="object-cover"
-              />
-            </div>
+          <div className="rounded-2xl overflow-hidden shadow-hover mb-10">
+  <Image
+    src={post.image_url}
+    alt={post.title}
+    width={900}
+    height={600}
+    className="w-full h-auto"
+  />
+</div>
           )}
 
           {/* Artikel content */}

@@ -66,13 +66,13 @@ export default async function BlogPostPage({
       <section className="pt-20 bg-primary relative overflow-hidden">
         {post.image_url && (
           <div className="absolute inset-0">
-            <Image
-              src={post.image_url}
-              alt={post.title}
-              fill
-              className="object-cover opacity-20"
-              priority
-            />
+           <Image
+  src={post.image_url}
+  alt={post.title}
+  width={800}
+  height={500}
+  className="w-full h-auto"
+/>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-b from-primary/80 to-primary" />

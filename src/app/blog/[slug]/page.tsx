@@ -121,7 +121,7 @@ export default async function BlogPostPage({
     src={post.image_url}
     alt={post.title}
     width={900}
-    height={600}
+    height={900}
     className="w-full h-auto"
   />
 </div>

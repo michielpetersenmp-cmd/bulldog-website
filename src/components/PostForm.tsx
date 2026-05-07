@@ -131,13 +131,15 @@ export default function PostForm({ initial, isEdit }: PostFormProps) {
             >
               Concept opslaan
             </button>
-            <button
-              onClick={() => handleSave(true)}
-              disabled={saving || !form.title || !form.content}
-              className="btn-primary text-sm disabled:opacity-50"
-            >
-              <Save size={14} /> {saving ? "Opslaan..." : "Publiceren"}
-            </button>
+           {isEdit ? (
+  <button onClick={() => handleSave()} disabled={saving || !form.title || !form.content} className="btn-primary text-sm disabled:opacity-50">
+    <Save size={14} /> {saving ? "Opslaan..." : "Wijzigingen opslaan"}
+  </button>
+) : (
+  <button onClick={() => handleSave(true)} disabled={saving || !form.title || !form.content} className="btn-primary text-sm disabled:opacity-50">
+    <Save size={14} /> {saving ? "Opslaan..." : "Publiceren"}
+  </button>
+)}
           </div>
         </div>
       </header>

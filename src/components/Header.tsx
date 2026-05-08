@@ -18,6 +18,7 @@ const navLinks = [
       { href: "https://stichtingbulldogsteunfondsnederland.nl/shop.html", label: "🛍️ Shop", external: true },
     ],
   },
+  { href: "/verhalen", label: "Verhalen" },
   { href: "/blog", label: "Blog" },
   { href: "/updates", label: "Updates" },
   { href: "/anbi", label: "ANBI" },

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
+export const dynamic = "force-dynamic";
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({ posts: 0, verhalen: 0, acties: 0, geholpen: 0 });

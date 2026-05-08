@@ -139,7 +139,7 @@ export default function Header() {
               return (
                 <div key={link.label}>
                   <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wide">{link.label}</div>
-                  {link.dropdown.map((item) =>
+                  {link.dropdown?.map((item) =>
                     "external" in item && item.external ? (
                       <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer"
                         className="block px-6 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-primary/8 hover:text-primary">

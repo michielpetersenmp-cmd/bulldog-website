@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Save } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
+export const dynamic = "force-dynamic";
 
 export default function AdminStatsPage() {
   const [bulldogs, setBulldogs] = useState(0);

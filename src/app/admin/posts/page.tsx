@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Edit, Trash2, Eye, EyeOff, LogOut, BookOpen, Megaphone } from "lucide-react";
 import type { Post } from "@/lib/supabase";
+export const dynamic = "force-dynamic";
 
 export default function AdminPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Edit, Trash2, Eye, LogOut } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
+export const dynamic = "force-dynamic";
 
 const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
   aangemeld: { label: "Aangemeld", color: "bg-yellow-100 text-yellow-700", icon: "🟡" },

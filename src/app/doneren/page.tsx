@@ -96,7 +96,7 @@ export default function DonerenPage() {
                 Kleurboeken, merchandise en andere artikelen — elke aankoop draagt direct bij aan ons medische hulpfonds.
               </p>
             </div>
-            <a href="https://stichtingbulldogsteunfondsnederland.nl/shop.html" target="_blank" rel="noopener noreferrer" className="btn-secondary shrink-0">
+            <a href="https://www.stichtingbulldogsteunfondsnederland.nl/shop" target="_blank" rel="noopener noreferrer" className="btn-secondary shrink-0">
               Naar de shop <ExternalLink size={14} />
             </a>
           </div>

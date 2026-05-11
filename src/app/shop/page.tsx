@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import EcwidShop from "@/components/EcwidShop";
 
 export const metadata: Metadata = {
   title: "Shop & Steun",
-  description:
-    "In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat. Zo help je een bulldog in nood.",
+  description: "In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat.",
 };
 
-export default function ShopPage() { 
+export default function ShopPage() {
   return (
     <>
-      {/* Hero */}
       <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 paw-bg opacity-20" />
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
@@ -24,8 +21,7 @@ export default function ShopPage() {
               Shop – steun bulldogs met je aankoop
             </h1>
             <p className="text-white/80 text-lg leading-relaxed">
-              In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat. 
-              Zo doe je jezelf of een ander een plezier én help je tegelijk een bulldog in nood.
+              In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat.
             </p>
           </div>
         </div>
@@ -36,7 +32,6 @@ export default function ShopPage() {
         </div>
       </section>
 
-      {/* Info blokken */}
       <section className="py-12 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -44,81 +39,63 @@ export default function ShopPage() {
               <div className="text-3xl mb-3">📚</div>
               <h3 className="font-display font-bold text-primary mb-2">Wat vind je hier?</h3>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Unieke <strong>kleurboeken</strong> met bulldogs en andere thema's
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Actie-artikelen waarvan de opbrengst naar een specifieke hond gaat
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Donatie-artikelen waarbij je een bedrag kiest
-                </li>
+                <li>• Unieke kleurboeken met bulldogs</li>
+                <li>• Actie-artikelen voor specifieke honden</li>
+                <li>• Donatie-artikelen naar keuze</li>
               </ul>
             </div>
-
             <div className="bg-white rounded-2xl shadow-card p-6">
               <div className="text-3xl mb-3">📦</div>
               <h3 className="font-display font-bold text-primary mb-2">Verzendkosten</h3>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Brievenbuspakket: <strong>€ 4,25</strong>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Pakketpost: <strong>€ 6,95</strong>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  <strong>Gratis</strong> vanaf € 50,- binnen Nederland
-                </li>
+                <li>• Brievenbuspakket: € 4,25</li>
+                <li>• Pakketpost: € 6,95</li>
+                <li>• Gratis vanaf € 50,-</li>
               </ul>
             </div>
-
             <div className="bg-white rounded-2xl shadow-card p-6">
               <div className="text-3xl mb-3">💛</div>
-              <h3 className="font-display font-bold text-primary mb-2">Waar gaat de opbrengst naartoe?</h3>
+              <h3 className="font-display font-bold text-primary mb-2">Opbrengst</h3>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Medische behandelingen van bulldogs
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Onvoorziene spoedsituaties
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-accent mt-0.5">•</span>
-                  Preventieve zorg bij high-risk gevallen
-                </li>
+                <li>• Medische behandelingen</li>
+                <li>• Spoedsituaties</li>
+                <li>• Preventieve zorg</li>
               </ul>
             </div>
           </div>
 
-          {/* Ecwid shop */}
-          <div className="bg-white rounded-3xl shadow-card p-6 md:p-8">
-            <h2 className="font-display text-2xl font-bold text-primary mb-2">Onze producten</h2>
-            <p className="text-gray-600 text-sm mb-6">
-              Selecteer een artikel, plaats het in uw winkelmand en rond veilig af.
-            </p>
-            <EcwidShop />
+          <div className="bg-white rounded-3xl shadow-card p-8 text-center">
+            <h2 className="font-display text-2xl font-bold text-primary mb-4">Onze producten</h2>
+            <p className="text-gray-600 mb-6">Bekijk alle producten in onze webshop.</p>
+            <div id="my-store-127419850"></div>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.ecwid_script_defer = true;
+                  window.ecwid_dynamic_widgets = true;
+                  if (!document.getElementById('ecwid-script')) {
+                    var s = document.createElement('script');
+                    s.id = 'ecwid-script';
+                    s.src = 'https://app.ecwid.com/script.js?127419850&data_platform=code&data_date=2025-12-07';
+                    s.charset = 'utf-8';
+                    s.async = true;
+                    s.onload = function() {
+                      xProductBrowser("categoriesPerRow=3","views=grid(20,3) list(60) table(60)","categoryView=grid","searchView=list","id=my-store-127419850");
+                    };
+                    document.body.appendChild(s);
+                  }
+                `
+              }}
+            />
           </div>
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 paw-bg opacity-20" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="font-display text-3xl font-bold text-white mb-4">
-            Liever direct doneren?
-          </h2>
-          <p className="text-white/80 text-lg mb-8">
-            Elke bijdrage helpt ons meer bulldogs te helpen.
-          </p>
+          <h2 className="font-display text-3xl font-bold text-white mb-4">Liever direct doneren?</h2>
+          <p className="text-white/80 text-lg mb-8">Elke bijdrage helpt ons meer bulldogs te helpen.</p>
           <Link href="/doneren" className="btn-primary">
             <Heart size={16} /> Doneer nu
           </Link>
@@ -127,4 +104,3 @@ export default function ShopPage() {
     </>
   );
 }
- 

@@ -86,7 +86,7 @@ export default function Header() {
                     </button>
                     {dropdownOpen && (
                       <div className="absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-hover border border-gray-100 py-2 z-50">
-                        {link.dropdown.map((item) =>
+                        {link.dropdown?.map((item) =>
                           "external" in item && item.external ? (
                             <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer"
                               className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:text-primary hover:bg-primary/6 transition-colors">
@@ -138,7 +138,7 @@ export default function Header() {
               return (
                 <div key={link.label}>
                   <div className="px-4 py-2 text-xs font-bold text-gray-400 uppercase tracking-wide">{link.label}</div>
-                  {link.dropdown.map((item) =>
+                  {link.dropdown?.map((item) =>
                     "external" in item && item.external ? (
                       <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer"
                         className="block px-6 py-2.5 rounded-xl text-sm text-gray-700 hover:bg-primary/8 hover:text-primary">

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat. Zo help je een bulldog in nood.",
 };
 
-export default function ShopPage() {
+export default function ShopPage() { 
   return (
     <>
       {/* Hero */}

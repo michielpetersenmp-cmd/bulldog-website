@@ -281,7 +281,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons medische hulpfonds.", href: "/doneren", cta: "Doneer nu" },
-              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "https://stichtingbulldogsteunfondsnederland.nl/shop.html", cta: "Naar de shop", external: true },
+              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "https://www.stichtingbulldogsteunfondsnederland.nl/shop", cta: "Naar de shop", external: true },
               { icon: "📣", title: "Delen", desc: "Vertel anderen over onze stichting. Meer bekendheid betekent meer steun.", href: "/over-ons", cta: "Lees meer" },
             ].map((item) => (
               <div key={item.title} className="card text-center">

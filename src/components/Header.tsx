@@ -15,7 +15,7 @@ const navLinks = [
     dropdown: [
       { href: "/doneren", label: "💶 Doneer nu" },
       { href: "/acties", label: "🏆 Acties & opbrengsten" },
-      { href: "https://stichtingbulldogsteunfondsnederland.nl/shop.html", label: "🛍️ Shop", external: true },
+     { href: "/shop", label: "🛍️ Shop" }
     ],
   },
   { href: "/verhalen", label: "Verhalen" },

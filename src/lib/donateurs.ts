@@ -11,7 +11,7 @@ export type Donateur = {
   bijdrage?: string;
 };
 
-export const donateurs: Donateur[] = [
+export const standaardDonateurs: Donateur[] = [
   {
     slug: "boeketten-nl",
     naam: "Boeketten.nl",
@@ -60,6 +60,22 @@ export const donateurs: Donateur[] = [
   },
 ];
 
-export function getDonateur(slug: string) {
+export async function getDonateurs(): Promise<Donateur[]> {
+  try {
+    const { getSupabaseAdmin } = await import("@/lib/supabase");
+    const admin = getSupabaseAdmin();
+    const { data, error } = await admin.storage
+      .from("post-images")
+      .download("config/donateurs.json");
+    if (error || !data) return standaardDonateurs;
+    const parsed = JSON.parse(await data.text());
+    return Array.isArray(parsed) ? parsed : standaardDonateurs;
+  } catch {
+    return standaardDonateurs;
+  }
+}
+
+export async function getDonateur(slug: string) {
+  const donateurs = await getDonateurs();
   return donateurs.find((donateur) => donateur.slug === slug);
 }

@@ -13,6 +13,19 @@ export type Donateur = {
 
 export const donateurs: Donateur[] = [
   {
+    slug: "canabioday",
+    naam: "Canabioday",
+    korteOmschrijving:
+      "Canabioday draagt Stichting Bulldog Steunfonds Nederland een warm hart toe en heeft met de organisatie van de Bullendag een prachtige ontmoetingsdag voor bulldogs, baasjes en liefhebbers mogelijk gemaakt.",
+    verhaal: [
+      "Canabioday heeft een bijzondere plek binnen onze stichting. Dankzij hun inzet en organisatie konden we deelnemen aan de Bullendag: een drukke, gezellige dag waarop we heel veel mensen en bulldogs hebben ontmoet.",
+      "Voor ons was het niet alleen een mooi evenement, maar ook een belangrijke dag om onze stichting onder de aandacht te brengen, gesprekken te voeren en geld op te halen voor ons werk. De sfeer, betrokkenheid en liefde voor honden maakten de dag extra bijzonder.",
+      "We zijn Canabioday enorm dankbaar voor het organiseren van deze dag en voor de ruimte die onze stichting kreeg om aanwezig te zijn. Zulke samenwerkingen helpen ons om meer mensen te bereiken en uiteindelijk meer bulldogs en hun baasjes te kunnen ondersteunen."
+    ],
+    bijdrage:
+      "Canabioday ondersteunt onze stichting door evenementen en ontmoetingsmomenten mogelijk te maken en onze stichting zichtbaar onder de aandacht te brengen."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 import { Heart, ExternalLink, Trophy, Calendar, TrendingUp } from "lucide-react";
+import { getSiteStats } from "@/lib/site-stats";
 
 export const metadata: Metadata = {
   title: "Acties & Opbrengsten",
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
     "Bekijk alle acties en opbrengsten van Stichting Bulldog Steunfonds Nederland. Volledig transparant over elke euro.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const typeIcons: Record<string, string> = {
   veiling: "🏆",
@@ -59,17 +61,13 @@ function formatDatum(datum: string) {
 }
 
 export default async function ActiesPage() {
-  const { acties, stats } = await getData();
+  const { acties } = await getData();
+  const siteStats = await getSiteStats();
 
-  const geregistreerdeBulldogs = Number(stats.find((s: any) => s.id === "bulldogs_geholpen")?.waarde || 0);
-  const geregistreerdeDonaties = Number(stats.find((s: any) => s.id === "donaties_dit_jaar")?.waarde || 0);
-  const bulldogsGeholpen = Math.max(6, geregistreerdeBulldogs);
-  const donатiesDitJaar = Math.max(2295, geregistreerdeDonaties);
-  const geregistreerdeOpbrengst = acties.reduce((sum: number, a: any) => sum + (a.opbrengst || 0), 0);
-  const historischOpbrengst = 2074.45;
-  const historischAantalActies = 7;
-  const totaalOpbrengst = historischOpbrengst + geregistreerdeOpbrengst;
-  const totaalActies = historischAantalActies + acties.length;
+  const bulldogsGeholpen = siteStats.bulldogsGeholpen;
+  const donatiesTotaal = siteStats.donatiesTotaal;
+  const totaalOpbrengst = siteStats.opbrengstActies;
+  const totaalActies = siteStats.actiesTotaal;
   const lopend = acties.filter((a: any) => a.status === "lopend");
   const afgerond = acties.filter((a: any) => a.status === "afgerond");
 
@@ -105,7 +103,7 @@ export default async function ActiesPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { icon: "💶", label: "Totale opbrengst acties", value: formatBedrag(totaalOpbrengst), accent: true },
-              { icon: "💛", label: "Gedoneerd dit jaar", value: formatBedrag(donатiesDitJaar), accent: false },
+              { icon: "💛", label: "Donaties & doneeracties", value: formatBedrag(donatiesTotaal), accent: false },
               { icon: "🐾", label: "Bulldogs geholpen", value: `${bulldogsGeholpen}`, accent: false },
               { icon: "🏆", label: "Acties uitgevoerd", value: `${totaalActies}`, accent: false },
             ].map((stat) => (

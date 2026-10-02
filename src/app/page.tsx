@@ -193,47 +193,67 @@ export default async function HomePage() {
             <span className="accent-bar mx-auto" />
             <h2 className="section-title mb-3">Bulldogs die we hebben geholpen</h2>
             <p className="section-subtitle max-w-2xl mx-auto">
-              Achter iedere aanvraag zit een hond, een baasje en een verhaal. Hieronder een aantal voorbeelden van steun die we samen mogelijk hebben gemaakt.
+              Achter iedere aanvraag zit een hond, een baasje en een verhaal. Hieronder ziet u een aantal voorbeelden van hulp en ondersteuning die we samen met onze donateurs mogelijk hebben gemaakt.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
                 naam: "Vito",
                 status: "Lopende ondersteuning",
-                tekst: "Vito ondersteunen we nog steeds met het speciale voer dat hij nodig heeft. Dankzij donateurs kunnen we die ondersteuning blijven voortzetten.",
+                afbeelding: "/vito.png",
+                tekst: "Vito ondersteunen we nog steeds met het speciale voer dat hij nodig heeft. Dankzij donateurs kunnen we deze hulp blijven voortzetten en krijgt hij nog altijd de ondersteuning die voor hem belangrijk is.",
               },
               {
                 naam: "RebL",
                 status: "Geholpen",
-                tekst: "Na een ernstige larynx-collapsaanval was een BOAS/BOS-operatie noodzakelijk. Met steun en een inzamelingsactie hebben we bijgedragen aan de behandeling en het herstel.",
+                afbeelding: "/rebl.jpg",
+                tekst: "Na een ernstige larynx-collapsaanval was voor RebL een BOAS/BOS-operatie noodzakelijk. Met steun en een inzamelingsactie konden we bijdragen aan zijn behandeling en herstel.",
               },
               {
                 naam: "Matcha",
                 status: "Operatie",
-                tekst: "Op de dag van haar operatie hebben we Matcha en haar baasjes gesteund en onze achterban gevraagd haar veel kracht en positiviteit mee te geven.",
+                afbeelding: "/matcha.jpg",
+                tekst: "Voor Matcha was het een spannende dag toen zij geopereerd werd. We hebben Matcha en haar baasjes gesteund en onze achterban gevraagd haar veel kracht, liefde en positiviteit mee te geven.",
               },
               {
                 naam: "Scott",
-                status: "Operatie gescheurde kruisband",
-                tekst: "Voor Scott zamelden we geld in voor een operatie aan zijn gescheurde kruisband. De operatie kostte € 2.550 en met hulp van donateurs brachten we het benodigde bedrag dichterbij.",
+                status: "Steunactie voor operatie",
+                afbeelding: "/scott.jpg",
+                tekst: "Voor Scott kwamen we in actie toen hij geopereerd moest worden aan zijn gescheurde kruisband. De operatie kostte € 2.550 en met hulp van donateurs brachten we het benodigde bedrag dichterbij.",
+              },
+              {
+                naam: "Lucy",
+                status: "Herstel & nazorg",
+                afbeelding: "/lucy.jpg",
+                tekst: "Lucy heeft een moeilijke periode achter de rug, maar gelukkig gaat het steeds beter met haar. Ze krijgt de zorg, medicatie en het aangepaste dieet dat zij nodig heeft en kan inmiddels weer genieten in haar gouden mandje.",
               },
             ].map((hond) => (
-              <div key={hond.naam} className="card">
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <h3 className="font-display font-bold text-primary text-xl">{hond.naam}</h3>
-                  <span className="text-xs font-semibold bg-accent/15 text-primary px-3 py-1 rounded-full">
-                    {hond.status}
-                  </span>
+              <article key={hond.naam} className="bg-white rounded-3xl shadow-card overflow-hidden">
+                <div className="relative h-56">
+                  <Image
+                    src={hond.afbeelding}
+                    alt={`${hond.naam} - een van de bulldogs die door de stichting is ondersteund`}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">{hond.tekst}</p>
-              </div>
+                <div className="p-6">
+                  <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <h3 className="font-display font-bold text-primary text-xl">{hond.naam}</h3>
+                    <span className="text-xs font-semibold bg-accent/15 text-primary px-3 py-1 rounded-full">
+                      {hond.status}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">{hond.tekst}</p>
+                </div>
+              </article>
             ))}
           </div>
 
-          <p className="text-center text-sm text-gray-500 mt-8">
-            Dit zijn enkele voorbeelden. Iedere aanvraag wordt afzonderlijk beoordeeld op basis van onze huidige doelstelling en beschikbare middelen.
+          <p className="text-center text-sm text-gray-500 mt-8 max-w-3xl mx-auto">
+            Dit zijn enkele voorbeelden van de hulp die wij bieden. Iedere aanvraag wordt afzonderlijk beoordeeld op basis van onze huidige doelstelling en beschikbare middelen.
           </p>
         </div>
       </section>

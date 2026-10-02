@@ -8,7 +8,7 @@ import PostCard from "@/components/PostCard";
 export const metadata: Metadata = {
   title: "Home",
   description:
-    "Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs in nood met noodzakelijke medische zorg en financiële hulp. Eerlijk, transparant en met ons hart bij de hond.",
+    "Stichting Bulldog Steunfonds Nederland helpt bij noodzakelijke operaties van bulldogs in Nederland, inclusief bijbehorende onderzoeken, medicatie en nazorg.",
 };
 
 export const revalidate = 60;
@@ -22,12 +22,12 @@ const steps = [
   {
     icon: Shield,
     title: "2. Wij nemen contact op",
-    desc: "We bespreken de situatie persoonlijk, stellen eventueel vragen en kijken samen naar de beste oplossing voor uw hond.",
+    desc: "We beoordelen de aanvraag zorgvuldig en nemen contact op als we aanvullende informatie nodig hebben.",
   },
   {
     icon: Heart,
     title: "3. Besluit & ondersteuning",
-    desc: "Als we kunnen helpen, doen we dat bij voorkeur door rechtstreeks aan de dierenarts te betalen.",
+    desc: "Bij goedkeuring betalen we de toegekende bijdrage rechtstreeks aan de dierenarts.",
   },
 ];
 
@@ -109,9 +109,7 @@ export default async function HomePage() {
                 Stichting Bulldog Steunfonds Nederland is ontstaan uit liefde voor bulldogs.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                We zien regelmatig honden die hulp nodig hebben, terwijl de eigenaar het (tijdelijk)
-                niet kan betalen. Dan willen wij er zijn: eerlijk, transparant en met ons hart bij de
-                hond én het baasje.
+                We zien regelmatig bulldogs die een noodzakelijke operatie nodig hebben, terwijl de eigenaar de kosten niet kan dragen. Dan willen wij er zijn: zorgvuldig, transparant en met ons hart bij de hond én het baasje.
               </p>
               <p className="text-gray-600 leading-relaxed mb-8">
                 Dankzij donateurs, acties en onze shop kunnen wij bijdragen aan noodzakelijke operaties en de onderzoeken, medicatie en nazorg die daarbij horen.
@@ -123,7 +121,7 @@ export default async function HomePage() {
 
             <div className="space-y-4">
               {[
-                { icon: "🏥", title: "Spoedoperaties", desc: "Bij maagtorsie, keizersnede of een andere spoedoperatie kijken wij mee wat we kunnen bijdragen." },
+                { icon: "🏥", title: "Noodzakelijke operaties", desc: "Wij beoordelen aanvragen voor medisch noodzakelijke operaties en kijken welke bijdrage mogelijk is." },
                 { icon: "🔬", title: "Onderzoeken & scans", desc: "Onderzoeken die nodig zijn voor een operatie kunnen onderdeel zijn van de steun." },
                 { icon: "💊", title: "Herstel & nazorg", desc: "Ook controles en medicatie die bij de operatie horen kunnen onderdeel zijn van de steun." },
                 { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring betalen wij direct aan de dierenarts." },
@@ -195,7 +193,7 @@ export default async function HomePage() {
             <span className="accent-bar mx-auto" />
             <h2 className="section-title mb-3">Hoe werkt het?</h2>
             <p className="section-subtitle max-w-xl mx-auto">
-              In drie stappen helpen wij u en uw bulldog op weg naar de zorg die nodig is.
+              In drie stappen beoordelen wij een aanvraag voor financiële steun bij een noodzakelijke operatie.
             </p>
           </div>
 
@@ -275,11 +273,11 @@ export default async function HomePage() {
           <div className="text-center mb-12">
             <span className="accent-bar mx-auto" />
             <h2 className="section-title mb-3">Wat u kunt doen</h2>
-            <p className="section-subtitle">Elke bijdrage, groot of klein, helpt ons om bulldogs de zorg te geven die ze verdienen.</p>
+            <p className="section-subtitle">Elke bijdrage, groot of klein, helpt ons om noodzakelijke operaties voor bulldogs mogelijk te maken.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons medische hulpfonds.", href: "/doneren", cta: "Doneer nu" },
+              { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons fonds voor noodzakelijke operaties.", href: "/doneren", cta: "Doneer nu" },
               { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "/shop", cta: "Naar de shop", external: true },
               { icon: "📣", title: "Delen", desc: "Vertel anderen over onze stichting. Meer bekendheid betekent meer steun.", href: "/over-ons", cta: "Lees meer" },
             ].map((item) => (

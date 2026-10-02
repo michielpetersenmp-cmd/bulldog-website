@@ -105,7 +105,28 @@ export default function AdminDonateursPage() {
       const res = await fetch("/api/admin/upload", { method: "POST", body: form });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload mislukt");
-      update(index, kind, data.url);
+
+      const next = donateurs.map((d, i) =>
+        i === index ? { ...d, [kind]: data.url } : d
+      );
+      setDonateurs(next);
+
+      const normalized = next.map((d) => ({
+        ...d,
+        slug: d.slug || makeSlug(d.naam),
+        verhaal: (d.verhaal || []).map((v) => v.trim()).filter(Boolean),
+      }));
+
+      const saveRes = await fetch("/api/admin/donateurs", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ donateurs: normalized }),
+      });
+      const saved = await saveRes.json();
+      if (!saveRes.ok) throw new Error(saved.error || "Afbeelding opslaan mislukt");
+
+      setDonateurs(saved.donateurs);
+      setMessage("Afbeelding bijgewerkt en direct opgeslagen.");
     } catch (e: any) {
       setMessage(e.message);
     } finally {

@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "ANBI-Informatie",
+  title: "Transparantie & verantwoording",
   description:
-    "Transparantie & verantwoording van Stichting Bulldog Steunfonds Nederland. Alle ANBI-gegevens, bestuur en beloningsbeleid.",
+    "Transparantie & verantwoording van Stichting Bulldog Steunfonds Nederland: stichtingsgegevens, bestuur, doelstelling, beloningsbeleid en financiële verantwoording.",
 };
 
 export default function AnbiPage() {
@@ -16,13 +16,13 @@ export default function AnbiPage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
           <div className="max-w-2xl">
             <span className="inline-block bg-accent/15 text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4 border border-accent/20">
-              ANBI
+              Transparantie
             </span>
             <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
               Transparantie & verantwoording
             </h1>
             <p className="text-white/80 text-lg leading-relaxed">
-              Alle informatie over onze stichting, bestuur, doelstelling en financiële verantwoording.
+              Wij zijn op dit moment geen ANBI. Toch vinden wij openheid belangrijk. Daarom publiceren wij hier vrijwillig onze stichtingsgegevens, het bestuur, onze doelstelling, het beloningsbeleid en onze financiële verantwoording.
             </p>
           </div>
         </div>
@@ -134,8 +134,7 @@ export default function AnbiPage() {
           <div className="bg-white rounded-2xl shadow-card p-8">
             <h2 className="font-display font-bold text-primary text-2xl mb-4">6. Financiële verantwoording</h2>
             <p className="text-gray-600 leading-relaxed mb-4">
-              Jaarlijks wordt een financieel verslag opgesteld volgens de ANBI-richtlijnen. Alle inkomsten 
-              worden besteed aan de doelstelling: medische zorg en welzijn van bulldogs in nood.
+              Wij streven naar een zo transparant mogelijke financiële verantwoording. Inkomsten worden ingezet voor de doelstelling van de stichting. Jaarlijks leggen wij verantwoording af over onze inkomsten en uitgaven.
             </p>
             <a
               href="https://stichtingbulldogsteunfondsnederland.nl/Beleidsplan_Stichting_Bulldog_Steunfonds.pdf"

@@ -34,7 +34,7 @@ export default async function DonateurDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const donateur = getDonateur(slug);
+  const donateur = await getDonateur(slug);
 
   if (!donateur) notFound();
 

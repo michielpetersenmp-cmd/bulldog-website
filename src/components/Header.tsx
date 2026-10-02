@@ -15,6 +15,7 @@ const navLinks = [
     dropdown: [
       { href: "/doneren", label: "💶 Doneer nu" },
       { href: "/acties", label: "🏆 Acties & opbrengsten" },
+      { href: "/donateurs", label: "🤝 Bedrijfsvrienden" },
       { href: "/shop", label: "🛍️ Shop", external: true },
     ],
   },
@@ -76,7 +77,7 @@ export default function Header() {
                     <button
                       onClick={() => setDropdownOpen(!dropdownOpen)}
                       className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
-                        pathname.startsWith("/doneren") || pathname.startsWith("/acties")
+                        pathname.startsWith("/doneren") || pathname.startsWith("/acties") || pathname.startsWith("/donateurs")
                           ? "bg-primary text-white"
                           : "text-gray-700 hover:text-primary hover:bg-primary/8"
                       }`}

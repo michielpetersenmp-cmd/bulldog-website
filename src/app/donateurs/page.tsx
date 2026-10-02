@@ -35,19 +35,19 @@ export default function DonateursPage() {
               {donateurs.map((donateur) => (
                 <article key={donateur.slug} className="bg-white rounded-3xl shadow-card overflow-hidden flex flex-col">
                   <div className="h-52 bg-gray-50 relative flex items-center justify-center">
-                    {donateur.afbeelding ? (
-                      <Image
-                        src={donateur.afbeelding}
-                        alt={donateur.naam}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : donateur.logo ? (
+                    {donateur.logo ? (
                       <Image
                         src={donateur.logo}
                         alt={donateur.naam}
                         fill
                         className="object-contain p-8"
+                      />
+                    ) : donateur.afbeelding ? (
+                      <Image
+                        src={donateur.afbeelding}
+                        alt={donateur.naam}
+                        fill
+                        className="object-cover"
                       />
                     ) : (
                       <HeartHandshake size={72} className="text-accent" />

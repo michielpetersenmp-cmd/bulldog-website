@@ -43,6 +43,21 @@ export const standaardDonateurs: Donateur[] = [
       "CannaBioDay ondersteunt onze stichting door ons zichtbaar een plek te geven tijdens De Bullendag en andere ontmoetingsmomenten voor hondenliefhebbers mogelijk te maken."
   },
   {
+    slug: "bonos-dogcenter",
+    naam: "Bono's Dogcenter",
+    korteOmschrijving:
+      "Bono's Dogcenter is een webshop voor honden met een groot assortiment natuurlijke snacks, trainings- en beloningssnacks, kauwproducten, speelgoed, verzorging en trainingsmaterialen. De producten worden zorgvuldig geselecteerd en volgens Bono's Dogcenter eerst door de eigen honden getest.",
+    verhaal: [
+      "Bono's Dogcenter is een webshop voor hondenliefhebbers die veel aandacht besteedt aan kwaliteit, plezier en persoonlijke service. Het assortiment is breed en loopt van natuurlijke hondensnacks en kauwproducten tot speelgoed, verzorging, enrichment en trainingsmaterialen.",
+      "Een belangrijk onderdeel van het aanbod zijn de natuurlijke snacks. Bono's Dogcenter verkoopt onder andere snacks van rund, lam, paard, konijn, gevogelte, wild en vis, maar ook trainers, beloningssnacks en opties voor honden met een gevoelige voeding. Veel van de samengestelde snackpakketten bestaan hoofdzakelijk uit natuurlijke producten zonder toegevoegde geur-, kleur- en smaakstoffen of extra zout en suiker.",
+      "Wat we mooi vinden aan Bono's Dogcenter is de persoonlijke aanpak. Volgens de webshop worden producten eerst door de eigen honden getest en worden alleen artikelen aangeboden waar ze zelf volledig achter staan. Kun je iets niet vinden, dan denken ze bovendien graag mee of het gewenste product kan worden ingekocht.",
+      "Als bedrijfsvriend van Stichting Bulldog Steunfonds Nederland helpt Bono's Dogcenter mee om onze stichting zichtbaar te maken en ons werk voor bulldogs en hun baasjes te ondersteunen. We waarderen die betrokkenheid enorm."
+    ],
+    website: "https://bonosdogcenter.com/",
+    bijdrage:
+      "Bono's Dogcenter ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en helpt daarmee ons werk voor bulldogs en hun baasjes onder de aandacht te brengen."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:
@@ -74,7 +89,7 @@ export async function getDonateurs(): Promise<Donateur[]> {
     if (!Array.isArray(parsed)) return standaardDonateurs;
 
     const standaardCannaBioDay = standaardDonateurs.find((d) => d.slug === "canabioday");
-    return parsed.map((donateur: Donateur) => {
+    const bijgewerkt = parsed.map((donateur: Donateur) => {
       if (
         donateur.slug === "canabioday" &&
         standaardCannaBioDay &&
@@ -89,6 +104,13 @@ export async function getDonateurs(): Promise<Donateur[]> {
       }
       return donateur;
     });
+
+    const bestaandeSlugs = new Set(bijgewerkt.map((d: Donateur) => d.slug));
+    const ontbrekendeStandaardDonateurs = standaardDonateurs.filter(
+      (d) => !bestaandeSlugs.has(d.slug)
+    );
+
+    return [...bijgewerkt, ...ontbrekendeStandaardDonateurs];
   } catch {
     return standaardDonateurs;
   }

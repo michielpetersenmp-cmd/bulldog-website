@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 export default function PrivacyverklaringPage() {
   return (
     <>
-      {/* Hero */}
       <section className="pt-28 pb-12 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 paw-bg opacity-20" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
@@ -30,12 +29,11 @@ export default function PrivacyverklaringPage() {
         </div>
       </section>
 
-      {/* Content */}
       <section className="py-16 bg-bg">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="bg-white rounded-3xl shadow-card p-8 md:p-12 prose prose-gray max-w-none">
             <p className="text-gray-500 text-sm mb-8">
-              Versie: 1.0 · Datum: januari 2024
+              Bijgewerkt op 2 oktober 2026
             </p>
 
             <div className="space-y-8">
@@ -103,9 +101,7 @@ export default function PrivacyverklaringPage() {
               <div>
                 <h2 className="font-display font-bold text-primary text-2xl mb-3">6. Cookies</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Onze website maakt gebruik van functionele cookies die strikt noodzakelijk zijn voor 
-                  het functioneren van de website. Wij plaatsen geen tracking- of analytische cookies 
-                  zonder uw toestemming.
+                  Onze website gebruikt functionele opslag voor onder andere uw cookievoorkeur. Alleen na uw toestemming laden wij Google Analytics om het gebruik van de openbare website te meten. Google verwerkt daarbij gegevens over bezochte pagina’s en uw apparaat. Beheerpagina’s worden niet gemeten. U kunt uw keuze wijzigen via de knop ‘Cookievoorkeuren’. Bij intrekking stoppen we de meting en verwijderen we de Analytics-cookies die voor deze website toegankelijk zijn.
                 </p>
               </div>
 

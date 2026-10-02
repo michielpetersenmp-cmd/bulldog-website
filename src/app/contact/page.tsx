@@ -1,3 +1,4 @@
+import ContactForm from "@/components/ContactForm";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Mail, Clock, MapPin, MessageSquare } from "lucide-react";
@@ -47,8 +48,7 @@ export default function ContactPage() {
               <span className="accent-bar" />
               <h2 className="section-title mb-4">Contactgegevens</h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                U kunt ons bereiken via e-mail. Wij streven ernaar uw bericht binnen 2 werkdagen 
-                te beantwoorden.
+                U kunt ons bereiken via e-mail. Ons vrijwillige team reageert zo snel mogelijk.
               </p>
 
               <div className="space-y-6">
@@ -73,7 +73,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-primary mb-0.5">Reactietijd</p>
-                    <p className="text-gray-600 text-sm">Binnen 2 werkdagen</p>
+                    <p className="text-gray-600 text-sm">Zo snel mogelijk</p>
                   </div>
                 </div>
 
@@ -94,8 +94,7 @@ export default function ContactPage() {
                   <span className="font-semibold text-primary text-sm">Spoedeisende situatie?</span>
                 </div>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  Heeft uw bulldog direct zorg nodig? Vermeld dit duidelijk in uw e-mail, 
-                  dan behandelen wij uw bericht met prioriteit.
+                  Neem bij medische spoed direct contact op met uw dierenarts of een spoedkliniek. Wacht niet op een reactie van de stichting. Vermeld de urgentie bij een aanvraag voor financiële steun.
                 </p>
               </div>
             </div>
@@ -103,85 +102,7 @@ export default function ContactPage() {
             {/* Contactformulier */}
             <div className="bg-white rounded-3xl shadow-card p-8">
               <h2 className="font-display font-bold text-primary text-2xl mb-6">Stuur een bericht</h2>
-              <form
-                action={`mailto:info@stichtingbulldogsteunfondsnederland.nl`}
-                method="post"
-                encType="text/plain"
-                className="space-y-4"
-              >
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="naam">
-                      Naam
-                    </label>
-                    <input
-                      id="naam"
-                      name="naam"
-                      type="text"
-                      required
-                      placeholder="Uw naam"
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="email">
-                      E-mailadres
-                    </label>
-                    <input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="uw@email.nl"
-                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="onderwerp">
-                    Onderwerp
-                  </label>
-                  <select
-                    id="onderwerp"
-                    name="onderwerp"
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all bg-white"
-                  >
-                    <option value="">Selecteer een onderwerp</option>
-                    <option value="aanvraag">Vraag over aanvraag</option>
-                    <option value="donatie">Donatie of sponsoring</option>
-                    <option value="samenwerking">Samenwerking / partnerschap</option>
-                    <option value="algemeen">Algemene vraag</option>
-                    <option value="anders">Anders</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1.5" htmlFor="bericht">
-                    Bericht
-                  </label>
-                  <textarea
-                    id="bericht"
-                    name="bericht"
-                    required
-                    rows={5}
-                    placeholder="Schrijf uw bericht hier..."
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn-primary w-full justify-center"
-                >
-                  <Mail size={16} />
-                  Bericht versturen
-                </button>
-
-                <p className="text-xs text-gray-400 text-center">
-                  U wordt doorgestuurd naar uw e-mailprogramma om het bericht te versturen.
-                </p>
-              </form>
+              <ContactForm />
             </div>
           </div>
         </div>

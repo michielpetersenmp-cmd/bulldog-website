@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 const besteding = [
-  { icon: "🏥", title: "Medische behandelingen", desc: "Operaties, spoedzorg, gebitsbehandelingen, luchtwegproblemen en meer." },
-  { icon: "🔬", title: "Diagnostiek", desc: "Röntgenfoto's, echo's, bloedonderzoek en andere noodzakelijke onderzoeken." },
-  { icon: "💊", title: "Nazorg & herstel", desc: "Medicatie, controlebezoeken en ondersteunende zorg na een behandeling." },
-  { icon: "🏠", title: "Bijzondere gevallen", desc: "Opvang- of herplaatsingskosten wanneer dit medisch noodzakelijk is." },
+  { icon: "🏥", title: "Medische behandelingen", desc: "Medisch noodzakelijke operaties, beoordeeld per aanvraag." },
+  { icon: "🔬", title: "Diagnostiek", desc: "De onderzoeken die nodig zijn voor de operatie." },
+  { icon: "💊", title: "Nazorg & herstel", desc: "Medicatie en controles die bij de operatie horen." },
+  { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring wordt de bijdrage aan de dierenarts betaald." },
 ];
 
 export default function DonerenPage() {
@@ -29,7 +29,7 @@ export default function DonerenPage() {
               Steun een bulldog in nood
             </h1>
             <p className="text-white/80 text-lg leading-relaxed">
-              Met uw donatie helpt u rechtstreeks een bulldog die medische zorg nodig heeft.
+              Met uw donatie helpt u rechtstreeks een bulldog die een noodzakelijke operatie nodig heeft.
               Soms maken we het verschil tussen wel of geen behandeling. Elke bijdrage telt.
             </p>
           </div>
@@ -96,7 +96,7 @@ export default function DonerenPage() {
                 Kleurboeken, merchandise en andere artikelen — elke aankoop draagt direct bij aan ons medische hulpfonds.
               </p>
             </div>
-            <a href="https://www.stichtingbulldogsteunfondsnederland.nl/shop" target="_blank" rel="noopener noreferrer" className="btn-secondary shrink-0">
+            <a href="/shop" target="_blank" rel="noopener noreferrer" className="btn-secondary shrink-0">
               Naar de shop <ExternalLink size={14} />
             </a>
           </div>
@@ -121,7 +121,7 @@ export default function DonerenPage() {
             <span className="accent-bar mx-auto" />
             <h2 className="section-title mb-3">Wat doet uw donatie?</h2>
             <p className="section-subtitle max-w-xl mx-auto">
-              De volledige opbrengst gaat naar ons medische hulpfonds. Het bestuur en de vrijwilligers ontvangen geen enkele beloning; elke euro wordt besteed aan bulldogs in nood.
+              Uw donatie helpt ons noodzakelijke operaties mogelijk te maken, inclusief bijbehorende onderzoeken en nazorg. Het bestuur ontvangt geen salaris; alleen aantoonbare, noodzakelijke onkosten kunnen worden vergoed.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">

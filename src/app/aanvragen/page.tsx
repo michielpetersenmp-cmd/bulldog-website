@@ -6,25 +6,25 @@ import { ExternalLink, FileText, CheckCircle, Clock, AlertCircle } from "lucide-
 export const metadata: Metadata = {
   title: "Aanvragen",
   description:
-    "Vraag financiële steun aan voor de veterinaire kosten van uw bulldog via ons online portaal.",
+    "Vraag via ons portaal steun aan voor een noodzakelijke operatie van uw bulldog, inclusief bijbehorende onderzoeken en nazorg.",
 };
 
 const requirements = [
-  "U bent eigenaar van een buldogras (Engelse, Franse of Amerikaans bulldog)",
-  "Uw bulldog heeft aantoonbare veterinaire zorg nodig",
+  "U bent eigenaar van een bulldog",
+  "Uw bulldog heeft een medisch noodzakelijke operatie nodig",
   "U kunt de veterinaire kosten niet (volledig) zelf dragen",
-  "U bent bereid documentatie te verstrekken (inkomensverklaring, veterinaire diagnose)",
+  "U verstrekt de gevraagde gegevens over inkomen en lasten, de diagnose en een kostenraming van de dierenarts",
   "U woont in Nederland",
 ];
 
 const faq = [
   {
     q: "Hoelang duurt de beoordeling?",
-    a: "Wij streven ernaar elke aanvraag binnen 5 werkdagen te beoordelen na ontvangst van alle benodigde documenten.",
+    a: "Wij beoordelen uw aanvraag zodra de benodigde gegevens compleet zijn. De duur hangt af van de situatie en eventuele aanvullende informatie. Bij spoed: neem direct contact op met uw dierenarts en vermeld de urgentie in uw aanvraag.",
   },
   {
     q: "Wat voor kosten worden vergoed?",
-    a: "Wij vergoeden veterinaire kosten voor diagnose, behandeling en operaties. Preventieve zorg zoals vaccinaties vallen buiten de regeling.",
+    a: "Wij kunnen bijdragen aan medisch noodzakelijke operaties en de onderzoeken, medicatie en nazorg die daarbij horen. Losstaande behandelingen, voeding, vaccinaties, opvang, herplaatsing en euthanasie vallen buiten onze huidige steunregeling. Iedere bijdrage hangt af van de beoordeling en de beschikbare middelen.",
   },
   {
     q: "Betalen jullie rechtstreeks aan de dierenarts?",
@@ -43,7 +43,6 @@ const faq = [
 export default function AanvragenPage() {
   return (
     <>
-      {/* Hero */}
       <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0">
           <Image src="/aanvragen.png" alt="Bulldog" fill className="object-cover opacity-50" />
@@ -58,9 +57,8 @@ export default function AanvragenPage() {
               Vraag financiële steun aan
             </h1>
             <p className="text-white/80 text-lg leading-relaxed">
-              Is uw bulldog ziek en kunt u de veterinaire kosten niet betalen? 
-              Dien een aanvraag in via ons portaal. Wij beoordelen uw aanvraag zorgvuldig en 
-              snel.
+              Heeft uw bulldog een noodzakelijke operatie nodig en kunt u de kosten niet betalen? 
+              Dien een aanvraag in via ons portaal. Wij beoordelen uw aanvraag zorgvuldig en persoonlijk.
             </p>
           </div>
         </div>
@@ -71,11 +69,9 @@ export default function AanvragenPage() {
         </div>
       </section>
 
-      {/* Main CTA */}
       <section className="py-20 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid md:grid-cols-2 gap-10 items-start">
-            {/* Portal link */}
             <div className="bg-white rounded-3xl shadow-hover p-8 border-2 border-accent/20">
               <div className="w-16 h-16 bg-accent/15 rounded-2xl flex items-center justify-center mb-6">
                 <FileText size={28} className="text-accent" />
@@ -101,7 +97,6 @@ export default function AanvragenPage() {
               </p>
             </div>
 
-            {/* Requirements */}
             <div>
               <span className="accent-bar" />
               <h2 className="section-title mb-4">Wie kan aanvragen?</h2>
@@ -130,7 +125,6 @@ export default function AanvragenPage() {
         </div>
       </section>
 
-      {/* Process */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -140,7 +134,7 @@ export default function AanvragenPage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: FileText, step: "Stap 1", title: "Aanvraag indienen", desc: "Vul het formulier volledig in en upload de gevraagde documenten via het portaal." },
-              { icon: Clock, step: "Stap 2", title: "Beoordeling (5 werkdagen)", desc: "Ons team bekijkt uw aanvraag. We nemen contact op als we aanvullende informatie nodig hebben." },
+              { icon: Clock, step: "Stap 2", title: "Beoordeling", desc: "Ons team bekijkt uw aanvraag. We nemen contact op als we aanvullende informatie nodig hebben." },
               { icon: CheckCircle, step: "Stap 3", title: "Beslissing & betaling", desc: "U ontvangt per e-mail bericht. Bij goedkeuring betalen wij direct aan uw dierenarts." },
             ].map((item) => (
               <div key={item.step} className="card text-center">
@@ -156,7 +150,6 @@ export default function AanvragenPage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="py-20 bg-bg">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">

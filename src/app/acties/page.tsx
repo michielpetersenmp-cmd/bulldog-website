@@ -63,7 +63,9 @@ export default async function ActiesPage() {
 
   const bulldogsGeholpen = stats.find((s: any) => s.id === "bulldogs_geholpen")?.waarde || 0;
   const donатiesDitJaar = stats.find((s: any) => s.id === "donaties_dit_jaar")?.waarde || 0;
-  const totaalOpbrengst = acties.reduce((sum: number, a: any) => sum + (a.opbrengst || 0), 0);
+  const geregistreerdeOpbrengst = acties.reduce((sum: number, a: any) => sum + (a.opbrengst || 0), 0);
+  const totaalOpbrengst = Math.max(2074.45, geregistreerdeOpbrengst);
+  const totaalActies = Math.max(7, acties.length);
   const lopend = acties.filter((a: any) => a.status === "lopend");
   const afgerond = acties.filter((a: any) => a.status === "afgerond");
 
@@ -101,7 +103,7 @@ export default async function ActiesPage() {
               { icon: "💶", label: "Totale opbrengst acties", value: formatBedrag(totaalOpbrengst), accent: true },
               { icon: "💛", label: "Gedoneerd dit jaar", value: formatBedrag(donатiesDitJaar), accent: false },
               { icon: "🐾", label: "Bulldogs geholpen", value: `${bulldogsGeholpen}`, accent: false },
-              { icon: "🏆", label: "Acties uitgevoerd", value: `${acties.length}`, accent: false },
+              { icon: "🏆", label: "Acties uitgevoerd", value: `${totaalActies}`, accent: false },
             ].map((stat) => (
               <div key={stat.label} className={`rounded-2xl shadow-card p-5 text-center ${stat.accent ? "bg-accent" : "bg-white"}`}>
                 <div className="text-3xl mb-2">{stat.icon}</div>

@@ -58,6 +58,22 @@ export const standaardDonateurs: Donateur[] = [
       "Bono's Dogcenter ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en helpt daarmee ons werk voor bulldogs en hun baasjes onder de aandacht te brengen."
   },
   {
+    slug: "style-3d-studio",
+    naam: "Style 3D Studio",
+    korteOmschrijving:
+      "Style 3D Studio is de 3D-printtak van Style Bedruk Service en maakt allerlei 3D-geprinte producten en maatwerk. Van decoratie, lampen, potten en cadeaus tot gepersonaliseerde ontwerpen, dierenfiguren en andere creatieve prints: veel ideeën kunnen in kleur, formaat en uitvoering worden aangepast.",
+    verhaal: [
+      "Style 3D Studio is de 3D-printtak van Style Bedruk Service in Montfoort. Vanuit de studio worden allerlei soorten 3D-prints gemaakt: niet alleen honden of bulldogs, maar juist een brede mix van decoratie, gebruiksartikelen, cadeaus, dierenfiguren, lampen, potten en maatwerk.",
+      "Veel producten kunnen persoonlijk worden gemaakt. Denk aan aanpassingen in kleur, formaat, naam, uitvoering of ontwerp. Ook wanneer iemand zelf een idee heeft, kan worden gekeken of dat als 3D-print kan worden uitgewerkt.",
+      "Voor Stichting Bulldog Steunfonds Nederland krijgt Style 3D Studio een extra bijzondere rol. Speciaal voor de stichting worden regelmatig bulldog-gerelateerde producten en acties gemaakt, zodat creativiteit en 3D-printen direct kunnen bijdragen aan het helpen van bulldogs en hun baasjes.",
+      "Daarmee is Style 3D Studio niet alleen een creatieve onderneming, maar ook een betrokken bedrijfsvriend die zijn mogelijkheden inzet om de stichting zichtbaar te maken en extra inkomsten voor het goede doel te genereren."
+    ],
+    website: "https://3d.stylebedrukservice.nl/",
+    plaats: "Montfoort",
+    bijdrage:
+      "Style 3D Studio ondersteunt Stichting Bulldog Steunfonds Nederland met speciaal voor de stichting gemaakte bulldog-producten, creatieve acties en bijdragen uit 3D-printwerk."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:

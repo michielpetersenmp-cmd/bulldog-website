@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+
 
 export const metadata: Metadata = {
   title: "Transparantie & verantwoording",
@@ -163,14 +163,9 @@ export default function AnbiPage() {
               <Link href="/acties" className="btn-secondary inline-flex">
                 Bekijk acties & opbrengsten
               </Link>
-              <a
-                href="https://stichtingbulldogsteunfondsnederland.nl/Beleidsplan_Stichting_Bulldog_Steunfonds.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary inline-flex"
-              >
-                📄 Download het beleidsplan (PDF) <ExternalLink size={14} />
-              </a>
+              <Link href="/beleidsplan" className="btn-secondary inline-flex">
+                📄 Bekijk het actuele beleidsplan
+              </Link>
             </div>
           </div>
 

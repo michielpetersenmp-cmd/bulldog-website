@@ -5,7 +5,8 @@ import Link from "next/link";
 import { ExternalLink, Facebook, Globe2, HeartHandshake, MapPin } from "lucide-react";
 import { getDonateurs, getDonateur } from "@/lib/donateurs";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateStaticParams() {
   const donateurs = await getDonateurs();

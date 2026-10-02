@@ -254,6 +254,12 @@ export default async function HomePage() {
                 afbeelding: "/lucy.jpg",
                 tekst: "Lucy heeft een moeilijke periode achter de rug, maar gelukkig gaat het steeds beter met haar. Ze krijgt de zorg, medicatie en het aangepaste dieet dat zij nodig heeft en kan inmiddels weer genieten in haar gouden mandje.",
               },
+              {
+                naam: "Nova",
+                status: "Gouden mandje gevonden",
+                afbeelding: "/nova.jpg",
+                tekst: "Voor Nova maakten we als stichting een bijzondere uitzondering. Haar baasje zocht door persoonlijke omstandigheden een nieuw, liefdevol thuis voor deze lieve 7-jarige Old English Bulldog. Dankzij de enorme betrokkenheid, het delen van onze oproep en alle reacties hebben we Nova goed onder de aandacht kunnen brengen. Het mooiste nieuws: Nova heeft haar nieuwe, liefdevolle gouden mandje gevonden.",
+              },
             ].map((hond) => (
               <article key={hond.naam} className="bg-white rounded-3xl shadow-card overflow-hidden">
                 <div className="relative h-56">

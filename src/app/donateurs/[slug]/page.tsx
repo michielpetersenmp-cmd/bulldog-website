@@ -86,6 +86,17 @@ export default async function DonateurDetailPage({
               ))}
             </div>
 
+            {donateur.afbeelding && (
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mt-8 bg-gray-100">
+                <Image
+                  src={donateur.afbeelding}
+                  alt={`${donateur.naam} - voorbeeld van het werk`}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+
             {donateur.bijdrage && (
               <div className="mt-8 bg-accent/10 rounded-2xl p-5 border border-accent/20">
                 <h3 className="font-display font-bold text-primary mb-2">

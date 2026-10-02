@@ -40,7 +40,7 @@ export default function Footer() {
                 { href: "/verhalen", label: "Verhalen" },
                 { href: "/blog", label: "Blog" },
                 { href: "/updates", label: "Updates" },
-                { href: "/anbi", label: "ANBI" },
+                { href: "/anbi", label: "Transparantie" },
                 { href: "/contact", label: "Contact" },
                 { href: "/privacyverklaring", label: "Privacyverklaring" },
               ].map((link) => (

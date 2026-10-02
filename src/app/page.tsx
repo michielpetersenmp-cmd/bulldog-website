@@ -98,6 +98,31 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Aankomende veiling */}
+      <section className="py-10 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="bg-gradient-to-r from-accent/20 via-accent/10 to-primary/10 border border-accent/30 rounded-3xl p-6 md:p-8 shadow-card">
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="text-5xl shrink-0">🔨</div>
+              <div className="flex-1">
+                <div className="inline-flex items-center bg-primary text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
+                  Binnenkort
+                </div>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-primary mb-2">
+                  Onze veiling komt eraan — rond 15 november!
+                </h2>
+                <p className="text-gray-600 leading-relaxed">
+                  We zijn alweer druk bezig met de voorbereidingen voor een gezellige nieuwe veiling. Rond 15 november gaat de actie van start. Er komen weer mooie kavels voorbij en de opbrengst gaat naar het werk van Stichting Bulldog Steunfonds Nederland. Houd onze website en socials in de gaten, want binnenkort delen we meer informatie.
+                </p>
+              </div>
+              <Link href="/acties" className="btn-primary shrink-0">
+                Bekijk acties <ChevronRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Wie wij zijn */}
       <section className="py-20 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

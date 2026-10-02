@@ -255,7 +255,7 @@ export default async function HomePage() {
               {
                 naam: "Vito",
                 status: "Lopende ondersteuning",
-                afbeelding: "/vito.png",
+                afbeelding: "/vito-echt.jpg",
                 tekst: "Vito ondersteunen we nog steeds met het speciale voer dat hij nodig heeft. Dankzij donateurs kunnen we deze hulp blijven voortzetten en krijgt hij nog altijd de ondersteuning die voor hem belangrijk is.",
               },
               {
@@ -290,12 +290,12 @@ export default async function HomePage() {
               },
             ].map((hond) => (
               <article key={hond.naam} className="bg-white rounded-3xl shadow-card overflow-hidden">
-                <div className="relative h-56">
+                <div className="relative h-72 bg-gray-50">
                   <Image
                     src={hond.afbeelding}
                     alt={`${hond.naam} - een van de bulldogs die door de stichting is ondersteund`}
                     fill
-                    className="object-cover"
+                    className="object-contain object-center p-2"
                   />
                 </div>
                 <div className="p-6">

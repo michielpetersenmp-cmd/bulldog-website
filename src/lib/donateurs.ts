@@ -29,16 +29,18 @@ export const standaardDonateurs: Donateur[] = [
   },
   {
     slug: "canabioday",
-    naam: "Canabioday",
+    naam: "CannaBioDay",
     korteOmschrijving:
-      "Canabioday draagt Stichting Bulldog Steunfonds Nederland een warm hart toe en heeft met de organisatie van de Bullendag een prachtige ontmoetingsdag voor bulldogs, baasjes en liefhebbers mogelijk gemaakt.",
+      "CannaBioDay richt zich op hennep- en CBD-producten voor honden en katten en combineert een gespecialiseerde webshop met persoonlijk advies, voorlichting en hondenevenementen. Oprichtster Kitty Schaap is medisch cannabis- en CBD-specialist en heeft meer dan tien jaar ervaring in de cannabisbranche.",
     verhaal: [
-      "Canabioday heeft een bijzondere plek binnen onze stichting. Dankzij hun inzet en organisatie konden we deelnemen aan de Bullendag: een drukke, gezellige dag waarop we heel veel mensen en bulldogs hebben ontmoet.",
-      "Voor ons was het niet alleen een mooi evenement, maar ook een belangrijke dag om onze stichting onder de aandacht te brengen, gesprekken te voeren en geld op te halen voor ons werk. De sfeer, betrokkenheid en liefde voor honden maakten de dag extra bijzonder.",
-      "We zijn Canabioday enorm dankbaar voor het organiseren van deze dag en voor de ruimte die onze stichting kreeg om aanwezig te zijn. Zulke samenwerkingen helpen ons om meer mensen te bereiken en uiteindelijk meer bulldogs en hun baasjes te kunnen ondersteunen."
+      "CannaBioDay is opgericht door Kitty Schaap, medisch cannabis- en CBD-specialist. Vanuit haar ervaring helpt zij huisdiereigenaren bij het maken van een verantwoorde keuze rond hennep- en CBD-producten voor honden en katten. In de webshop staan onder andere THC-vrije hennepolie, snacks, verzorgingsproducten en verschillende voordeelpakketten. Daarnaast biedt CannaBioDay persoonlijk advies en voorlichting over het gebruik van CBD en cannabinoïden bij huisdieren.",
+      "Naast de webshop organiseert CannaBioDay ook hondenevenementen. Een prachtig voorbeeld daarvan is De Bullendag. Tijdens de editie van 26 september 2026 in het Develpark in Zwijndrecht kwamen bulldogs, baasjes, liefhebbers, standhouders en stichtingen samen voor een dag vol ontmoeting en gezelligheid. Bezoekers konden onder andere terecht bij de bullenbraderie, een hondenfotograaf en Rally-O Fun, terwijl er ook activiteiten voor kinderen waren.",
+      "Voor Stichting Bulldog Steunfonds Nederland was De Bullendag een bijzondere en succesvolle dag. We hebben ontzettend veel mensen en bulldogs ontmoet, mooie gesprekken gevoerd en onze stichting goed onder de aandacht kunnen brengen. Dankzij de drukte en betrokkenheid konden we bovendien een mooie opbrengst voor de stichting realiseren.",
+      "We zijn Kitty en CannaBioDay enorm dankbaar voor de organisatie van De Bullendag en voor de plek die onze stichting daar kreeg. Hun liefde voor dieren, inzet voor huisdiereigenaren en enthousiasme voor evenementen sluiten prachtig aan bij waar wij als stichting voor staan."
     ],
+    website: "https://www.cannabioday.nl/",
     bijdrage:
-      "Canabioday ondersteunt onze stichting door evenementen en ontmoetingsmomenten mogelijk te maken en onze stichting zichtbaar onder de aandacht te brengen."
+      "CannaBioDay ondersteunt onze stichting door ons zichtbaar een plek te geven tijdens De Bullendag en andere ontmoetingsmomenten voor hondenliefhebbers mogelijk te maken."
   },
   {
     slug: "stacaravan-service",
@@ -69,7 +71,24 @@ export async function getDonateurs(): Promise<Donateur[]> {
       .download("config/donateurs.json");
     if (error || !data) return standaardDonateurs;
     const parsed = JSON.parse(await data.text());
-    return Array.isArray(parsed) ? parsed : standaardDonateurs;
+    if (!Array.isArray(parsed)) return standaardDonateurs;
+
+    const standaardCannaBioDay = standaardDonateurs.find((d) => d.slug === "canabioday");
+    return parsed.map((donateur: Donateur) => {
+      if (
+        donateur.slug === "canabioday" &&
+        standaardCannaBioDay &&
+        donateur.verhaal?.[0]?.startsWith("Canabioday heeft een bijzondere plek binnen onze stichting")
+      ) {
+        return {
+          ...standaardCannaBioDay,
+          logo: donateur.logo || standaardCannaBioDay.logo,
+          afbeelding: donateur.afbeelding || standaardCannaBioDay.afbeelding,
+          facebook: donateur.facebook || standaardCannaBioDay.facebook,
+        };
+      }
+      return donateur;
+    });
   } catch {
     return standaardDonateurs;
   }

@@ -163,7 +163,7 @@ export default function AnbiPage() {
               <Link href="/acties" className="btn-secondary inline-flex">
                 Bekijk acties & opbrengsten
               </Link>
-              <Link href="/beleidsplan" className="btn-secondary inline-flex">
+              <Link href="/beleidsplan-2025-2028" className="btn-secondary inline-flex">
                 📄 Bekijk het actuele beleidsplan
               </Link>
             </div>

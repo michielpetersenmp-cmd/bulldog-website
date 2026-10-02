@@ -66,8 +66,10 @@ export default async function ActiesPage() {
   const bulldogsGeholpen = Math.max(6, geregistreerdeBulldogs);
   const donатiesDitJaar = Math.max(2295, geregistreerdeDonaties);
   const geregistreerdeOpbrengst = acties.reduce((sum: number, a: any) => sum + (a.opbrengst || 0), 0);
-  const totaalOpbrengst = Math.max(2074.45, geregistreerdeOpbrengst);
-  const totaalActies = Math.max(7, acties.length);
+  const historischOpbrengst = 2074.45;
+  const historischAantalActies = 7;
+  const totaalOpbrengst = historischOpbrengst + geregistreerdeOpbrengst;
+  const totaalActies = historischAantalActies + acties.length;
   const lopend = acties.filter((a: any) => a.status === "lopend");
   const afgerond = acties.filter((a: any) => a.status === "afgerond");
 
@@ -126,7 +128,7 @@ export default async function ActiesPage() {
             <span className="accent-bar" />
             <h2 className="section-title mb-2">Acties & evenementen</h2>
             <p className="section-subtitle max-w-3xl">
-              Met loterijen, creatieve acties, evenementen en inzamelingen brengen we samen geld bijeen voor de stichting. Hieronder een aantal mooie momenten waar we met veel plezier op terugkijken.
+              Met loterijen, creatieve acties, evenementen en inzamelingen brengen we samen geld bijeen voor de stichting. Hieronder staan onze eerste zeven vastgelegde acties. Nieuwe acties worden via ons beheersysteem toegevoegd en verschijnen automatisch op deze pagina.
             </p>
           </div>
 
@@ -315,17 +317,6 @@ export default async function ActiesPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* Leeg state */}
-      {acties.length === 0 && (
-        <section className="py-20 bg-bg">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <div className="text-6xl mb-4">🏆</div>
-            <h2 className="section-title mb-3">Binnenkort meer acties</h2>
-            <p className="section-subtitle">Onze eerste acties worden hier binnenkort weergegeven.</p>
           </div>
         </section>
       )}

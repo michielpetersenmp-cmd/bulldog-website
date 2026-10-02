@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Eye, EyeOff } from "lucide-react";
+import { Lock, Eye, EyeOff, Mail } from "lucide-react";
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState("michielpetersen.mp@gmail.com");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ export default function AdminLoginPage() {
     const res = await fetch("/api/admin/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ email, password }),
     });
 
     if (res.ok) {
@@ -43,7 +44,24 @@ export default function AdminLoginPage() {
         </div>
 
         <form onSubmit={handleLogin} className="bg-white rounded-3xl p-8 shadow-2xl">
-          <div className="mb-6">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              E-mailadres
+            </label>
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40"
+                placeholder="E-mailadres"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Wachtwoord
             </label>
@@ -80,6 +98,15 @@ export default function AdminLoginPage() {
           >
             {loading ? "Inloggen..." : "Inloggen"}
           </button>
+
+          <div className="mt-4 text-center">
+            <a
+              href="/admin/wachtwoord-vergeten"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              Wachtwoord vergeten?
+            </a>
+          </div>
         </form>
       </div>
     </div>

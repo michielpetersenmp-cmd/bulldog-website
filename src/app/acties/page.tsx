@@ -61,8 +61,10 @@ function formatDatum(datum: string) {
 export default async function ActiesPage() {
   const { acties, stats } = await getData();
 
-  const bulldogsGeholpen = stats.find((s: any) => s.id === "bulldogs_geholpen")?.waarde || 0;
-  const donатiesDitJaar = stats.find((s: any) => s.id === "donaties_dit_jaar")?.waarde || 0;
+  const geregistreerdeBulldogs = Number(stats.find((s: any) => s.id === "bulldogs_geholpen")?.waarde || 0);
+  const geregistreerdeDonaties = Number(stats.find((s: any) => s.id === "donaties_dit_jaar")?.waarde || 0);
+  const bulldogsGeholpen = Math.max(6, geregistreerdeBulldogs);
+  const donатiesDitJaar = Math.max(2295, geregistreerdeDonaties);
   const geregistreerdeOpbrengst = acties.reduce((sum: number, a: any) => sum + (a.opbrengst || 0), 0);
   const totaalOpbrengst = Math.max(2074.45, geregistreerdeOpbrengst);
   const totaalActies = Math.max(7, acties.length);

@@ -68,9 +68,7 @@ export default function OverOnsPage() {
               <div className="bg-white rounded-2xl shadow-card p-6 border-l-4 border-accent">
                 <h3 className="font-display font-bold text-primary text-xl mb-2">Onze missie</h3>
                 <p className="text-gray-600">
-                  Bulldogs in Nederland helpen die medische zorg nodig hebben, terwijl de eigenaar het 
-                  (tijdelijk) niet kan betalen. We richten ons op noodzakelijke zorg: operaties, 
-                  onderzoeken en spoedbehandelingen.
+                  Bulldogs in Nederland helpen wanneer een medisch noodzakelijke operatie voor hun baasje financieel niet haalbaar is. De bijbehorende onderzoeken, medicatie en nazorg kunnen onderdeel zijn van de steun.
                 </p>
               </div>
               <div className="bg-white rounded-2xl shadow-card p-6 border-l-4 border-primary">
@@ -78,7 +76,7 @@ export default function OverOnsPage() {
                 <ul className="space-y-2 text-gray-600 text-sm">
                   {[
                     "We beoordelen iedere hulpvraag zorgvuldig en persoonlijk",
-                    "We betalen – waar mogelijk – rechtstreeks aan de dierenarts",
+                    "Bij goedkeuring betalen we rechtstreeks aan de dierenarts",
                     "We denken mee met eigenaren over de beste oplossing",
                     "We communiceren eerlijk over wat wel en niet mogelijk is",
                     "We delen gemaakte kosten en resultaten zo transparant mogelijk",
@@ -119,7 +117,7 @@ export default function OverOnsPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {[
               { naam: "Michiel Petersen", rol: "Voorzitter" },
-              { naam: "Angela Terpstra", rol: "Secretaris" },
+              { naam: "Mandy Willems", rol: "Secretaris" },
               { naam: "Anja Petersen", rol: "Penningmeester" },
               { naam: "Sander Cuijpers", rol: "Bestuurder" },
               { naam: "Esther Imanse", rol: "Bestuurder" },
@@ -136,7 +134,6 @@ export default function OverOnsPage() {
             ))}
           </div>
 
-          {/* Adviseurs & Vrijwilligers */}
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-bg rounded-2xl p-6">
               <h3 className="font-display font-bold text-primary text-lg mb-4">Adviseurs</h3>
@@ -150,7 +147,7 @@ export default function OverOnsPage() {
                   <p className="text-gray-700 text-sm">Dierenarts Praktijk Sleeuwijk</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Herplaatsing &amp; Opvang</p>
+                  <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Advies over herplaatsing</p>
                   <p className="text-gray-700 text-sm">Joyce van den Berg</p>
                 </div>
               </div>
@@ -170,7 +167,6 @@ export default function OverOnsPage() {
         </div>
       </section>
 
-      {/* Kernwaarden */}
       <section className="py-16 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -182,7 +178,7 @@ export default function OverOnsPage() {
               { icon: "🐾", title: "Zorg voor de hond", desc: "Het welzijn van de bulldog staat altijd centraal in alles wat we doen." },
               { icon: "🔍", title: "Eerlijk & transparant", desc: "We gaan zorgvuldig om met elke donatie en communiceren open over onze besluiten." },
               { icon: "🤝", title: "Menselijk & dichtbij", desc: "Achter elke aanvraag zit een verhaal. We kijken niet alleen naar de hond, maar ook naar de eigenaar." },
-              { icon: "💚", title: "Volledig vrijwillig", desc: "Niemand in het bestuur verdient aan de stichting. Elke euro gaat naar de bulldogs." },
+              { icon: "💚", title: "Volledig vrijwillig", desc: "Het bestuur werkt zonder salaris. Alleen aantoonbare, noodzakelijke onkosten kunnen worden vergoed." },
             ].map((val) => (
               <div key={val.title} className="card text-center">
                 <div className="text-3xl mb-3">{val.icon}</div>
@@ -194,7 +190,6 @@ export default function OverOnsPage() {
         </div>
       </section>
 
-      {/* CTA */}
       <section className="py-16 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 paw-bg opacity-20" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">

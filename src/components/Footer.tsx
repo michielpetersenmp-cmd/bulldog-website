@@ -22,8 +22,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-4">
-              Wij helpen eigenaren van buldoggen die veterinaire kosten niet kunnen betalen. 
-              Samen zorgen we voor onze vierpootige vrienden.
+              Wij helpen eigenaren van bulldogs bij noodzakelijke operaties wanneer zij de kosten niet kunnen dragen. Ook bijbehorende onderzoeken, medicatie en nazorg kunnen onderdeel zijn van de steun.
             </p>
             <p className="text-white/50 text-xs">KvK: 99058731</p>
           </div>
@@ -70,7 +69,7 @@ export default function Footer() {
             <div className="mt-6 p-4 bg-white/8 rounded-xl border border-white/10">
               <p className="text-white/80 text-sm font-semibold mb-1">Hulp nodig?</p>
               <p className="text-white/60 text-xs leading-relaxed">
-                Is uw bulldog ziek en kunt u de kosten niet dragen? Dien een aanvraag in via ons portaal.
+                Heeft uw bulldog een noodzakelijke operatie nodig en kunt u de kosten niet dragen? Dien dan een aanvraag in via ons portaal.
               </p>
               <Link
                 href="/aanvragen"

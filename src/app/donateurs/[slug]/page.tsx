@@ -3,9 +3,12 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Facebook, Globe2, HeartHandshake, MapPin } from "lucide-react";
-import { donateurs, getDonateur } from "@/lib/donateurs";
+import { getDonateurs, getDonateur } from "@/lib/donateurs";
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const donateurs = await getDonateurs();
   return donateurs.map((donateur) => ({ slug: donateur.slug }));
 }
 
@@ -15,7 +18,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const donateur = getDonateur(slug);
+  const donateur = await getDonateur(slug);
 
   if (!donateur) return { title: "Donateur" };
 

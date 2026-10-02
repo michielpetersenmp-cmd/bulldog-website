@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, Facebook, Globe2, HeartHandshake } from "lucide-react";
-import { donateurs } from "@/lib/donateurs";
+import { getDonateurs } from "@/lib/donateurs";
 
 export const metadata: Metadata = {
   title: "Donateurs & bedrijfsvrienden",
@@ -10,7 +10,10 @@ export const metadata: Metadata = {
     "Maak kennis met de bedrijven en organisaties die Stichting Bulldog Steunfonds Nederland een warm hart toedragen.",
 };
 
-export default function DonateursPage() {
+export const revalidate = 60;
+
+export default async function DonateursPage() {
+  const donateurs = await getDonateurs();
   return (
     <>
       <section className="pt-28 pb-16 bg-primary">

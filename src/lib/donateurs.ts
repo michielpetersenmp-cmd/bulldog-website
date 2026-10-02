@@ -13,6 +13,20 @@ export type Donateur = {
 
 export const donateurs: Donateur[] = [
   {
+    slug: "boeketten-nl",
+    naam: "Boeketten.nl",
+    korteOmschrijving:
+      "Boeketten.nl is een betrokken bedrijfsvriend die Stichting Bulldog Steunfonds Nederland een warm hart toedraagt en ons helpt om ons werk voor bulldogs en hun baasjes mogelijk te maken.",
+    verhaal: [
+      "Boeketten.nl is voor onze stichting een waardevolle bedrijfsvriend. Met hun betrokkenheid laten zij zien dat maatschappelijk meedenken en ondernemen heel mooi samen kunnen gaan.",
+      "Wij waarderen het enorm wanneer bedrijven niet alleen naar hun eigen onderneming kijken, maar ook bereid zijn om een stichting als de onze te steunen. Die steun helpt ons om onze acties verder uit te bouwen, meer mensen te bereiken en financiële hulp mogelijk te maken voor bulldogs die dat nodig hebben.",
+      "We zijn Boeketten.nl en Dennis Smit dankbaar voor het vertrouwen, de samenwerking en de betrokkenheid bij Stichting Bulldog Steunfonds Nederland. Samen kunnen we stap voor stap meer betekenen voor bulldogs en hun baasjes."
+    ],
+    website: "https://boeketten.nl/",
+    bijdrage:
+      "Boeketten.nl ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid en samenwerking bij aan het werk van de stichting."
+  },
+  {
     slug: "canabioday",
     naam: "Canabioday",
     korteOmschrijving:

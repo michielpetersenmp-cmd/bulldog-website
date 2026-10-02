@@ -143,7 +143,7 @@ export default function DonerenPage() {
           <p className="section-subtitle mb-8 max-w-2xl mx-auto">
             Dankzij donateurs zijn er al meerdere bulldogs geholpen die anders geen kans hadden gehad. Uw bijdrage — groot of klein — komt altijd op een plek terecht waar het écht nodig is.
           </p>
-          <Link href="/anbi" className="btn-secondary">Bekijk onze ANBI-informatie</Link>
+          <Link href="/anbi" className="btn-secondary">Bekijk onze transparantie-informatie</Link>
         </div>
       </section>
     </>

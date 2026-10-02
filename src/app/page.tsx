@@ -123,6 +123,34 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Vertrouwen in één oogopslag */}
+      <section className="py-8 bg-bg">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl shadow-card p-5 text-center">
+              <div className="text-2xl mb-1">🐾</div>
+              <div className="font-display text-2xl font-bold text-primary">6</div>
+              <div className="text-sm text-gray-500">Bulldogs geholpen / ondersteund</div>
+            </div>
+            <div className="bg-white rounded-2xl shadow-card p-5 text-center">
+              <div className="text-2xl mb-1">💛</div>
+              <div className="font-display text-2xl font-bold text-primary">€ 2.295,00</div>
+              <div className="text-sm text-gray-500">Donaties & doneeracties</div>
+            </div>
+            <div className="bg-accent/15 rounded-2xl shadow-card p-5 text-center">
+              <div className="text-2xl mb-1">🏆</div>
+              <div className="font-display text-2xl font-bold text-primary">€ 2.074,45</div>
+              <div className="text-sm text-primary/70">Acties & evenementen</div>
+            </div>
+          </div>
+          <div className="text-center mt-5">
+            <Link href="/anbi" className="btn-secondary">
+              Bekijk onze transparantie <ChevronRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Wie wij zijn */}
       <section className="py-20 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -258,7 +286,7 @@ export default async function HomePage() {
                 naam: "Nova",
                 status: "Gouden mandje gevonden",
                 afbeelding: "/nova.jpg",
-                tekst: "Voor Nova maakten we als stichting een bijzondere uitzondering. Haar baasje zocht door persoonlijke omstandigheden een nieuw, liefdevol thuis voor deze lieve 7-jarige Old English Bulldog. Dankzij de enorme betrokkenheid, het delen van onze oproep en alle reacties hebben we Nova goed onder de aandacht kunnen brengen. Het mooiste nieuws: Nova heeft haar nieuwe, liefdevolle gouden mandje gevonden.",
+                tekst: "Voor Nova maakten we een eenmalige uitzondering buiten onze normale financiële doelstelling. Haar baasje zocht door persoonlijke omstandigheden een nieuw, liefdevol thuis voor deze lieve 7-jarige Old English Bulldog. Wij boden geen opvang en namen de herplaatsing niet over, maar hielpen uitsluitend door haar via onze kanalen onder de aandacht te brengen. Dankzij alle betrokkenheid heeft Nova haar liefdevolle gouden mandje gevonden.",
               },
             ].map((hond) => (
               <article key={hond.naam} className="bg-white rounded-3xl shadow-card overflow-hidden">

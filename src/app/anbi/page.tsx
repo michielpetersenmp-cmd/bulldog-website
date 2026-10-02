@@ -58,11 +58,9 @@ export default function AnbiPage() {
 
           {/* Doelstelling */}
           <div className="bg-white rounded-2xl shadow-card p-8">
-            <h2 className="font-display font-bold text-primary text-2xl mb-4">2. Doelstelling</h2>
+            <h2 className="font-display font-bold text-primary text-2xl mb-4">2. Missie en huidige werkwijze</h2>
             <p className="text-gray-600 leading-relaxed">
-              De stichting ondersteunt bulldograssen bij noodzakelijke medische zorg wanneer eigenaren 
-              deze kosten (tijdelijk) niet kunnen dragen. De stichting bevordert gezondheid, welzijn, 
-              hulpverlening, opvang en herplaatsing waar nodig.
+              De stichting biedt financiële steun voor noodzakelijke operaties van bulldogs in Nederland wanneer hun eigenaren de kosten niet kunnen dragen. Onderzoeken, medicatie en nazorg die bij de operatie horen, kunnen onderdeel zijn van de steun. Wij bieden geen opvang en financieren geen euthanasie.
             </p>
           </div>
 
@@ -72,7 +70,7 @@ export default function AnbiPage() {
             <div className="grid sm:grid-cols-2 gap-3 mb-6">
               {[
                 { naam: "Michiel Petersen", rol: "Voorzitter" },
-                { naam: "Angela Terpstra", rol: "Secretaris" },
+                { naam: "Mandy Willems", rol: "Secretaris" },
                 { naam: "Anja Petersen", rol: "Penningmeester" },
                 { naam: "Sander Cuijpers", rol: "Bestuurder" },
                 { naam: "Esther Imanse", rol: "Bestuurder" },
@@ -98,7 +96,7 @@ export default function AnbiPage() {
                 <p className="text-sm text-gray-700">AniCura Dierenkliniek Sleeuwijk</p>
               </div>
               <div className="bg-bg rounded-xl p-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Herplaatsing &amp; Opvang</p>
+                <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Advies over herplaatsing</p>
                 <p className="text-sm text-gray-700">Joyce van den Berg</p>
               </div>
             </div>

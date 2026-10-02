@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye } from "lucide-react";
+import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({ posts: 0, verhalen: 0, acties: 0, geholpen: 0 });
+  const [stats, setStats] = useState({ posts: 0, verhalen: 0, acties: 0, geholpen: 0, donateurs: 0 });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -18,10 +18,11 @@ export default function AdminDashboardPage() {
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       );
-      const [postsRes, verhalenRes, actiesRes] = await Promise.all([
+      const [postsRes, verhalenRes, actiesRes, donateursRes] = await Promise.all([
         supabase.from("posts").select("id", { count: "exact" }),
         supabase.from("verhalen").select("id, status", { count: "exact" }),
         supabase.from("acties").select("id", { count: "exact" }),
+        fetch("/api/admin/donateurs", { cache: "no-store" }).then((r) => r.json()),
       ]);
       const geholpen = verhalenRes.data?.filter((v: any) => v.status === "geholpen").length || 0;
       setStats({
@@ -29,6 +30,7 @@ export default function AdminDashboardPage() {
         verhalen: verhalenRes.count || 0,
         acties: actiesRes.count || 0,
         geholpen,
+        donateurs: donateursRes.donateurs?.length || 0,
       });
       setLoading(false);
     }
@@ -67,6 +69,15 @@ export default function AdminDashboardPage() {
       newHref: "/admin/acties/nieuw",
       count: stats.acties,
       color: "bg-green-50 text-green-600",
+    },
+    {
+      icon: Building2,
+      label: "Donateurs & bedrijfsvrienden",
+      desc: "Teksten, logo's, foto's en links",
+      href: "/admin/donateurs",
+      newHref: null,
+      count: stats.donateurs,
+      color: "bg-violet-50 text-violet-600",
     },
     {
       icon: Heart,
@@ -111,6 +122,7 @@ export default function AdminDashboardPage() {
               { href: "/admin/posts", label: "Blog & Updates" },
               { href: "/admin/verhalen", label: "Verhalen" },
               { href: "/admin/acties", label: "Acties" },
+              { href: "/admin/donateurs", label: "Donateurs" },
               { href: "/admin/stats", label: "Stats" },
             ].map((tab) => (
               <Link key={tab.href} href={tab.href}
@@ -130,11 +142,12 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {[
             { icon: "📝", label: "Posts", value: stats.posts },
             { icon: "🐾", label: "Verhalen", value: stats.verhalen },
             { icon: "🏆", label: "Acties", value: stats.acties },
+            { icon: "🤝", label: "Donateurs", value: stats.donateurs },
             { icon: "🟢", label: "Geholpen", value: stats.geholpen },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl shadow-card p-5 text-center">

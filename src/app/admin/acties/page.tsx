@@ -46,7 +46,8 @@ export default function AdminActiesPage() {
         <div className="flex justify-between items-center mb-6">
           <div>
             <h1 className="font-display text-2xl font-bold text-primary">Acties ({acties.length})</h1>
-            <p className="text-sm text-gray-500">Totale opbrengst: <strong className="text-primary">{formatBedrag(totaal)}</strong></p>
+            <p className="text-sm text-gray-500">Totale opbrengst nieuwe beheerde acties: <strong className="text-primary">{formatBedrag(totaal)}</strong></p>
+            <p className="text-xs text-gray-400 mt-1">Nieuwe acties die u hier toevoegt verschijnen automatisch op de openbare pagina Acties & opbrengsten. De eerste zeven historische acties staan apart als vast overzicht.</p>
           </div>
           <Link href="/admin/acties/nieuw" className="btn-primary text-sm">
             <Plus size={16} /> Nieuwe actie

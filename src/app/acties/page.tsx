@@ -115,6 +115,104 @@ export default async function ActiesPage() {
         </div>
       </section>
 
+      {/* Uitgelichte acties en evenementen */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="mb-10">
+            <span className="accent-bar" />
+            <h2 className="section-title mb-2">Acties & evenementen</h2>
+            <p className="section-subtitle max-w-3xl">
+              Met loterijen, creatieve acties, evenementen en inzamelingen brengen we samen geld bijeen voor de stichting. Hieronder een aantal mooie momenten waar we met veel plezier op terugkijken.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: "🐾",
+                naam: "Viervoetersdag",
+                label: "Evenement",
+                bedrag: "€ 225,00",
+                verhaal:
+                  "Tijdens de Viervoetersdag stonden we met onze stichting tussen heel veel dierenliefhebbers. We verkochten onder andere kleurboeken, eigen artikelen en mooie gedoneerde spullen. Naast gezellige gesprekken en nieuwe ontmoetingen leverde deze dag een prachtige opbrengst van € 225 op.",
+              },
+              {
+                icon: "🌷",
+                naam: "Moederdagloterij",
+                label: "Loterij",
+                bedrag: "€ 400,00",
+                verhaal:
+                  "Rond Moederdag organiseerden we een gezellige loterij. Maar liefst 200 lootjes van € 2 per stuk vonden hun weg naar enthousiaste deelnemers. Samen zorgden zij voor een mooie opbrengst van € 400 voor de stichting.",
+              },
+              {
+                icon: "💙",
+                naam: "Vaderdagloterij",
+                label: "Loterij",
+                bedrag: "€ 300,00",
+                verhaal:
+                  "Ook voor Vaderdag maakten we er een leuke actie van. We verkochten 150 lootjes van € 2 per stuk. Dankzij iedereen die meespeelde kwam er € 300 binnen om ons werk voor bulldogs voort te zetten.",
+              },
+              {
+                icon: "📸",
+                naam: "WK-fotoactie",
+                label: "Creatieve actie",
+                bedrag: "€ 85,00",
+                verhaal:
+                  "Tijdens het WK maakten we speciale WK-afbeeldingen van honden. Voor € 5 per ontwerp kreeg ieder baasje een persoonlijke afbeelding van zijn of haar hond. De actie bracht in totaal € 85 op en zorgde tegelijk voor heel veel leuke reacties.",
+              },
+              {
+                icon: "🎁",
+                naam: "Dierendagloterij",
+                label: "Loterij",
+                bedrag: "€ 200,00",
+                verhaal:
+                  "Voor Dierendag organiseerden we een loterij met mooie prijzen. De lootjes kostten € 1 per stuk en alle 200 lootjes werden verkocht. Daarmee haalden we € 200 op en maakten we er samen een feestelijke actie van.",
+              },
+              {
+                icon: "🎪",
+                naam: "Bullendag",
+                label: "Evenement",
+                bedrag: "€ 784,45",
+                verhaal:
+                  "De Bullendag was een fantastische en ontzettend drukke dag. We hebben veel mensen en bulldogs ontmoet, mooie gesprekken gevoerd en volop verkocht. Aan het einde van de dag konden we terugkijken op een geweldige opbrengst van maar liefst € 784,45.",
+              },
+              {
+                icon: "♻️",
+                naam: "Flessen ophaalactie",
+                label: "Doorlopende actie",
+                bedrag: "€ 80,00",
+                verhaal:
+                  "Ook met kleine bedragen kun je samen iets groots bereiken. Esther zamelt lege statiegeldflessen en -blikjes in die mensen bij haar thuis en op haar werk kunnen inleveren. Met deze doorlopende actie heeft zij inmiddels al € 80 voor de stichting opgehaald.",
+              },
+            ].map((actie) => (
+              <article key={actie.naam} className="card relative overflow-hidden">
+                <div className="flex items-start justify-between gap-4 mb-4">
+                  <div className="text-4xl">{actie.icon}</div>
+                  <span className="bg-accent/10 text-primary text-xs font-bold px-3 py-1 rounded-full">
+                    {actie.label}
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-primary text-xl mb-3">{actie.naam}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed mb-5">{actie.verhaal}</p>
+                <div className="bg-accent/10 rounded-xl p-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp size={16} className="text-accent" />
+                    <span className="font-display font-bold text-primary text-xl">{actie.bedrag}</span>
+                    <span className="text-xs text-gray-500">opgebracht</span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10 bg-primary/5 rounded-2xl p-6 text-center">
+            <p className="text-gray-700">
+              Samen brachten deze acties en evenementen <strong className="text-primary">€ 2.074,45</strong> op voor de stichting. Dank aan iedereen die een lootje kocht, iets bestelde, spullen doneerde, flessen inleverde of onze kraam bezocht.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Lopende acties */}
       {lopend.length > 0 && (
         <section className="py-16 bg-white">
@@ -243,7 +341,7 @@ export default async function ActiesPage() {
               <Heart size={16} /> Doneer nu
             </Link>
             <a
-              href="https://stichtingbulldogsteunfondsnederland.nl/shop.html"
+              href="/shop"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline-white"

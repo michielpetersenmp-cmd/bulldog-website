@@ -58,6 +58,22 @@ export const standaardDonateurs: Donateur[] = [
       "Bono's Dogcenter ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en helpt daarmee ons werk voor bulldogs en hun baasjes onder de aandacht te brengen."
   },
   {
+    slug: "style-bedruk-service",
+    naam: "Style Bedruk Service",
+    korteOmschrijving:
+      "Style Bedruk Service uit Montfoort helpt bedrijven, verenigingen en particulieren met bedrukking, belettering en visuele presentatie. Van voertuigbelettering en stickers tot kledingbedrukking, reclame-uitingen en maatwerk: ideeën worden vertaald naar een opvallende en professionele uitstraling.",
+    verhaal: [
+      "Style Bedruk Service is een creatief bedrijf uit Montfoort dat zich bezighoudt met bedrukking, belettering en verschillende vormen van visuele communicatie. Zowel bedrijven als particulieren kunnen er terecht voor maatwerk dat helpt om een naam, merk of boodschap duidelijk zichtbaar te maken.",
+      "Tot de mogelijkheden behoren onder andere voertuigbelettering, stickers, kledingbedrukking, reclame-uitingen, gepersonaliseerde producten en andere creatieve toepassingen. Daarbij wordt meegedacht over ontwerp, uitstraling en uitvoering, zodat een idee praktisch én herkenbaar wordt uitgewerkt.",
+      "Style Bedruk Service is nauw verbonden met Stichting Bulldog Steunfonds Nederland. Vanuit het bedrijf worden regelmatig ontwerpen, drukwerk, stickers en andere creatieve middelen ingezet voor acties, evenementen en promotie van de stichting.",
+      "Zo draagt Style Bedruk Service niet alleen bij met creativiteit en vakwerk, maar ook met zichtbaarheid. Die ondersteuning helpt ons om meer mensen te bereiken en daarmee meer aandacht en middelen te krijgen voor bulldogs die onze hulp nodig hebben."
+    ],
+    website: "https://stylebedrukservice.nl/",
+    plaats: "Montfoort",
+    bijdrage:
+      "Style Bedruk Service ondersteunt Stichting Bulldog Steunfonds Nederland met ontwerp, bedrukking, belettering en promotiemateriaal voor acties, evenementen en zichtbaarheid van de stichting."
+  },
+  {
     slug: "style-3d-studio",
     naam: "Style 3D Studio",
     korteOmschrijving:

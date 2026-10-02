@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Plus, Save, Trash2, Upload, ArrowLeft, Eye } from "lucide-react";
+import { Plus, Save, Trash2, Upload, ArrowLeft, Eye, ChevronUp, ChevronDown } from "lucide-react";
 
 type Donateur = {
   slug: string;
@@ -78,6 +78,17 @@ export default function AdminDonateursPage() {
   function removeDonateur(index: number) {
     if (!confirm("Deze bedrijfsvriend verwijderen uit het overzicht?")) return;
     setDonateurs((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function moveDonateur(index: number, direction: "up" | "down") {
+    setDonateurs((prev) => {
+      const next = [...prev];
+      const target = direction === "up" ? index - 1 : index + 1;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+    setMessage("Volgorde aangepast. Klik op ‘Alles opslaan’ om deze volgorde op de website te bewaren.");
   }
 
   function addParagraph(index: number) {
@@ -210,9 +221,29 @@ export default function AdminDonateursPage() {
                     <h2 className="font-display font-bold text-primary text-xl">{d.naam || "Nieuwe bedrijfsvriend"}</h2>
                     <p className="text-xs text-gray-400">/{d.slug || "slug"}</p>
                   </div>
-                  <button onClick={() => removeDonateur(index)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg" title="Verwijderen">
-                    <Trash2 size={17} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => moveDonateur(index, "up")}
+                      disabled={index === 0}
+                      className="p-2 text-gray-500 hover:text-primary hover:bg-gray-50 rounded-lg disabled:opacity-25 disabled:cursor-not-allowed"
+                      title="Omhoog"
+                      aria-label="Omhoog"
+                    >
+                      <ChevronUp size={18} />
+                    </button>
+                    <button
+                      onClick={() => moveDonateur(index, "down")}
+                      disabled={index === donateurs.length - 1}
+                      className="p-2 text-gray-500 hover:text-primary hover:bg-gray-50 rounded-lg disabled:opacity-25 disabled:cursor-not-allowed"
+                      title="Omlaag"
+                      aria-label="Omlaag"
+                    >
+                      <ChevronDown size={18} />
+                    </button>
+                    <button onClick={() => removeDonateur(index)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg" title="Verwijderen">
+                      <Trash2 size={17} />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="p-6 grid lg:grid-cols-3 gap-6">

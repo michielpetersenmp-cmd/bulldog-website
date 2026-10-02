@@ -25,6 +25,7 @@ export const donateurs: Donateur[] = [
     logo: "/donateurs/stacaravan-service-logo.jpg",
     afbeelding: "/donateurs/stacaravan-service-project.jpg",
     website: "https://www.stacaravanservice.nl/",
+    facebook: "https://www.facebook.com/share/1E27EuBR8p/?mibextid=wwXIfr",
     plaats: "Montfoort",
     bijdrage:
       "Stacaravan Service ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt daarmee bij aan het werk van de stichting."

@@ -20,7 +20,7 @@ const navLinks = [
   },
   { href: "/blog", label: "Blog" },
   { href: "/updates", label: "Updates" },
-  { href: "/anbi", label: "ANBI" },
+  { href: "/anbi", label: "Transparantie" },
   { href: "/contact", label: "Contact" },
 ];
 

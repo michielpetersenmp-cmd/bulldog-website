@@ -16,13 +16,14 @@ export const donateurs: Donateur[] = [
     slug: "boeketten-nl",
     naam: "Boeketten.nl",
     korteOmschrijving:
-      "Boeketten.nl is een betrokken bedrijfsvriend die Stichting Bulldog Steunfonds Nederland een warm hart toedraagt en ons helpt om ons werk voor bulldogs en hun baasjes mogelijk te maken.",
+      "Boeketten.nl is een echte bloemenwinkel in Nieuwegein en bezorgt handgebonden boeketten, rouwbloemen en zakelijke bloemoplossingen. Ze werken met veilingverse bloemen en bezorgen in de regio zelf en daarbuiten via lokale bloemisten.",
     verhaal: [
-      "Boeketten.nl is voor onze stichting een waardevolle bedrijfsvriend. Met hun betrokkenheid laten zij zien dat maatschappelijk meedenken en ondernemen heel mooi samen kunnen gaan.",
-      "Wij waarderen het enorm wanneer bedrijven niet alleen naar hun eigen onderneming kijken, maar ook bereid zijn om een stichting als de onze te steunen. Die steun helpt ons om onze acties verder uit te bouwen, meer mensen te bereiken en financiële hulp mogelijk te maken voor bulldogs die dat nodig hebben.",
-      "We zijn Boeketten.nl en Dennis Smit dankbaar voor het vertrouwen, de samenwerking en de betrokkenheid bij Stichting Bulldog Steunfonds Nederland. Samen kunnen we stap voor stap meer betekenen voor bulldogs en hun baasjes."
+      "Boeketten.nl is al meer dan 35 jaar actief als bloemist in Nieuwegein. Dagelijks worden boeketten met zorg samengesteld met veilingverse bloemen die persoonlijk worden geselecteerd. In de eigen regio worden bestellingen zelf bezorgd; buiten de regio werkt Boeketten.nl samen met lokale bloemisten.",
+      "Naast boeketten voor allerlei momenten verzorgt Boeketten.nl ook rouwbloemen en zakelijke bestellingen. Voor zakelijke klanten zijn onder andere bloemenabonnementen, maatwerk, meerdere gebruikers en een verzamelfactuur mogelijk. Daarmee bedienen ze zowel particuliere als zakelijke klanten op een persoonlijke en praktische manier.",
+      "Boeketten.nl is daarnaast een waardevolle bedrijfsvriend van Stichting Bulldog Steunfonds Nederland. We zijn Dennis Smit en zijn team dankbaar voor de betrokkenheid, het vertrouwen en de samenwerking. Met zulke bedrijfsvrienden kunnen we onze stichting zichtbaarder maken en meer betekenen voor bulldogs en hun baasjes."
     ],
     website: "https://boeketten.nl/",
+    plaats: "Nieuwegein",
     bijdrage:
       "Boeketten.nl ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid en samenwerking bij aan het werk van de stichting."
   },

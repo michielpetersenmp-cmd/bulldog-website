@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import AnalyticsConsent from "@/components/AnalyticsConsent";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import FooterWrapper from "@/components/FooterWrapper";
 
@@ -17,13 +18,14 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://stichtingbulldogsteunfondsnederland.nl"),
   title: {
     default: "Stichting Bulldog Steunfonds Nederland",
     template: "%s | Stichting Bulldog Steunfonds Nederland",
   },
   description:
-    "Financiële steun voor eigenaren van buldoggen die veterinaire kosten niet kunnen betalen. Samen zorgen we voor onze vierpootige vrienden.",
-  keywords: ["bulldog", "steunfonds", "veterinaire kosten", "stichting", "doneren", "buldoggen"],
+    "Financiële steun voor noodzakelijke operaties van bulldogs in Nederland, inclusief bijbehorende onderzoeken en nazorg.",
+  keywords: ["bulldog", "steunfonds", "veterinaire kosten", "stichting", "doneren", "bulldogs"],
   authors: [{ name: "Stichting Bulldog Steunfonds Nederland" }],
   icons: {
     icon: "/favicon.ico",
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
     siteName: "Stichting Bulldog Steunfonds Nederland",
     title: "Stichting Bulldog Steunfonds Nederland",
     description:
-      "Financiële steun voor eigenaren van buldoggen die veterinaire kosten niet kunnen betalen.",
+      "Financiële steun voor noodzakelijke operaties van bulldogs in Nederland.",
     images: ["/logo.png"],
   },
 };
@@ -52,6 +54,7 @@ export default function RootLayout({
    <HeaderWrapper />
 <main>{children}</main>
 <FooterWrapper />
+<AnalyticsConsent />
       </body>
     </html>
   );

@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+
 
 export async function POST(request: Request) {
-  const { password } = await request.json();
+  const body = await request.json().catch(() => null);
+  const password = body?.password;
 
-  if (password !== process.env.ADMIN_SECRET) {
+  if (!process.env.ADMIN_SECRET || typeof password !== "string" || password !== process.env.ADMIN_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

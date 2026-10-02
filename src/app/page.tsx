@@ -62,7 +62,7 @@ export default async function HomePage() {
             </h1>
 
             <p className="text-white/80 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
-              Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs die medische zorg nodig hebben,
+              Stichting Bulldog Steunfonds Nederland ondersteunt bulldogs die een noodzakelijke operatie nodig hebben,
               terwijl de eigenaar het (tijdelijk) niet kan betalen. Eerlijk, transparant en met ons hart
               bij de hond én het baasje.
             </p>
@@ -87,7 +87,7 @@ export default async function HomePage() {
             className="flex items-center gap-3 bg-red-600/90 backdrop-blur-sm text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-lg hover:bg-red-700 transition-colors"
           >
             <AlertTriangle size={16} />
-            Spoed? Mail direct naar hulpaanvraag@stichtingbulldogsteunfondsnederland.nl
+            Medische spoed? Bel eerst uw dierenarts. Hulp bij operatiekosten? Mail ons.
           </a>
         </div>
 
@@ -114,8 +114,7 @@ export default async function HomePage() {
                 hond én het baasje.
               </p>
               <p className="text-gray-600 leading-relaxed mb-8">
-                Dankzij donateurs, acties en onze shop kunnen wij bijdragen aan operaties, onderzoeken
-                en andere medische behandelingen die simpelweg niet kunnen wachten.
+                Dankzij donateurs, acties en onze shop kunnen wij bijdragen aan noodzakelijke operaties en de onderzoeken, medicatie en nazorg die daarbij horen.
               </p>
               <Link href="/over-ons" className="btn-secondary">
                 Lees meer over ons <ChevronRight size={16} />
@@ -125,8 +124,8 @@ export default async function HomePage() {
             <div className="space-y-4">
               {[
                 { icon: "🏥", title: "Spoedoperaties", desc: "Bij maagtorsie, keizersnede of een andere spoedoperatie kijken wij mee wat we kunnen bijdragen." },
-                { icon: "🔬", title: "Onderzoeken & scans", desc: "Röntgenfoto's, echo's en bloedonderzoek zijn vaak duur maar noodzakelijk." },
-                { icon: "💊", title: "Herstel & nazorg", desc: "Na een behandeling zijn soms controles, medicijnen of extra zorg nodig." },
+                { icon: "🔬", title: "Onderzoeken & scans", desc: "Onderzoeken die nodig zijn voor een operatie kunnen onderdeel zijn van de steun." },
+                { icon: "💊", title: "Herstel & nazorg", desc: "Ook controles en medicatie die bij de operatie horen kunnen onderdeel zijn van de steun." },
                 { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring betalen wij direct aan de dierenarts." },
               ].map((item) => (
                 <div key={item.title} className="flex gap-4 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300">
@@ -281,7 +280,7 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: "💶", title: "Doneren", desc: "Eenmalig of regelmatig bijdragen aan ons medische hulpfonds.", href: "/doneren", cta: "Doneer nu" },
-              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "https://www.stichtingbulldogsteunfondsnederland.nl/shop", cta: "Naar de shop", external: true },
+              { icon: "🛍️", title: "Shop & Steun", desc: "Kleurboeken en merchandise — gekocht via onze shop steun je direct de stichting.", href: "/shop", cta: "Naar de shop", external: true },
               { icon: "📣", title: "Delen", desc: "Vertel anderen over onze stichting. Meer bekendheid betekent meer steun.", href: "/over-ons", cta: "Lees meer" },
             ].map((item) => (
               <div key={item.title} className="card text-center">

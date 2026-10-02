@@ -36,6 +36,7 @@ export default function Footer() {
                 { href: "/over-ons", label: "Over ons" },
                 { href: "/aanvragen", label: "Hulp aanvragen" },
                 { href: "/doneren", label: "Doneren" },
+                { href: "/donateurs", label: "Bedrijfsvrienden" },
                 { href: "/verhalen", label: "Verhalen" },
                 { href: "/blog", label: "Blog" },
                 { href: "/updates", label: "Updates" },

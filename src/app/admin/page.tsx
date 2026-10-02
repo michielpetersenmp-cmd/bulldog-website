@@ -2,37 +2,35 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { createClient } from "@supabase/supabase-js";
 import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({ posts: 0, verhalen: 0, acties: 0, geholpen: 0, donateurs: 0 });
+  const [stats, setStats] = useState({
+    posts: 0,
+    verhalen: 0,
+    acties: 0,
+    actiesAfgerond: 0,
+    actiesLopend: 0,
+    geholpen: 0,
+    donateurs: 0,
+    donaties: 0,
+    opbrengstActies: 0,
+  });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchStats() {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
-      const [postsRes, verhalenRes, actiesRes, donateursRes] = await Promise.all([
-        supabase.from("posts").select("id", { count: "exact" }),
-        supabase.from("verhalen").select("id, status", { count: "exact" }),
-        supabase.from("acties").select("id", { count: "exact" }),
-        fetch("/api/admin/donateurs", { cache: "no-store" }).then((r) => r.json()),
-      ]);
-      const geholpen = verhalenRes.data?.filter((v: any) => v.status === "geholpen").length || 0;
-      setStats({
-        posts: postsRes.count || 0,
-        verhalen: verhalenRes.count || 0,
-        acties: actiesRes.count || 0,
-        geholpen,
-        donateurs: donateursRes.donateurs?.length || 0,
-      });
-      setLoading(false);
+      try {
+        const res = await fetch("/api/admin/dashboard-stats", { cache: "no-store" });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Statistieken konden niet worden geladen.");
+        setStats(data);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchStats();
   }, []);
@@ -142,17 +140,20 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[
+            { icon: "🐾", label: "Bulldogs geholpen", value: stats.geholpen },
+            { icon: "✅", label: "Acties afgerond", value: stats.actiesAfgerond },
+            { icon: "🔄", label: "Acties lopend", value: stats.actiesLopend },
+            { icon: "🤝", label: "Bedrijfsvrienden", value: stats.donateurs },
+            { icon: "💛", label: "Donaties", value: new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(stats.donaties) },
+            { icon: "🏆", label: "Opbrengst acties", value: new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(stats.opbrengstActies) },
             { icon: "📝", label: "Posts", value: stats.posts },
-            { icon: "🐾", label: "Verhalen", value: stats.verhalen },
-            { icon: "🏆", label: "Acties", value: stats.acties },
-            { icon: "🤝", label: "Donateurs", value: stats.donateurs },
-            { icon: "🟢", label: "Geholpen", value: stats.geholpen },
+            { icon: "📖", label: "Verhalen", value: stats.verhalen },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl shadow-card p-5 text-center">
               <div className="text-2xl mb-1">{stat.icon}</div>
-              <div className="font-display text-3xl font-bold text-primary">{loading ? "..." : stat.value}</div>
+              <div className="font-display text-2xl md:text-3xl font-bold text-primary break-words">{loading ? "..." : stat.value}</div>
               <div className="text-xs text-gray-500">{stat.label}</div>
             </div>
           ))}

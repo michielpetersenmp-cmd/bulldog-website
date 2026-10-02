@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Heart, FileText, Shield, ChevronRight, AlertTriangle, ExternalLink } from "lucide-react";
 import { getFeaturedPosts } from "@/lib/supabase";
 import PostCard from "@/components/PostCard";
+import { getSiteStats } from "@/lib/site-stats";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
     "Stichting Bulldog Steunfonds Nederland helpt bij noodzakelijke operaties van bulldogs in Nederland, inclusief bijbehorende onderzoeken, medicatie en nazorg.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const steps = [
   {
@@ -32,7 +34,8 @@ const steps = [
 ];
 
 export default async function HomePage() {
- let featuredPosts: any[] = [];
+  let featuredPosts: any[] = [];
+  const siteStats = await getSiteStats();
   try {
     featuredPosts = await getFeaturedPosts(3);
   } catch {
@@ -129,17 +132,17 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white rounded-2xl shadow-card p-5 text-center">
               <div className="text-2xl mb-1">🐾</div>
-              <div className="font-display text-2xl font-bold text-primary">6</div>
+              <div className="font-display text-2xl font-bold text-primary">{siteStats.bulldogsGeholpen}</div>
               <div className="text-sm text-gray-500">Bulldogs geholpen / ondersteund</div>
             </div>
             <div className="bg-white rounded-2xl shadow-card p-5 text-center">
               <div className="text-2xl mb-1">💛</div>
-              <div className="font-display text-2xl font-bold text-primary">€ 2.295,00</div>
+              <div className="font-display text-2xl font-bold text-primary">{new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(siteStats.donatiesTotaal)}</div>
               <div className="text-sm text-gray-500">Donaties & doneeracties</div>
             </div>
             <div className="bg-accent/15 rounded-2xl shadow-card p-5 text-center">
               <div className="text-2xl mb-1">🏆</div>
-              <div className="font-display text-2xl font-bold text-primary">€ 2.074,45</div>
+              <div className="font-display text-2xl font-bold text-primary">{new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(siteStats.opbrengstActies)}</div>
               <div className="text-sm text-primary/70">Acties & evenementen</div>
             </div>
           </div>

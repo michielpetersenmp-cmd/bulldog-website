@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     "Maak kennis met de bedrijven en organisaties die Stichting Bulldog Steunfonds Nederland een warm hart toedragen.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function DonateursPage() {
   const donateurs = await getDonateurs();

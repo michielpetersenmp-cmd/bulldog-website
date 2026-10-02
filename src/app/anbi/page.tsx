@@ -133,17 +133,45 @@ export default function AnbiPage() {
           {/* Financiële verantwoording */}
           <div className="bg-white rounded-2xl shadow-card p-8">
             <h2 className="font-display font-bold text-primary text-2xl mb-4">6. Financiële verantwoording</h2>
-            <p className="text-gray-600 leading-relaxed mb-4">
-              Wij streven naar een zo transparant mogelijke financiële verantwoording. Inkomsten worden ingezet voor de doelstelling van de stichting. Jaarlijks leggen wij verantwoording af over onze inkomsten en uitgaven.
+            <p className="text-gray-600 leading-relaxed mb-6">
+              Wij streven naar een zo transparant mogelijke financiële verantwoording. Hieronder staat de actuele tussenstand van de bedragen die via acties, evenementen en donaties voor de stichting zijn binnengekomen.
             </p>
-            <a
-              href="https://stichtingbulldogsteunfondsnederland.nl/Beleidsplan_Stichting_Bulldog_Steunfonds.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-secondary inline-flex"
-            >
-              📄 Download het beleidsplan (PDF) <ExternalLink size={14} />
-            </a>
+
+            <div className="grid sm:grid-cols-3 gap-4 mb-6">
+              <div className="bg-accent/10 rounded-2xl p-5 text-center">
+                <div className="text-2xl mb-1">🏆</div>
+                <div className="font-display font-bold text-primary text-2xl">€ 2.074,45</div>
+                <div className="text-xs text-gray-500 mt-1">Acties & evenementen</div>
+              </div>
+              <div className="bg-primary/5 rounded-2xl p-5 text-center">
+                <div className="text-2xl mb-1">💛</div>
+                <div className="font-display font-bold text-primary text-2xl">€ 2.295,00</div>
+                <div className="text-xs text-gray-500 mt-1">Donaties & doneeracties</div>
+              </div>
+              <div className="bg-primary/5 rounded-2xl p-5 text-center">
+                <div className="text-2xl mb-1">🐾</div>
+                <div className="font-display font-bold text-primary text-2xl">6</div>
+                <div className="text-xs text-gray-500 mt-1">Bulldogs geholpen / ondersteund</div>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-500 leading-relaxed mb-6">
+              Deze bedragen zijn een tussenstand. Nieuwe acties, donaties en hulpvragen worden doorlopend verwerkt. Bij goedgekeurde medische steun betalen wij rechtstreeks aan de dierenarts.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link href="/acties" className="btn-secondary inline-flex">
+                Bekijk acties & opbrengsten
+              </Link>
+              <a
+                href="https://stichtingbulldogsteunfondsnederland.nl/Beleidsplan_Stichting_Bulldog_Steunfonds.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary inline-flex"
+              >
+                📄 Download het beleidsplan (PDF) <ExternalLink size={14} />
+              </a>
+            </div>
           </div>
 
           {/* CTA */}

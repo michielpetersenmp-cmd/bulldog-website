@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const HISTORISCHE_ACTIES = 7;
 export const HISTORISCHE_OPBRENGST = 2074.45;
@@ -16,10 +16,7 @@ export type SiteStats = {
 };
 
 export async function getSiteStats(): Promise<SiteStats> {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseAdmin();
 
   const [statsRes, actiesRes, verhalenRes] = await Promise.all([
     supabase.from("stats").select("*"),

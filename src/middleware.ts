@@ -4,9 +4,24 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Bescherm alle /admin routes behalve /admin/login
-  const protectedApi = pathname.startsWith("/api/admin/") && !["/api/admin/login", "/api/admin/logout"].includes(pathname);
-  if ((pathname.startsWith("/admin") && pathname !== "/admin/login") || protectedApi) {
+  // Publieke beheer-routes voor inloggen en wachtwoordherstel.
+  const publicAdminPages = [
+    "/admin/login",
+    "/admin/wachtwoord-vergeten",
+    "/admin/reset-password",
+  ];
+  const publicAdminApis = [
+    "/api/admin/login",
+    "/api/admin/logout",
+    "/api/admin/forgot-password",
+  ];
+
+  const protectedApi =
+    pathname.startsWith("/api/admin/") && !publicAdminApis.includes(pathname);
+  const protectedAdminPage =
+    pathname.startsWith("/admin") && !publicAdminPages.includes(pathname);
+
+  if (protectedAdminPage || protectedApi) {
     const adminToken = request.cookies.get("admin_token");
 
     if (!process.env.ADMIN_SECRET || !adminToken || adminToken.value !== process.env.ADMIN_SECRET) {

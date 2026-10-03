@@ -5,11 +5,11 @@ import { Heart, CreditCard, Building2, ExternalLink } from "lucide-react";
 export const metadata: Metadata = {
   title: "Doneren",
   description:
-    "Steun Stichting Bulldog Steunfonds Nederland. De volledige opbrengst gaat naar ons medische hulpfonds voor bulldogs in nood.",
+    "Steun Stichting Bulldog Steunfonds Nederland. Uw bijdrage helpt bij noodzakelijke operaties van bulldogs en de onderzoeken, medicatie en nazorg die daarbij horen.",
 };
 
 const besteding = [
-  { icon: "🏥", title: "Medische behandelingen", desc: "Medisch noodzakelijke operaties, beoordeeld per aanvraag." },
+  { icon: "🏥", title: "Noodzakelijke operaties", desc: "Medisch noodzakelijke operaties, zorgvuldig beoordeeld per aanvraag." },
   { icon: "🔬", title: "Diagnostiek", desc: "De onderzoeken die nodig zijn voor de operatie." },
   { icon: "💊", title: "Nazorg & herstel", desc: "Medicatie en controles die bij de operatie horen." },
   { icon: "💙", title: "Rechtstreeks betalen", desc: "Bij goedkeuring wordt de bijdrage aan de dierenarts betaald." },
@@ -55,7 +55,7 @@ export default function DonerenPage() {
                 </div>
               </div>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                De makkelijkste manier om bij te dragen. Via Tikkie kunt u snel en veilig een bedrag naar keuze overmaken — rechtstreeks naar ons medische hulpfonds.
+                De makkelijkste manier om bij te dragen. Via Tikkie kunt u snel en veilig een bedrag naar keuze overmaken — rechtstreeks naar het werk van onze stichting.
               </p>
               <a href="https://tikkie.me/pay/Stichti4535/meUy1FHvYzrfr7pdxEbL8r" target="_blank" rel="noopener noreferrer" className="btn-primary w-full justify-center">
                 <Heart size={16} /> Open Tikkie donatie <ExternalLink size={14} />
@@ -93,7 +93,7 @@ export default function DonerenPage() {
             <div className="flex-1">
               <h3 className="font-display font-bold text-primary text-xl mb-1">Steun via onze shop</h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Kleurboeken, merchandise en andere artikelen — elke aankoop draagt direct bij aan ons medische hulpfonds.
+                Kleurboeken, merchandise en andere artikelen — elke aankoop draagt bij aan het werk van onze stichting voor bulldogs die een noodzakelijke operatie nodig hebben.
               </p>
             </div>
             <a href="/shop" target="_blank" rel="noopener noreferrer" className="btn-secondary shrink-0">

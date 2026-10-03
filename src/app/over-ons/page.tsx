@@ -48,9 +48,9 @@ export default function OverOnsPage() {
               <h2 className="section-title mb-4">Ons verhaal</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p>
-                  Stichting Bulldog Steunfonds Nederland is ontstaan uit liefde voor bulldogs en uit 
-                  het besef dat niet iedereen onverwachte medische kosten kan dragen. Wanneer een hond 
-                  dringend hulp nodig heeft en de rekening simpelweg niet te betalen is, willen wij — 
+                  Stichting Bulldog Steunfonds Nederland is ontstaan uit liefde voor bulldogs en uit
+                  het besef dat niet iedereen de kosten van een noodzakelijke operatie kan dragen. Wanneer
+                  een bulldog zo'n operatie nodig heeft en het baasje de rekening niet zelf kan betalen, willen wij —
                   samen met donateurs en supporters — het verschil maken.
                 </p>
                 <p>
@@ -144,7 +144,7 @@ export default function OverOnsPage() {
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Medisch adviseur</p>
-                  <p className="text-gray-700 text-sm">Dierenarts Praktijk Sleeuwijk</p>
+                  <p className="text-gray-700 text-sm">AniCura Dierenkliniek Sleeuwijk</p>
                 </div>
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Advies over herplaatsing</p>

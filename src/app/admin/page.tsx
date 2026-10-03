@@ -17,6 +17,7 @@ export default function AdminDashboardPage() {
     donateurs: 0,
     donaties: 0,
     opbrengstActies: 0,
+    planner: 0,
   });
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -83,7 +84,7 @@ export default function AdminDashboardPage() {
       desc: "Loterijen, veilingen, evenementen en herinneringen",
       href: "/admin/planner",
       newHref: null,
-      count: stats.actiesLopend,
+      count: stats.planner,
       color: "bg-cyan-50 text-cyan-700",
     },
     {

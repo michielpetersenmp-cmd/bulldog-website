@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const requirements = [
   "U bent eigenaar van een bulldog",
   "Uw bulldog heeft een medisch noodzakelijke operatie nodig",
-  "U kunt de veterinaire kosten niet (volledig) zelf dragen",
+  "U kunt de kosten van de noodzakelijke operatie niet (volledig) zelf dragen",
   "U verstrekt de gevraagde gegevens over inkomen en lasten, de diagnose en een kostenraming van de dierenarts",
   "U woont in Nederland",
 ];
@@ -80,8 +80,8 @@ export default function AanvragenPage() {
                 Aanvraag indienen via portaal
               </h2>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Ons online portaal begeleidt u stap voor stap door het aanvraagproces. 
-                U kunt documenten uploaden, de status volgen en berichten ontvangen.
+                Ons beveiligde aanvraagportaal is onderdeel van onze aanvraagprocedure en begeleidt u stap voor stap.
+                U kunt documenten uploaden, de status van uw aanvraag volgen en berichten van de stichting ontvangen.
               </p>
               <a
                 href="https://bulldog-steunfonds-portaal.vercel.app"

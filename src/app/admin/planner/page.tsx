@@ -52,8 +52,18 @@ export default function PlannerAdminPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState("");
   const [message, setMessage] = useState("");
+  const [userStats, setUserStats] = useState({ gebruikers: 0, pushAbonnementen: 0 });
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+    fetch("/api/admin/planner-users", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setUserStats({
+        gebruikers: d.gebruikers || 0,
+        pushAbonnementen: d.pushAbonnementen || 0,
+      }))
+      .catch(() => {});
+  }, []);
 
   async function load() {
     setLoading(true);
@@ -146,6 +156,19 @@ export default function PlannerAdminPage() {
           <button onClick={add} className="btn-primary text-sm">
             <Plus size={15} /> Nieuw planner-item
           </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-white rounded-2xl shadow-card p-5 text-center">
+            <div className="text-2xl mb-1">👥</div>
+            <div className="font-display text-3xl font-bold text-primary">{userStats.gebruikers}</div>
+            <div className="text-xs text-gray-500">Planner-gebruikers</div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-card p-5 text-center">
+            <div className="text-2xl mb-1">🔔</div>
+            <div className="font-display text-3xl font-bold text-primary">{userStats.pushAbonnementen}</div>
+            <div className="text-xs text-gray-500">Pushmeldingen actief</div>
+          </div>
         </div>
 
         <div className="mb-6 bg-white rounded-2xl shadow-card p-5">

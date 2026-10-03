@@ -7,11 +7,12 @@ export async function GET() {
   try {
     const admin = getSupabaseAdmin();
 
-    const [siteStats, donateurs, postsRes, verhalenRes] = await Promise.all([
+    const [siteStats, donateurs, postsRes, verhalenRes, plannerRes] = await Promise.all([
       getSiteStats(),
       getDonateurs(),
       admin.from("posts").select("id", { count: "exact", head: true }),
       admin.from("verhalen").select("id", { count: "exact", head: true }),
+      admin.from("planner_evenementen").select("id", { count: "exact", head: true }).eq("published", true),
     ]);
 
     return NextResponse.json({
@@ -24,6 +25,7 @@ export async function GET() {
       actiesAfgerond: siteStats.actiesAfgerond,
       actiesLopend: siteStats.actiesLopend,
       opbrengstActies: siteStats.opbrengstActies,
+      planner: plannerRes.count || 0,
     });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });

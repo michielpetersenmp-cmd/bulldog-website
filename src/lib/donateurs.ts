@@ -90,6 +90,22 @@ export const standaardDonateurs: Donateur[] = [
       "Style 3D Studio ondersteunt Stichting Bulldog Steunfonds Nederland met speciaal voor de stichting gemaakte bulldog-producten, creatieve acties en bijdragen uit 3D-printwerk."
   },
   {
+    slug: "durks-dogsnacks",
+    naam: "Durk's Dogsnacks",
+    korteOmschrijving:
+      "Durk's Dogsnacks is een gespecialiseerde webshop voor pure en eerlijke hondensnacks. De nadruk ligt op natuurlijke snacks zonder graan of gluten, zonder toegevoegde suiker en zonder chemische behandelingen of onnodige toevoegingen, met ook veel keuze voor honden met een intolerantie of allergie.",
+    verhaal: [
+      "Durk's Dogsnacks is ontstaan uit liefde voor hond Durk, een Friese Wetterhoun. Oprichtster Claudia Visser-Evers ging op zoek naar gezonde alternatieven voor sterk bewerkte hondensnacks en begon aanvankelijk zelf snacks te drogen. Vanuit die zoektocht groeide uiteindelijk een gespecialiseerde webshop.",
+      "De missie van Durk's is helder: natuurlijke, gezonde en betaalbare hondensnacks aanbieden waarvan je weet wat je geeft. Het assortiment richt zich op pure producten zonder graan of gluten, zonder toegevoegde suiker, zonder conserveringsmiddelen en zonder chemische behandelingen of onnatuurlijke toevoegingen.",
+      "Ook voor honden met een voedselintolerantie of allergie is er veel aandacht. Durk's heeft een ruim hypoallergeen en mono-proteïne assortiment en denkt graag mee over welke snack bij een hond past. De webshop bedient een brede groep honden, van huishond en werkhond tot therapiehond, junior en senior.",
+      "Wat ons aanspreekt is de persoonlijke benadering en de duidelijke focus op kwaliteit en transparantie. Als bedrijfsvriend van Stichting Bulldog Steunfonds Nederland helpt Durk's Dogsnacks mee om ons werk voor bulldogs en hun baasjes onder de aandacht te brengen."
+    ],
+    website: "https://durksdogsnacks.nl/",
+    plaats: "Gendt",
+    bijdrage:
+      "Durk's Dogsnacks ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid en zichtbaarheid bij aan ons werk voor bulldogs en hun baasjes."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:

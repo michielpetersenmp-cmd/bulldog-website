@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getSiteStats } from "@/lib/site-stats";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 
 export const metadata: Metadata = {
@@ -8,7 +12,8 @@ export const metadata: Metadata = {
     "Transparantie & verantwoording van Stichting Bulldog Steunfonds Nederland: stichtingsgegevens, bestuur, doelstelling, beloningsbeleid en financiële verantwoording.",
 };
 
-export default function AnbiPage() {
+export default async function AnbiPage() {
+  const siteStats = await getSiteStats();
   return (
     <>
       <section className="pt-28 pb-16 bg-primary relative overflow-hidden">
@@ -124,7 +129,7 @@ export default function AnbiPage() {
           <div className="bg-white rounded-2xl shadow-card p-8">
             <h2 className="font-display font-bold text-primary text-2xl mb-4">5. Activiteiten</h2>
             <p className="text-gray-600 leading-relaxed">
-              De stichting beoordeelt aanvragen voor medische steun, zorgt voor financiële afhandeling, 
+              De stichting beoordeelt aanvragen voor financiële steun bij noodzakelijke operaties, zorgt voor de financiële afhandeling, 
               organiseert fondsenwerving (veilingen, loterijen, acties), biedt voorlichting en onderhoudt 
               contacten met dierenartsen en andere partners.
             </p>
@@ -140,17 +145,17 @@ export default function AnbiPage() {
             <div className="grid sm:grid-cols-3 gap-4 mb-6">
               <div className="bg-accent/10 rounded-2xl p-5 text-center">
                 <div className="text-2xl mb-1">🏆</div>
-                <div className="font-display font-bold text-primary text-2xl">€ 2.074,45</div>
+                <div className="font-display font-bold text-primary text-2xl">{new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(siteStats.opbrengstActies)}</div>
                 <div className="text-xs text-gray-500 mt-1">Acties & evenementen</div>
               </div>
               <div className="bg-primary/5 rounded-2xl p-5 text-center">
                 <div className="text-2xl mb-1">💛</div>
-                <div className="font-display font-bold text-primary text-2xl">€ 2.295,00</div>
+                <div className="font-display font-bold text-primary text-2xl">{new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(siteStats.donatiesTotaal)}</div>
                 <div className="text-xs text-gray-500 mt-1">Donaties & doneeracties</div>
               </div>
               <div className="bg-primary/5 rounded-2xl p-5 text-center">
                 <div className="text-2xl mb-1">🐾</div>
-                <div className="font-display font-bold text-primary text-2xl">6</div>
+                <div className="font-display font-bold text-primary text-2xl">{siteStats.bulldogsGeholpen}</div>
                 <div className="text-xs text-gray-500 mt-1">Bulldogs geholpen / ondersteund</div>
               </div>
             </div>

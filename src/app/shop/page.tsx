@@ -4,7 +4,7 @@ import { Heart } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Shop & Steun",
-  description: "In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat.",
+  description: "In onze shop vind je artikelen waarvan de opbrengst bijdraagt aan noodzakelijke operaties van bulldogs en de zorg die daarbij hoort.",
 };
 
 export default function ShopPage() {
@@ -21,7 +21,7 @@ export default function ShopPage() {
               Shop – steun bulldogs met je aankoop
             </h1>
             <p className="text-white/80 text-lg leading-relaxed">
-              In onze shop vind je artikelen waarvan de opbrengst direct naar het medische hulpfonds gaat.
+              In onze shop vind je artikelen waarvan de opbrengst bijdraagt aan noodzakelijke operaties van bulldogs en de onderzoeken, medicatie en nazorg die daarbij horen.
             </p>
           </div>
         </div>
@@ -57,9 +57,9 @@ export default function ShopPage() {
               <div className="text-3xl mb-3">💛</div>
               <h3 className="font-display font-bold text-primary mb-2">Opbrengst</h3>
               <ul className="space-y-2 text-sm text-gray-600">
-                <li>• Medische behandelingen</li>
-                <li>• Spoedsituaties</li>
-                <li>• Preventieve zorg</li>
+                <li>• Noodzakelijke operaties</li>
+                <li>• Onderzoeken die bij de operatie horen</li>
+                <li>• Medicatie en nazorg rond de operatie</li>
               </ul>
             </div>
           </div>

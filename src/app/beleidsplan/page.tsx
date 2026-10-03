@@ -49,7 +49,7 @@ export default function BeleidsplanPage() {
             <section>
               <h2 className="font-display font-bold text-primary text-2xl mb-3">Voorwoord</h2>
               <p className="text-gray-700 leading-relaxed mb-3">
-                Voor u ligt het beleidsplan van Stichting Bulldog Steunfonds Nederland voor de periode 2025-2028. Dit document geeft inzicht in de doelstellingen, werkwijze, financiële kaders en toekomstplannen van de stichting. Als organisatie zetten wij ons in voor het ondersteunen van eigenaren van bulldograssen die financiële hulp nodig hebben voor noodzakelijke medische zorg. Transparantie, zorgvuldigheid en professionaliteit staan hierbij centraal.
+                Voor u ligt het beleidsplan van Stichting Bulldog Steunfonds Nederland voor de periode 2025-2028. Dit document geeft inzicht in de doelstellingen, werkwijze, financiële kaders en toekomstplannen van de stichting. Als organisatie zetten wij ons in voor het ondersteunen van eigenaren van bulldograssen die financiële hulp nodig hebben voor een noodzakelijke operatie van hun hond. Transparantie, zorgvuldigheid en professionaliteit staan hierbij centraal.
               </p>
               <p className="text-gray-700 leading-relaxed">
                 Het bestuur ziet dit beleidsplan als leidraad voor de komende jaren en als instrument om onze maatschappelijke doelstelling zo effectief mogelijk te realiseren. Dit document is in oktober 2026 geactualiseerd om de actuele samenstelling van het bestuur, de huidige werkwijze en de status van de stichting correct weer te geven.
@@ -92,7 +92,7 @@ export default function BeleidsplanPage() {
               <ul className="list-disc pl-6 space-y-2 text-gray-700">
                 <li>Beoordelen van aanvragen voor financiële steun bij noodzakelijke operaties.</li>
                 <li>Beoordelen van inkomen, vaste lasten, beschikbare eigen middelen en de raming van de dierenarts.</li>
-                <li>Betalen van toegekende medische kosten rechtstreeks aan de dierenarts.</li>
+                <li>Betalen van toegekende kosten voor een noodzakelijke operatie en direct samenhangende onderzoeken, medicatie en nazorg rechtstreeks aan de dierenarts.</li>
                 <li>Organiseren van fondsenwervende activiteiten, waaronder veilingen, loterijen, evenementen, sponsoracties en verkoopacties.</li>
                 <li>Voorlichting via website en sociale media over bulldoggezondheid, verantwoord eigenaarschap en het werk van de stichting.</li>
                 <li>Samenwerken en contacten onderhouden met dierenartsen, bedrijven, vrijwilligers, donateurs en andere relevante partners.</li>
@@ -105,7 +105,7 @@ export default function BeleidsplanPage() {
                 <li>Zoveel mogelijk bulldogs ondersteunen binnen de actuele doelstelling en beschikbare middelen.</li>
                 <li>Vergroten van naamsbekendheid, bereik en betrokkenheid.</li>
                 <li>Opbouwen van een gezonde financiële reserve voor toekomstige hulpvragen.</li>
-                <li>Bevorderen van verantwoord hondenbezit en tijdige medische zorg door middel van voorlichting.</li>
+                <li>Bevorderen van verantwoord hondenbezit en goede voorbereiding op noodzakelijke veterinaire zorg door middel van voorlichting.</li>
               </ul>
             </section>
 
@@ -122,7 +122,7 @@ export default function BeleidsplanPage() {
                 De penningmeester beheert de financiële administratie en zorgt voor een zorgvuldige registratie van inkomsten en uitgaven. De stichting streeft naar open en controleerbare verslaglegging. Financiële tussenstanden, acties en behaalde resultaten worden periodiek gepubliceerd in het kader van transparantie.
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Bij goedgekeurde medische steun wordt het toegekende bedrag niet aan de eigenaar uitbetaald, maar rechtstreeks aan de behandelend dierenarts. Daarmee waarborgt de stichting dat de middelen daadwerkelijk worden besteed aan het doel waarvoor de steun is toegekend.
+                Bij goedgekeurde steun voor een noodzakelijke operatie wordt het toegekende bedrag niet aan de eigenaar uitbetaald, maar rechtstreeks aan de behandelend dierenarts. Daarmee waarborgt de stichting dat de middelen daadwerkelijk worden besteed aan het doel waarvoor de steun is toegekend.
               </p>
             </section>
 

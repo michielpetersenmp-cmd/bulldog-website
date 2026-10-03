@@ -101,6 +101,22 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Welkom */}
+      <section className="py-12 bg-bg">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <span className="accent-bar mx-auto" />
+          <h2 className="section-title mb-4">Welkom bij Stichting Bulldog Steunfonds Nederland</h2>
+          <p className="text-gray-600 leading-relaxed text-base md:text-lg">
+            Wij zetten ons met hart en ziel in voor bulldogs die een noodzakelijke operatie nodig hebben,
+            maar waarvan het baasje de kosten niet alleen kan dragen. Dankzij donateurs, acties,
+            bedrijfsvrienden en iedereen die ons steunt, kunnen we samen echt verschil maken.
+          </p>
+          <p className="text-gray-600 leading-relaxed text-base md:text-lg mt-4">
+            Op deze website lees je wie we helpen, welke acties we organiseren en hoe je zelf kunt bijdragen. 💛🐾
+          </p>
+        </div>
+      </section>
+
       {/* Aankomende veiling */}
       <section className="py-10 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

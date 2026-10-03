@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2 } from "lucide-react";
+import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2, CalendarDays } from "lucide-react";
 import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 
@@ -76,6 +76,15 @@ export default function AdminDashboardPage() {
       newHref: null,
       count: stats.donateurs,
       color: "bg-violet-50 text-violet-600",
+    },
+    {
+      icon: CalendarDays,
+      label: "Planner",
+      desc: "Loterijen, veilingen, evenementen en herinneringen",
+      href: "/admin/planner",
+      newHref: null,
+      count: stats.actiesLopend,
+      color: "bg-cyan-50 text-cyan-700",
     },
     {
       icon: Heart,

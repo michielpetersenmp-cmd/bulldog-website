@@ -30,6 +30,7 @@ export async function PUT(request: Request) {
         website: d.website ? String(d.website) : undefined,
         facebook: d.facebook ? String(d.facebook) : undefined,
         instagram: d.instagram ? String(d.instagram) : undefined,
+        whatsapp: d.whatsapp ? String(d.whatsapp) : undefined,
         plaats: d.plaats ? String(d.plaats) : undefined,
         bijdrage: d.bijdrage ? String(d.bijdrage) : undefined,
       }));

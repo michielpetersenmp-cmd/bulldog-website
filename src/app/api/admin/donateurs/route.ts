@@ -29,6 +29,7 @@ export async function PUT(request: Request) {
         afbeelding: d.afbeelding ? String(d.afbeelding) : undefined,
         website: d.website ? String(d.website) : undefined,
         facebook: d.facebook ? String(d.facebook) : undefined,
+        instagram: d.instagram ? String(d.instagram) : undefined,
         plaats: d.plaats ? String(d.plaats) : undefined,
         bijdrage: d.bijdrage ? String(d.bijdrage) : undefined,
       }));

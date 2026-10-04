@@ -15,6 +15,7 @@ type Donateur = {
   website?: string;
   facebook?: string;
   instagram?: string;
+  whatsapp?: string;
   plaats?: string;
   bijdrage?: string;
 };
@@ -73,6 +74,7 @@ export default function AdminDonateursPage() {
         website: "",
         facebook: "",
         instagram: "",
+        whatsapp: "",
       },
     ]);
   }
@@ -257,6 +259,7 @@ export default function AdminDonateursPage() {
                       <Field label="Website" value={d.website || ""} onChange={(v) => update(index, "website", v)} placeholder="https://..." />
                       <Field label="Facebook" value={d.facebook || ""} onChange={(v) => update(index, "facebook", v)} placeholder="https://facebook.com/..." />
                       <Field label="Instagram" value={d.instagram || ""} onChange={(v) => update(index, "instagram", v)} placeholder="https://instagram.com/..." />
+                      <Field label="Telefoon / WhatsApp" value={d.whatsapp || ""} onChange={(v) => update(index, "whatsapp", v)} placeholder="06 12345678 of +31..." />
                     </div>
 
                     <TextArea

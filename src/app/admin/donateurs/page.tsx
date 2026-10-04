@@ -149,31 +149,48 @@ export default function AdminDonateursPage() {
     }
   }
 
+  async function persist(nextDonateurs: Donateur[], successMessage: string) {
+    const normalized = nextDonateurs.map((d) => ({
+      ...d,
+      slug: d.slug || makeSlug(d.naam),
+      verhaal: (d.verhaal || []).map((v) => v.trim()).filter(Boolean),
+    }));
+
+    const res = await fetch("/api/admin/donateurs", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ donateurs: normalized }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Opslaan mislukt");
+    setDonateurs(data.donateurs);
+    setMessage(successMessage);
+  }
+
   async function save() {
     setSaving(true);
     setMessage("");
     try {
-      const normalized = donateurs.map((d) => ({
-        ...d,
-        slug: d.slug || makeSlug(d.naam),
-        verhaal: (d.verhaal || []).map((v) => v.trim()).filter(Boolean),
-      }));
-
-      const res = await fetch("/api/admin/donateurs", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ donateurs: normalized }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Opslaan mislukt");
-      setDonateurs(data.donateurs);
-      setMessage("Opgeslagen. De website wordt binnen ongeveer een minuut bijgewerkt.");
+      await persist(donateurs, "Opgeslagen. De website is bijgewerkt.");
     } catch (e: any) {
       setMessage(e.message);
     } finally {
       setSaving(false);
     }
   }
+
+  async function saveWhatsapp(index: number, value: string) {
+    const next = donateurs.map((d, i) => i === index ? { ...d, whatsapp: value } : d);
+    setDonateurs(next);
+    setMessage("");
+    try {
+      await persist(next, "WhatsApp-nummer opgeslagen. De WhatsApp-knop staat nu op de website.");
+    } catch (e: any) {
+      setMessage(e.message);
+    }
+  }
+
+
 
   return (
     <div className="min-h-screen bg-bg">
@@ -259,7 +276,14 @@ export default function AdminDonateursPage() {
                       <Field label="Website" value={d.website || ""} onChange={(v) => update(index, "website", v)} placeholder="https://..." />
                       <Field label="Facebook" value={d.facebook || ""} onChange={(v) => update(index, "facebook", v)} placeholder="https://facebook.com/..." />
                       <Field label="Instagram" value={d.instagram || ""} onChange={(v) => update(index, "instagram", v)} placeholder="https://instagram.com/..." />
-                      <Field label="Telefoon / WhatsApp" value={d.whatsapp || ""} onChange={(v) => update(index, "whatsapp", v)} placeholder="06 12345678 of +31..." />
+                      <Field
+                        label="Telefoon / WhatsApp"
+                        value={d.whatsapp || ""}
+                        onChange={(v) => update(index, "whatsapp", v)}
+                        onBlur={(v) => saveWhatsapp(index, v)}
+                        placeholder="06 12345678 of +31..."
+                        inputMode="tel"
+                      />
                     </div>
 
                     <TextArea
@@ -331,13 +355,29 @@ export default function AdminDonateursPage() {
   );
 }
 
-function Field({ label, value, onChange, placeholder = "" }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
+function Field({
+  label,
+  value,
+  onChange,
+  onBlur,
+  placeholder = "",
+  inputMode,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  onBlur?: (v: string) => void;
+  placeholder?: string;
+  inputMode?: "text" | "tel" | "url";
+}) {
   return (
     <div>
       <label className="block text-xs font-semibold text-gray-600 mb-1">{label}</label>
       <input
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onBlur={(e) => onBlur?.(e.target.value)}
+        inputMode={inputMode}
         placeholder={placeholder}
         className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 outline-none focus:ring-2 focus:ring-primary/20"
       />

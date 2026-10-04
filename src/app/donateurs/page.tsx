@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, Facebook, Globe2, HeartHandshake, Instagram } from "lucide-react";
-import { getDonateurs } from "@/lib/donateurs";
+import { ExternalLink, Facebook, Globe2, HeartHandshake, Instagram, MessageCircle } from "lucide-react";
+import { getDonateurs, whatsappLink } from "@/lib/donateurs";
 
 export const metadata: Metadata = {
   title: "Donateurs & bedrijfsvrienden",
@@ -69,7 +69,7 @@ export default async function DonateursPage() {
                       {donateur.korteOmschrijving}
                     </p>
 
-                    {(donateur.website || donateur.facebook || donateur.instagram) && (
+                    {(donateur.website || donateur.facebook || donateur.instagram || donateur.whatsapp) && (
                       <div className="flex flex-wrap items-center gap-2 mb-5">
                         {donateur.website && (
                           <a
@@ -105,6 +105,18 @@ export default async function DonateursPage() {
                             className="w-10 h-10 rounded-full bg-[linear-gradient(135deg,#833AB4,#FD1D1D,#FCAF45)] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
                           >
                             <Instagram size={18} />
+                          </a>
+                        )}
+                        {donateur.whatsapp && whatsappLink(donateur.whatsapp) && (
+                          <a
+                            href={whatsappLink(donateur.whatsapp)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`WhatsApp van ${donateur.naam}`}
+                            title="WhatsApp"
+                            className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                          >
+                            <MessageCircle size={18} fill="currentColor" />
                           </a>
                         )}
                       </div>

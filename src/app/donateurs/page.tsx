@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, Facebook, Globe2, HeartHandshake } from "lucide-react";
+import { ExternalLink, Facebook, Globe2, HeartHandshake, Instagram } from "lucide-react";
 import { getDonateurs } from "@/lib/donateurs";
 
 export const metadata: Metadata = {
@@ -69,28 +69,46 @@ export default async function DonateursPage() {
                       {donateur.korteOmschrijving}
                     </p>
 
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {donateur.website && (
-                        <a
-                          href={donateur.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/5 px-3 py-2 rounded-lg"
-                        >
-                          <Globe2 size={14} /> Website
-                        </a>
-                      )}
-                      {donateur.facebook && (
-                        <a
-                          href={donateur.facebook}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/5 px-3 py-2 rounded-lg"
-                        >
-                          <Facebook size={14} /> Facebook
-                        </a>
-                      )}
-                    </div>
+                    {(donateur.website || donateur.facebook || donateur.instagram) && (
+                      <div className="flex flex-wrap items-center gap-2 mb-5">
+                        {donateur.website && (
+                          <a
+                            href={donateur.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Website van ${donateur.naam}`}
+                            title="Website"
+                            className="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                          >
+                            <Globe2 size={18} />
+                          </a>
+                        )}
+                        {donateur.facebook && (
+                          <a
+                            href={donateur.facebook}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Facebook van ${donateur.naam}`}
+                            title="Facebook"
+                            className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                          >
+                            <Facebook size={18} fill="currentColor" />
+                          </a>
+                        )}
+                        {donateur.instagram && (
+                          <a
+                            href={donateur.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Instagram van ${donateur.naam}`}
+                            title="Instagram"
+                            className="w-10 h-10 rounded-full bg-[linear-gradient(135deg,#833AB4,#FD1D1D,#FCAF45)] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                          >
+                            <Instagram size={18} />
+                          </a>
+                        )}
+                      </div>
+                    )}
 
                     <Link href={`/donateurs/${donateur.slug}`} className="btn-primary w-full justify-center">
                       Lees hun verhaal <ExternalLink size={15} />

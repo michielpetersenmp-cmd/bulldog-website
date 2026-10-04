@@ -78,7 +78,7 @@ export default async function DonateursPage() {
                             rel="noopener noreferrer"
                             aria-label={`Website van ${donateur.naam}`}
                             title="Website"
-                            className="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                            className="w-10 h-10 rounded-full bg-[linear-gradient(145deg,#3D8FE8,#0758A8)] text-white flex items-center justify-center border border-white/30 shadow-[inset_0_2px_0_rgba(255,255,255,0.35),0_5px_10px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 transition-all"
                           >
                             <Globe2 size={18} />
                           </a>
@@ -90,7 +90,7 @@ export default async function DonateursPage() {
                             rel="noopener noreferrer"
                             aria-label={`Facebook van ${donateur.naam}`}
                             title="Facebook"
-                            className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                            className="w-10 h-10 rounded-full bg-[linear-gradient(145deg,#4F9BFF,#1466D8)] text-white flex items-center justify-center border border-white/30 shadow-[inset_0_2px_0_rgba(255,255,255,0.35),0_5px_10px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 transition-all"
                           >
                             <Facebook size={18} fill="currentColor" />
                           </a>
@@ -102,7 +102,7 @@ export default async function DonateursPage() {
                             rel="noopener noreferrer"
                             aria-label={`Instagram van ${donateur.naam}`}
                             title="Instagram"
-                            className="w-10 h-10 rounded-full bg-[linear-gradient(135deg,#833AB4,#FD1D1D,#FCAF45)] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                            className="w-10 h-10 rounded-full bg-[linear-gradient(145deg,#A95BE0_0%,#F12B73_48%,#FFB44E_100%)] text-white flex items-center justify-center border border-white/30 shadow-[inset_0_2px_0_rgba(255,255,255,0.35),0_5px_10px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 transition-all"
                           >
                             <Instagram size={18} />
                           </a>
@@ -114,7 +114,7 @@ export default async function DonateursPage() {
                             rel="noopener noreferrer"
                             aria-label={`WhatsApp van ${donateur.naam}`}
                             title="WhatsApp"
-                            className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                            className="w-10 h-10 rounded-full bg-[linear-gradient(145deg,#55E783,#18B957)] text-white flex items-center justify-center border border-white/30 shadow-[inset_0_2px_0_rgba(255,255,255,0.35),0_5px_10px_rgba(0,0,0,0.22)] hover:-translate-y-0.5 hover:scale-105 active:translate-y-0 transition-all"
                           >
                             <MessageCircle size={18} fill="currentColor" />
                           </a>

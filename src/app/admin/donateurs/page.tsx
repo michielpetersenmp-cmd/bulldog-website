@@ -14,6 +14,7 @@ type Donateur = {
   afbeelding?: string;
   website?: string;
   facebook?: string;
+  instagram?: string;
   plaats?: string;
   bijdrage?: string;
 };
@@ -71,6 +72,7 @@ export default function AdminDonateursPage() {
         plaats: "",
         website: "",
         facebook: "",
+        instagram: "",
       },
     ]);
   }
@@ -253,7 +255,8 @@ export default function AdminDonateursPage() {
                       <Field label="Slug" value={d.slug} onChange={(v) => update(index, "slug", makeSlug(v))} />
                       <Field label="Plaats" value={d.plaats || ""} onChange={(v) => update(index, "plaats", v)} />
                       <Field label="Website" value={d.website || ""} onChange={(v) => update(index, "website", v)} placeholder="https://..." />
-                      <Field label="Facebook" value={d.facebook || ""} onChange={(v) => update(index, "facebook", v)} placeholder="https://..." />
+                      <Field label="Facebook" value={d.facebook || ""} onChange={(v) => update(index, "facebook", v)} placeholder="https://facebook.com/..." />
+                      <Field label="Instagram" value={d.instagram || ""} onChange={(v) => update(index, "instagram", v)} placeholder="https://instagram.com/..." />
                     </div>
 
                     <TextArea

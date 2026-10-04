@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Globe2, HeartHandshake, Instagram, MapPin } from "lucide-react";
-import { getDonateurs, getDonateur } from "@/lib/donateurs";
+import { Facebook, Globe2, HeartHandshake, Instagram, MapPin, MessageCircle } from "lucide-react";
+import { getDonateurs, getDonateur, whatsappLink } from "@/lib/donateurs";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -112,7 +112,7 @@ export default async function DonateurDetailPage({
           </article>
 
           <aside className="space-y-5">
-            {(donateur.website || donateur.facebook || donateur.instagram) && (
+            {(donateur.website || donateur.facebook || donateur.instagram || donateur.whatsapp) && (
               <div className="bg-white rounded-3xl shadow-card p-6">
                 <h2 className="font-display font-bold text-primary text-xl mb-4">
                   Bezoek {donateur.naam}
@@ -152,6 +152,18 @@ export default async function DonateurDetailPage({
                       className="w-12 h-12 rounded-full bg-[linear-gradient(135deg,#833AB4,#FD1D1D,#FCAF45)] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
                     >
                       <Instagram size={21} />
+                    </a>
+                  )}
+                  {donateur.whatsapp && whatsappLink(donateur.whatsapp) && (
+                    <a
+                      href={whatsappLink(donateur.whatsapp)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`WhatsApp van ${donateur.naam}`}
+                      title="WhatsApp"
+                      className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
+                    >
+                      <MessageCircle size={21} fill="currentColor" />
                     </a>
                   )}
                 </div>

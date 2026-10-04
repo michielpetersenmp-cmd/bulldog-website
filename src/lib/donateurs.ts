@@ -7,6 +7,7 @@ export type Donateur = {
   afbeelding?: string;
   website?: string;
   facebook?: string;
+  instagram?: string;
   plaats?: string;
   bijdrage?: string;
 };

@@ -8,6 +8,7 @@ export type Donateur = {
   website?: string;
   facebook?: string;
   instagram?: string;
+  whatsapp?: string;
   plaats?: string;
   bijdrage?: string;
 };
@@ -168,4 +169,15 @@ export async function getDonateurs(): Promise<Donateur[]> {
 export async function getDonateur(slug: string) {
   const donateurs = await getDonateurs();
   return donateurs.find((donateur) => donateur.slug === slug);
+}
+
+
+export function whatsappLink(value?: string) {
+  if (!value) return undefined;
+  let nummer = value.trim().replace(/[^\d+]/g, "");
+  if (nummer.startsWith("00")) nummer = "+" + nummer.slice(2);
+  nummer = nummer.replace(/\D/g, "");
+  if (nummer.startsWith("0")) nummer = "31" + nummer.slice(1);
+  if (!nummer) return undefined;
+  return `https://wa.me/${nummer}`;
 }

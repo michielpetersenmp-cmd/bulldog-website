@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ExternalLink, Facebook, Globe2, HeartHandshake, MapPin } from "lucide-react";
+import { Facebook, Globe2, HeartHandshake, Instagram, MapPin } from "lucide-react";
 import { getDonateurs, getDonateur } from "@/lib/donateurs";
 
 export const dynamic = "force-dynamic";
@@ -112,20 +112,22 @@ export default async function DonateurDetailPage({
           </article>
 
           <aside className="space-y-5">
-            {(donateur.website || donateur.facebook) && (
+            {(donateur.website || donateur.facebook || donateur.instagram) && (
               <div className="bg-white rounded-3xl shadow-card p-6">
                 <h2 className="font-display font-bold text-primary text-xl mb-4">
                   Bezoek {donateur.naam}
                 </h2>
-                <div className="space-y-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   {donateur.website && (
                     <a
                       href={donateur.website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-primary w-full justify-center"
+                      aria-label={`Website van ${donateur.naam}`}
+                      title="Website"
+                      className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-105 transition-transform"
                     >
-                      <Globe2 size={16} /> Website <ExternalLink size={14} />
+                      <Globe2 size={21} />
                     </a>
                   )}
                   {donateur.facebook && (
@@ -133,9 +135,23 @@ export default async function DonateurDetailPage({
                       href={donateur.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-secondary w-full justify-center"
+                      aria-label={`Facebook van ${donateur.naam}`}
+                      title="Facebook"
+                      className="w-12 h-12 rounded-full bg-gray-100 text-primary flex items-center justify-center hover:scale-105 transition-transform"
                     >
-                      <Facebook size={16} /> Facebook <ExternalLink size={14} />
+                      <Facebook size={21} />
+                    </a>
+                  )}
+                  {donateur.instagram && (
+                    <a
+                      href={donateur.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Instagram van ${donateur.naam}`}
+                      title="Instagram"
+                      className="w-12 h-12 rounded-full bg-gray-100 text-primary flex items-center justify-center hover:scale-105 transition-transform"
+                    >
+                      <Instagram size={21} />
                     </a>
                   )}
                 </div>

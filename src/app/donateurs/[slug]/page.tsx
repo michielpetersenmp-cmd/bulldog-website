@@ -125,7 +125,7 @@ export default async function DonateurDetailPage({
                       rel="noopener noreferrer"
                       aria-label={`Website van ${donateur.naam}`}
                       title="Website"
-                      className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:scale-105 transition-transform"
+                      className="w-12 h-12 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
                     >
                       <Globe2 size={21} />
                     </a>
@@ -137,9 +137,9 @@ export default async function DonateurDetailPage({
                       rel="noopener noreferrer"
                       aria-label={`Facebook van ${donateur.naam}`}
                       title="Facebook"
-                      className="w-12 h-12 rounded-full bg-gray-100 text-primary flex items-center justify-center hover:scale-105 transition-transform"
+                      className="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
                     >
-                      <Facebook size={21} />
+                      <Facebook size={21} fill="currentColor" />
                     </a>
                   )}
                   {donateur.instagram && (
@@ -149,7 +149,7 @@ export default async function DonateurDetailPage({
                       rel="noopener noreferrer"
                       aria-label={`Instagram van ${donateur.naam}`}
                       title="Instagram"
-                      className="w-12 h-12 rounded-full bg-gray-100 text-primary flex items-center justify-center hover:scale-105 transition-transform"
+                      className="w-12 h-12 rounded-full bg-[linear-gradient(135deg,#833AB4,#FD1D1D,#FCAF45)] text-white flex items-center justify-center shadow-sm hover:scale-105 transition-transform"
                     >
                       <Instagram size={21} />
                     </a>

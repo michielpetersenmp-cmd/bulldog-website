@@ -13,8 +13,26 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+function roteerDagelijks<T>(items: T[]): T[] {
+  if (items.length < 2) return items;
+
+  const datumdelen = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Amsterdam",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const deel = (type: "year" | "month" | "day") =>
+    Number(datumdelen.find((item) => item.type === type)?.value ?? 0);
+  const dagnummer = Math.floor(Date.UTC(deel("year"), deel("month") - 1, deel("day")) / 86_400_000);
+  const start = dagnummer % items.length;
+
+  return [...items.slice(start), ...items.slice(0, start)];
+}
+
 export default async function DonateursPage() {
-  const donateurs = await getDonateurs();
+  const donateurs = roteerDagelijks(await getDonateurs());
   return (
     <>
       <section className="pt-28 pb-16 bg-primary">

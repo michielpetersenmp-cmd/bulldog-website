@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-function roteerDagelijks<T>(items: T[]): T[] {
+function husselDagelijks<T>(items: T[]): T[] {
   if (items.length < 2) return items;
 
   const datumdelen = new Intl.DateTimeFormat("en-CA", {
@@ -26,13 +26,22 @@ function roteerDagelijks<T>(items: T[]): T[] {
   const deel = (type: "year" | "month" | "day") =>
     Number(datumdelen.find((item) => item.type === type)?.value ?? 0);
   const dagnummer = Math.floor(Date.UTC(deel("year"), deel("month") - 1, deel("day")) / 86_400_000);
-  const start = dagnummer % items.length;
+  const bovenaanIndex = dagnummer % items.length;
+  const bovenaan = items[bovenaanIndex];
+  const overige = items.filter((_, index) => index !== bovenaanIndex);
+  let getal = dagnummer;
 
-  return [...items.slice(start), ...items.slice(0, start)];
+  for (let index = overige.length - 1; index > 0; index -= 1) {
+    getal = (getal * 1_664_525 + 1_013_904_223) >>> 0;
+    const wisselIndex = getal % (index + 1);
+    [overige[index], overige[wisselIndex]] = [overige[wisselIndex], overige[index]];
+  }
+
+  return [bovenaan, ...overige];
 }
 
 export default async function DonateursPage() {
-  const donateurs = roteerDagelijks(await getDonateurs());
+  const donateurs = husselDagelijks(await getDonateurs());
   return (
     <>
       <section className="pt-28 pb-16 bg-primary">

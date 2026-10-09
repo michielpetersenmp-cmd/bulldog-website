@@ -25,7 +25,18 @@ export const metadata: Metadata = {
   },
   description:
     "Financiële steun voor noodzakelijke operaties van bulldogs in Nederland, inclusief bijbehorende onderzoeken en nazorg.",
-  keywords: ["bulldog", "steunfonds", "veterinaire kosten", "stichting", "doneren", "bulldogs"],
+  keywords: [
+    "bulldog",
+    "steunfonds",
+    "bulldog operatie",
+    "hulp operatie bulldog",
+    "dierenartskosten bulldog",
+    "financiële hulp dierenarts hond",
+    "medische hulp bulldog",
+    "stichting bulldog",
+    "doneren bulldogs",
+    "bulldogs",
+  ],
   authors: [{ name: "Stichting Bulldog Steunfonds Nederland" }],
   icons: {
     icon: "/favicon.ico",
@@ -48,8 +59,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    name: "Stichting Bulldog Steunfonds Nederland",
+    url: "https://stichtingbulldogsteunfondsnederland.nl",
+    logo: "https://stichtingbulldogsteunfondsnederland.nl/logo.png",
+    email: "info@stichtingbulldogsteunfondsnederland.nl",
+    areaServed: {
+      "@type": "Country",
+      name: "Nederland",
+    },
+    description:
+      "Stichting die bulldogeigenaren in Nederland ondersteunt bij noodzakelijke operaties en direct samenhangende onderzoeken, medicatie en nazorg.",
+  };
+
   return (
     <html lang="nl" className={`${nunito.variable} ${playfair.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body className="font-sans bg-bg text-gray-800 antialiased">
    <HeaderWrapper />
 <main>{children}</main>

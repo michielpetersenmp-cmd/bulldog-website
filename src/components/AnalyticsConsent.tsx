@@ -60,6 +60,62 @@ export default function AnalyticsConsent() {
     });
   }, [pathname, loaded, choice, admin]);
 
+
+  useEffect(() => {
+    if (!loaded || choice !== "accepted" || admin) return;
+
+    function trackClick(event: MouseEvent) {
+      const target = event.target as Element | null;
+      const anchor = target?.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href") || "";
+      const label = (anchor.textContent || "").trim().replace(/\s+/g, " ").slice(0, 120);
+      const gtag = (window as AnalyticsWindow).gtag;
+      if (!gtag) return;
+
+      if (href.includes("bulldog-steunfonds-portaal.vercel.app")) {
+        gtag("event", "begin_application", {
+          link_url: href,
+          link_text: label,
+          page_path: pathname,
+        });
+        return;
+      }
+
+      if (href.includes("tikkie.me/pay/")) {
+        gtag("event", "donation_click", {
+          donation_method: "tikkie",
+          link_url: href,
+          link_text: label,
+          page_path: pathname,
+        });
+        return;
+      }
+
+      if (href === "/shop" || href.startsWith("/shop?")) {
+        gtag("event", "shop_visit", {
+          link_url: href,
+          link_text: label,
+          page_path: pathname,
+        });
+        return;
+      }
+
+      if (href.startsWith("mailto:")) {
+        gtag("event", "contact_click", {
+          contact_method: "email",
+          link_url: href,
+          link_text: label,
+          page_path: pathname,
+        });
+      }
+    }
+
+    document.addEventListener("click", trackClick);
+    return () => document.removeEventListener("click", trackClick);
+  }, [loaded, choice, admin, pathname]);
+
   function choose(value: Exclude<Choice, null>) {
     const w = window as AnalyticsWindow;
     w[`ga-disable-${ID}`] = value !== "accepted";

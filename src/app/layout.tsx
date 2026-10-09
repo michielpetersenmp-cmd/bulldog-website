@@ -25,8 +25,22 @@ export const metadata: Metadata = {
   },
   description:
     "Financiële steun voor noodzakelijke operaties van bulldogs in Nederland, inclusief bijbehorende onderzoeken en nazorg.",
-  keywords: ["bulldog", "steunfonds", "veterinaire kosten", "stichting", "doneren", "bulldogs"],
+  keywords: [
+    "bulldog",
+    "steunfonds",
+    "bulldog operatie",
+    "hulp operatie bulldog",
+    "dierenartskosten bulldog",
+    "financiële hulp dierenarts hond",
+    "medische hulp bulldog",
+    "stichting bulldog",
+    "doneren bulldogs",
+    "bulldogs",
+  ],
   authors: [{ name: "Stichting Bulldog Steunfonds Nederland" }],
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",

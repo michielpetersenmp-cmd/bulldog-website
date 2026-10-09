@@ -15,6 +15,10 @@ export default function ContactForm() {
 E-mailadres: ${data.get("email")}
 
 ${data.get("bericht")}`;
+    const analyticsWindow = window as Window & { gtag?: (...args: unknown[]) => void };
+    analyticsWindow.gtag?.("event", "contact_form_open_email", {
+      subject_category: subject,
+    });
     window.location.href = `mailto:info@stichtingbulldogsteunfondsnederland.nl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setOpened(true);
   }

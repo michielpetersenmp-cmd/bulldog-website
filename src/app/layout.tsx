@@ -38,9 +38,6 @@ export const metadata: Metadata = {
     "bulldogs",
   ],
   authors: [{ name: "Stichting Bulldog Steunfonds Nederland" }],
-  alternates: {
-    canonical: "/",
-  },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
@@ -62,8 +59,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    name: "Stichting Bulldog Steunfonds Nederland",
+    url: "https://stichtingbulldogsteunfondsnederland.nl",
+    logo: "https://stichtingbulldogsteunfondsnederland.nl/logo.png",
+    email: "info@stichtingbulldogsteunfondsnederland.nl",
+    areaServed: {
+      "@type": "Country",
+      name: "Nederland",
+    },
+    description:
+      "Stichting die bulldogeigenaren in Nederland ondersteunt bij noodzakelijke operaties en direct samenhangende onderzoeken, medicatie en nazorg.",
+  };
+
   return (
     <html lang="nl" className={`${nunito.variable} ${playfair.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body className="font-sans bg-bg text-gray-800 antialiased">
    <HeaderWrapper />
 <main>{children}</main>

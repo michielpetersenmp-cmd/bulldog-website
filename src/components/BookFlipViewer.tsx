@@ -103,7 +103,7 @@ export default function BookFlipViewer() {
         : "[transform:rotateY(0deg)]";
 
   return (
-    <div className={fullscreen ? "fixed inset-0 z-[100] bg-black p-0 overflow-hidden" : "bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5"}>
+    <div className={fullscreen ? "fixed inset-0 z-[100] bg-black p-0 overflow-auto overscroll-contain" : "bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5"}>
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
         onLoad={loadPdf}
@@ -146,8 +146,8 @@ export default function BookFlipViewer() {
         </div>
       </div>
 
-      <div className={fullscreen ? "relative [perspective:1800px] w-screen h-screen flex items-center justify-center" : "relative [perspective:1800px]"}>
-        <div className={(fullscreen ? "mx-auto max-w-none max-h-none " : "mx-auto max-w-[760px] ") + "bg-white shadow-2xl overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
+      <div className={fullscreen ? "relative [perspective:1800px] min-w-full min-h-full pt-16 pb-16 flex items-start justify-center" : "relative [perspective:1800px]"}>
+        <div className={(fullscreen ? "mx-auto w-max max-w-none max-h-none " : "mx-auto max-w-[760px] ") + "bg-white shadow-2xl overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
           <canvas ref={canvasRef} className="block w-full" />
         </div>
 
@@ -156,7 +156,7 @@ export default function BookFlipViewer() {
           onClick={() => go(page - 1)}
           disabled={page <= 1 || !ready}
           aria-label="Vorige pagina"
-          className={fullscreen ? "absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/45 border border-white/20 flex items-center justify-center text-white disabled:opacity-30" : "absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-primary disabled:opacity-30"}
+          className={fullscreen ? "fixed z-30 left-3 sm:left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/45 border border-white/20 flex items-center justify-center text-white disabled:opacity-30" : "absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-primary disabled:opacity-30"}
         >
           <ChevronLeft size={24} />
         </button>
@@ -166,17 +166,17 @@ export default function BookFlipViewer() {
           onClick={() => go(page + 1)}
           disabled={page >= pages || !ready}
           aria-label="Volgende pagina"
-          className={fullscreen ? "absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/45 border border-white/20 flex items-center justify-center text-white disabled:opacity-30" : "absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-primary disabled:opacity-30"}
+          className={fullscreen ? "fixed z-30 right-3 sm:right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/45 border border-white/20 flex items-center justify-center text-white disabled:opacity-30" : "absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-primary disabled:opacity-30"}
         >
           <ChevronRight size={24} />
         </button>
       </div>
 
-      <div className={fullscreen ? "absolute bottom-3 left-0 right-0 z-20 flex items-center justify-center gap-3" : "mt-4 flex items-center justify-center gap-3"}>
-        <button type="button" onClick={() => go(page - 1)} disabled={page <= 1 || !ready} className={fullscreen ? "inline-flex items-center gap-2 rounded-xl bg-white/95 text-primary px-4 py-2 text-sm font-semibold disabled:opacity-40" : "btn-secondary text-sm disabled:opacity-40"}>
+      <div className={fullscreen ? "fixed bottom-3 left-0 right-0 z-30 flex items-center justify-center gap-3 pointer-events-none" : "mt-4 flex items-center justify-center gap-3"}>
+        <button type="button" onClick={() => go(page - 1)} disabled={page <= 1 || !ready} className={fullscreen ? "pointer-events-auto inline-flex items-center gap-2 rounded-xl bg-white/95 text-primary px-4 py-2 text-sm font-semibold disabled:opacity-40" : "btn-secondary text-sm disabled:opacity-40"}>
           <ChevronLeft size={15} /> Vorige
         </button>
-        <button type="button" onClick={() => go(page + 1)} disabled={page >= pages || !ready} className={fullscreen ? "inline-flex items-center gap-2 rounded-xl bg-white text-primary px-4 py-2 text-sm font-semibold disabled:opacity-40" : "btn-primary text-sm disabled:opacity-40"}>
+        <button type="button" onClick={() => go(page + 1)} disabled={page >= pages || !ready} className={fullscreen ? "pointer-events-auto inline-flex items-center gap-2 rounded-xl bg-white text-primary px-4 py-2 text-sm font-semibold disabled:opacity-40" : "btn-primary text-sm disabled:opacity-40"}>
           Volgende <ChevronRight size={15} />
         </button>
       </div>

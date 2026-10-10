@@ -12,6 +12,7 @@ declare global {
 
 export default function BookFlipViewer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [pdf, setPdf] = useState<any>(null);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(0);
@@ -65,6 +66,15 @@ export default function BookFlipViewer() {
         viewport,
         transform: [dpr, 0, 0, dpr, 0, 0],
       }).promise;
+
+      if (fullscreen && scrollRef.current) {
+        requestAnimationFrame(() => {
+          const el = scrollRef.current;
+          if (!el) return;
+          el.scrollLeft = Math.max(0, (el.scrollWidth - el.clientWidth) / 2);
+          el.scrollTop = Math.max(0, (el.scrollHeight - el.clientHeight) / 2);
+        });
+      }
     }
     render();
   }, [pdf, page, fullscreen, zoom]);
@@ -103,7 +113,7 @@ export default function BookFlipViewer() {
         : "[transform:rotateY(0deg)]";
 
   return (
-    <div className={fullscreen ? "fixed inset-0 z-[100] bg-black p-0 overflow-auto overscroll-contain" : "bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5"}>
+    <div className={fullscreen ? "fixed inset-0 z-[100] bg-black p-0 overflow-hidden" : "bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5"}>
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
         onLoad={loadPdf}
@@ -146,9 +156,15 @@ export default function BookFlipViewer() {
         </div>
       </div>
 
-      <div className={fullscreen ? "relative [perspective:1800px] min-w-full min-h-full pt-16 pb-16 flex items-start justify-center" : "relative [perspective:1800px]"}>
-        <div className={(fullscreen ? "mx-auto w-max max-w-none max-h-none " : "mx-auto max-w-[760px] ") + "bg-white shadow-2xl overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
-          <canvas ref={canvasRef} className="block w-full" />
+      <div
+        ref={scrollRef}
+        className={fullscreen ? "absolute inset-x-0 top-16 bottom-16 overflow-auto overscroll-contain touch-pan-x touch-pan-y" : "relative [perspective:1800px]"}
+        style={fullscreen ? { WebkitOverflowScrolling: "touch" } : undefined}
+      >
+        <div className={fullscreen ? "min-w-max min-h-full p-3 flex items-start justify-start" : ""}>
+          <div className={(fullscreen ? "w-max mx-auto max-w-none max-h-none " : "mx-auto max-w-[760px] ") + "bg-white shadow-2xl overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
+            <canvas ref={canvasRef} className="block" />
+          </div>
         </div>
 
         <button

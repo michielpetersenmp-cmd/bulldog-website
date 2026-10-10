@@ -22,9 +22,11 @@ export async function PUT(request: Request) {
     };
 
     const admin = getSupabaseAdmin();
+    const payload = Buffer.from(JSON.stringify(boek, null, 2), "utf-8");
+
     const { error } = await admin.storage.from("post-images").upload(
       "config/boek.json",
-      new Blob([JSON.stringify(boek, null, 2)], { type: "application/json" }),
+      payload,
       { contentType: "application/json", upsert: true, cacheControl: "60" }
     );
     if (error) throw error;

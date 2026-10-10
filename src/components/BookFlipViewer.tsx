@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2, ZoomIn, ZoomOut } from "lucide-react";
 
 declare global {
   interface Window {
@@ -17,6 +17,8 @@ export default function BookFlipViewer() {
   const [pages, setPages] = useState(0);
   const [ready, setReady] = useState(false);
   const [turning, setTurning] = useState<"next" | "prev" | null>(null);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   async function loadPdf() {
     if (!window.pdfjsLib || pdf) return;
@@ -37,8 +39,10 @@ export default function BookFlipViewer() {
       if (!pdf || !canvasRef.current) return;
       const current = await pdf.getPage(page);
       const base = current.getViewport({ scale: 1 });
-      const maxWidth = Math.min(window.innerWidth - 56, 760);
-      const scale = Math.max(0.7, Math.min(1.8, maxWidth / base.width));
+      const maxWidth = fullscreen
+        ? Math.min(window.innerWidth - 40, 1200)
+        : Math.min(window.innerWidth - 56, 760);
+      const scale = Math.max(0.7, Math.min(2.8, (maxWidth / base.width) * zoom));
       const viewport = current.getViewport({ scale });
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
@@ -50,7 +54,7 @@ export default function BookFlipViewer() {
       await current.render({ canvasContext: ctx, viewport }).promise;
     }
     render();
-  }, [pdf, page]);
+  }, [pdf, page, fullscreen, zoom]);
 
   function go(next: number) {
     if (next < 1 || next > pages || turning) return;
@@ -61,6 +65,23 @@ export default function BookFlipViewer() {
     }, 220);
   }
 
+  useEffect(() => {
+    document.body.style.overflow = fullscreen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [fullscreen]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setFullscreen(false);
+      if (event.key === "ArrowLeft") go(page - 1);
+      if (event.key === "ArrowRight") go(page + 1);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
   const turnClass =
     turning === "next"
       ? "[transform:rotateY(-10deg)_scale(.985)]"
@@ -69,7 +90,7 @@ export default function BookFlipViewer() {
         : "[transform:rotateY(0deg)]";
 
   return (
-    <div className="bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5">
+    <div className={fullscreen ? "fixed inset-0 z-[100] bg-[#e9e1d2] p-3 sm:p-5 overflow-auto" : "bg-[#efe8da] rounded-3xl p-3 sm:p-6 shadow-card border border-black/5"}>
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"
         onLoad={loadPdf}
@@ -82,13 +103,38 @@ export default function BookFlipViewer() {
             {ready ? "Pagina " + page + " van " + pages : "Boek laden..."}
           </p>
         </div>
-        <a href="/api/boek/pdf" target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm">
-          <Maximize2 size={14} /> Groot openen
-        </a>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setZoom((z) => Math.max(0.8, +(z - 0.2).toFixed(1)))}
+            className="w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center text-primary"
+            aria-label="Uitzoomen"
+            title="Uitzoomen"
+          >
+            <ZoomOut size={17} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setZoom((z) => Math.min(2, +(z + 0.2).toFixed(1)))}
+            className="w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center text-primary"
+            aria-label="Inzoomen"
+            title="Inzoomen"
+          >
+            <ZoomIn size={17} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setFullscreen((value) => !value)}
+            className="btn-secondary text-sm"
+          >
+            {fullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            {fullscreen ? "Terug" : "Groot openen"}
+          </button>
+        </div>
       </div>
 
-      <div className="relative [perspective:1800px]">
-        <div className={"mx-auto max-w-[760px] bg-white shadow-2xl rounded-lg overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
+      <div className={fullscreen ? "relative [perspective:1800px] min-h-[calc(100vh-130px)] flex items-start justify-center" : "relative [perspective:1800px]"}>
+        <div className={(fullscreen ? "mx-auto max-w-[1200px] " : "mx-auto max-w-[760px] ") + "bg-white shadow-2xl rounded-lg overflow-hidden origin-left transition-transform duration-300 " + turnClass}>
           <canvas ref={canvasRef} className="block w-full" />
         </div>
 
@@ -113,7 +159,7 @@ export default function BookFlipViewer() {
         </button>
       </div>
 
-      <div className="mt-4 flex items-center justify-center gap-3">
+      <div className={fullscreen ? "sticky bottom-3 mt-4 flex items-center justify-center gap-3" : "mt-4 flex items-center justify-center gap-3"}>
         <button type="button" onClick={() => go(page - 1)} disabled={page <= 1 || !ready} className="btn-secondary text-sm disabled:opacity-40">
           <ChevronLeft size={15} /> Vorige
         </button>

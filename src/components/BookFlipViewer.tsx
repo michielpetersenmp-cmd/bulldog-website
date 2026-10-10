@@ -48,16 +48,23 @@ export default function BookFlipViewer() {
       const fitScale = fullscreen
         ? Math.min(maxWidth / base.width, maxHeight / base.height)
         : maxWidth / base.width;
-      const scale = Math.max(0.7, Math.min(3.2, fitScale * zoom));
+      const scale = Math.max(0.7, Math.min(6, fitScale * zoom));
       const viewport = current.getViewport({ scale });
       const canvas = canvasRef.current;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      canvas.style.width = "100%";
-      canvas.style.height = "auto";
-      await current.render({ canvasContext: ctx, viewport }).promise;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      canvas.style.width = viewport.width + "px";
+      canvas.style.height = viewport.height + "px";
+
+      await current.render({
+        canvasContext: ctx,
+        viewport,
+        transform: [dpr, 0, 0, dpr, 0, 0],
+      }).promise;
     }
     render();
   }, [pdf, page, fullscreen, zoom]);
@@ -112,7 +119,7 @@ export default function BookFlipViewer() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            onClick={() => setZoom((z) => Math.max(0.8, +(z - 0.2).toFixed(1)))}
+            onClick={() => setZoom((z) => Math.max(0.6, +(z - 0.25).toFixed(2)))}
             className={fullscreen ? "w-10 h-10 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-white" : "w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center text-primary"}
             aria-label="Uitzoomen"
             title="Uitzoomen"
@@ -121,7 +128,7 @@ export default function BookFlipViewer() {
           </button>
           <button
             type="button"
-            onClick={() => setZoom((z) => Math.min(2, +(z + 0.2).toFixed(1)))}
+            onClick={() => setZoom((z) => Math.min(5, +(z + 0.25).toFixed(2)))}
             className={fullscreen ? "w-10 h-10 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-white" : "w-10 h-10 rounded-xl bg-white/90 shadow-sm flex items-center justify-center text-primary"}
             aria-label="Inzoomen"
             title="Inzoomen"

@@ -3,11 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { BookOpen, ExternalLink, Heart } from "lucide-react";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { getBoekConfig } from "@/lib/boek";
 
 export const metadata: Metadata = {
-  title: "Leven met een Bulldog",
+  title: "{boek.titel}",
   description:
-    "Lees Leven met een Bulldog van Michiel Petersen: een eerlijke en persoonlijke gids over karakter, verzorging, gezondheid en het leven samen.",
+    "Lees {boek.titel} van Michiel Petersen: een eerlijke en persoonlijke gids over karakter, verzorging, gezondheid en het leven samen.",
 };
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ async function boekBeschikbaar() {
 
 export default async function BoekPage() {
   const beschikbaar = await boekBeschikbaar();
+  const boek = await getBoekConfig();
 
   return (
     <>
@@ -34,10 +36,9 @@ export default async function BoekPage() {
           <span className="inline-flex items-center gap-2 bg-accent/15 text-accent px-4 py-1.5 rounded-full text-sm font-semibold mb-4 border border-accent/20">
             <BookOpen size={15} /> Ons boek
           </span>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">Leven met een Bulldog</h1>
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-white mb-4">{boek.titel}</h1>
           <p className="text-white/80 text-lg max-w-3xl mx-auto leading-relaxed">
-            Een eerlijke en persoonlijke gids over karakter, verzorging, gezondheid en het leven samen.
-            Geschreven door Michiel Petersen vanuit jarenlange ervaring met Molly, Tara, Binky, Sjors en Carlos.
+            {boek.subtitel} Geschreven door {boek.auteur} vanuit jarenlange ervaring met Molly, Tara, Binky, Sjors en Carlos.
           </p>
         </div>
       </section>
@@ -49,14 +50,14 @@ export default async function BoekPage() {
             <div className="max-w-[340px] mx-auto lg:mx-0 w-full">
               <div className="relative aspect-[2/3] rounded-3xl overflow-hidden shadow-hover bg-white border border-gray-100">
                 <Image
-                  src="/boeken/leven-met-een-bulldog-cover.jpg"
-                  alt="Voorkant van Leven met een Bulldog"
+                  src={boek.cover}
+                  alt={`Voorkant van ${boek.titel}`}
                   fill
                   priority
                   className="object-cover"
                 />
               </div>
-              <p className="text-center text-xs text-gray-400 mt-3">Michiel Petersen · 2026</p>
+              <p className="text-center text-xs text-gray-400 mt-3">{boek.auteur} · {boek.jaar}</p>
             </div>
 
             <div className="bg-white rounded-3xl shadow-card p-7 md:p-9">
@@ -67,20 +68,7 @@ export default async function BoekPage() {
                 Wat kun je van dit boek verwachten?
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p>
-                  Dit boek is ontstaan uit jaren leven met Bulldogs. Niet om te vertellen dat iedereen een Bulldog
-                  moet nemen, maar om een eerlijk beeld te geven van de liefde, humor, zorgen en verantwoordelijkheid
-                  die bij deze bijzondere honden horen.
-                </p>
-                <p>
-                  Vanuit mijn eigen ervaringen met Molly, Tara, Binky, Sjors en Carlos vertel ik over vijf totaal
-                  verschillende karakters. Juist daardoor laat het boek zien dat er niet zoiets bestaat als één
-                  standaard Bulldog: iedere hond is een individu met een eigen gebruiksaanwijzing.
-                </p>
-                <p>
-                  Je leest niet alleen de mooie en grappige kanten, maar ook over gezondheid, verzorging, kosten,
-                  opvoeding, warmte, alleen thuis zijn en de moeilijke momenten die soms bij het leven met een hond horen.
-                </p>
+                {boek.intro.map((tekst) => <p key={tekst}>{tekst}</p>)}
               </div>
 
               <div className="grid sm:grid-cols-2 gap-3 mt-7">
@@ -117,11 +105,7 @@ export default async function BoekPage() {
 
           <section className="bg-white rounded-3xl shadow-card p-7 md:p-9 mb-8">
             <h2 className="font-display text-2xl font-bold text-primary mb-3">Voor wie is het boek?</h2>
-            <p className="text-gray-600 leading-relaxed max-w-4xl">
-              Voor mensen die al met een Bulldog leven, voor wie erover denkt er één in huis te nemen en voor iedereen
-              die beter wil begrijpen wat deze honden zo bijzonder maakt. Het boek probeert niets mooier te maken dan het is,
-              maar wil ook niemand afschrikken. Het doel is vooral dat je bewuster kijkt naar de hond voor je.
-            </p>
+            <p className="text-gray-600 leading-relaxed max-w-4xl">{boek.doelgroep}</p>
           </section>
 
           {beschikbaar && (
@@ -138,7 +122,7 @@ export default async function BoekPage() {
               <div className="bg-white rounded-3xl shadow-card overflow-hidden border border-gray-100">
                 <iframe
                   src="/api/boek/pdf#view=FitH"
-                  title="Leven met een Bulldog"
+                  title="{boek.titel}"
                   className="w-full h-[78vh] min-h-[650px]"
                 />
               </div>

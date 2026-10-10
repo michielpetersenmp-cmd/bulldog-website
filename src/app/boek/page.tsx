@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { BookOpen, ExternalLink, Heart } from "lucide-react";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
@@ -43,44 +44,118 @@ export default async function BoekPage() {
 
       <main className="py-14 bg-bg">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="bg-white rounded-3xl shadow-card p-6 md:p-8 mb-7">
-            <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
-              <div>
-                <h2 className="font-display text-2xl font-bold text-primary mb-3">Lees het boek online</h2>
-                <p className="text-gray-600 leading-relaxed">
-                  Geen verkooppraatje voor het ras en ook geen boek dat alleen waarschuwt. Dit is een persoonlijke
-                  en praktische gids over het leven met Bulldogs: wat mooi is, wat lastig kan zijn en waar je vooraf
-                  misschien niet altijd bij stilstaat.
+
+          <section className="grid lg:grid-cols-[340px_1fr] gap-8 lg:gap-12 items-start mb-10">
+            <div className="max-w-[340px] mx-auto lg:mx-0 w-full">
+              <div className="relative aspect-[2/3] rounded-3xl overflow-hidden shadow-hover bg-white border border-gray-100">
+                <Image
+                  src="/boeken/leven-met-een-bulldog-cover.jpg"
+                  alt="Voorkant van Leven met een Bulldog"
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
+              <p className="text-center text-xs text-gray-400 mt-3">Michiel Petersen · 2026</p>
+            </div>
+
+            <div className="bg-white rounded-3xl shadow-card p-7 md:p-9">
+              <span className="inline-block text-xs font-bold uppercase tracking-wide text-accent mb-2">
+                Persoonlijk, praktisch en eerlijk
+              </span>
+              <h2 className="font-display text-3xl font-bold text-primary mb-4">
+                Wat kun je van dit boek verwachten?
+              </h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>
+                  Dit boek is ontstaan uit jaren leven met Bulldogs. Niet om te vertellen dat iedereen een Bulldog
+                  moet nemen, maar om een eerlijk beeld te geven van de liefde, humor, zorgen en verantwoordelijkheid
+                  die bij deze bijzondere honden horen.
+                </p>
+                <p>
+                  Vanuit mijn eigen ervaringen met Molly, Tara, Binky, Sjors en Carlos vertel ik over vijf totaal
+                  verschillende karakters. Juist daardoor laat het boek zien dat er niet zoiets bestaat als één
+                  standaard Bulldog: iedere hond is een individu met een eigen gebruiksaanwijzing.
+                </p>
+                <p>
+                  Je leest niet alleen de mooie en grappige kanten, maar ook over gezondheid, verzorging, kosten,
+                  opvoeding, warmte, alleen thuis zijn en de moeilijke momenten die soms bij het leven met een hond horen.
                 </p>
               </div>
-              {beschikbaar && (
-                <a href="/api/boek/pdf" target="_blank" rel="noopener noreferrer" className="btn-primary whitespace-nowrap">
-                  Open PDF <ExternalLink size={16} />
-                </a>
+
+              <div className="grid sm:grid-cols-2 gap-3 mt-7">
+                {[
+                  "Karakter & gedrag",
+                  "Verzorging & gezondheid",
+                  "Opvoeding & dagelijks leven",
+                  "Kosten & verantwoordelijkheid",
+                  "Franse, Engelse & Amerikaanse Bulldogs",
+                  "Persoonlijke verhalen van onze honden",
+                ].map((item) => (
+                  <div key={item} className="rounded-xl bg-primary/5 px-4 py-3 text-sm font-semibold text-primary">
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              {beschikbaar ? (
+                <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                  <a href="/api/boek/pdf" target="_blank" rel="noopener noreferrer" className="btn-primary justify-center">
+                    Open het boek <ExternalLink size={16} />
+                  </a>
+                  <a href="/api/boek/pdf" download className="btn-secondary justify-center">
+                    PDF openen
+                  </a>
+                </div>
+              ) : (
+                <div className="mt-8 rounded-2xl bg-amber-50 border border-amber-100 p-4 text-sm text-amber-800">
+                  De boekpagina staat klaar. De PDF zelf hoeft alleen nog via het beheer gepubliceerd te worden.
+                </div>
               )}
             </div>
-          </div>
+          </section>
 
-          {beschikbaar ? (
-            <div className="bg-white rounded-3xl shadow-card overflow-hidden border border-gray-100">
-              <iframe src="/api/boek/pdf#view=FitH" title="Leven met een Bulldog" className="w-full h-[78vh] min-h-[650px]" />
-            </div>
-          ) : (
-            <div className="bg-white rounded-3xl shadow-card p-10 text-center">
-              <BookOpen size={52} className="text-accent mx-auto mb-4" />
-              <h2 className="font-display text-2xl font-bold text-primary mb-2">Het boek komt hier te staan</h2>
-              <p className="text-gray-500">De PDF kan vanuit het beheer gepubliceerd worden.</p>
-            </div>
+          <section className="bg-white rounded-3xl shadow-card p-7 md:p-9 mb-8">
+            <h2 className="font-display text-2xl font-bold text-primary mb-3">Voor wie is het boek?</h2>
+            <p className="text-gray-600 leading-relaxed max-w-4xl">
+              Voor mensen die al met een Bulldog leven, voor wie erover denkt er één in huis te nemen en voor iedereen
+              die beter wil begrijpen wat deze honden zo bijzonder maakt. Het boek probeert niets mooier te maken dan het is,
+              maar wil ook niemand afschrikken. Het doel is vooral dat je bewuster kijkt naar de hond voor je.
+            </p>
+          </section>
+
+          {beschikbaar && (
+            <section className="mb-8">
+              <div className="flex items-center justify-between gap-4 mb-4">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-accent">Online lezen</p>
+                  <h2 className="font-display text-2xl font-bold text-primary">Blader door het volledige boek</h2>
+                </div>
+                <a href="/api/boek/pdf" target="_blank" rel="noopener noreferrer" className="btn-secondary text-sm">
+                  Groot openen <ExternalLink size={14} />
+                </a>
+              </div>
+              <div className="bg-white rounded-3xl shadow-card overflow-hidden border border-gray-100">
+                <iframe
+                  src="/api/boek/pdf#view=FitH"
+                  title="Leven met een Bulldog"
+                  className="w-full h-[78vh] min-h-[650px]"
+                />
+              </div>
+            </section>
           )}
 
-          <div className="mt-8 bg-accent/10 border border-accent/20 rounded-2xl p-5 flex gap-3">
+          <div className="bg-accent/10 border border-accent/20 rounded-2xl p-5 flex gap-3">
             <Heart size={20} className="text-primary shrink-0 mt-0.5" />
             <p className="text-sm text-gray-700 leading-relaxed">
-              Het boek is gebaseerd op persoonlijke ervaringen met Bulldogs en vervangt geen advies, onderzoek of behandeling door een dierenarts.
+              Het boek is gebaseerd op persoonlijke ervaringen met Bulldogs en is bedoeld als praktische en persoonlijke gids.
+              Bij medische klachten of twijfel blijft de dierenarts altijd de aangewezen gesprekspartner.
             </p>
           </div>
 
-          <div className="text-center mt-8"><Link href="/" className="btn-secondary">Terug naar de website</Link></div>
+          <div className="text-center mt-8">
+            <Link href="/" className="btn-secondary">Terug naar de website</Link>
+          </div>
         </div>
       </main>
     </>

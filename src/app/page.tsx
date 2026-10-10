@@ -5,6 +5,7 @@ import { Heart, FileText, Shield, ChevronRight, AlertTriangle, ExternalLink } fr
 import { getFeaturedPosts } from "@/lib/supabase";
 import PostCard from "@/components/PostCard";
 import { getSiteStats } from "@/lib/site-stats";
+import { getBoekConfig } from "@/lib/boek";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -36,6 +37,7 @@ const steps = [
 export default async function HomePage() {
   let featuredPosts: any[] = [];
   const siteStats = await getSiteStats();
+  const boek = await getBoekConfig();
   try {
     featuredPosts = await getFeaturedPosts(3);
   } catch {
@@ -176,19 +178,16 @@ export default async function HomePage() {
           <div className="bg-primary/5 border border-primary/10 rounded-3xl p-5 md:p-7 flex flex-col sm:flex-row sm:items-center gap-5">
             <div className="relative w-24 h-36 shrink-0 rounded-xl overflow-hidden shadow-card mx-auto sm:mx-0">
               <Image
-                src="/boeken/leven-met-een-bulldog-cover.jpg"
-                alt="Leven met een Bulldog"
+                src={boek.cover}
+                alt={boek.titel}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="flex-1">
               <p className="text-xs font-bold uppercase tracking-wide text-accent mb-1">Nieuw op de website</p>
-              <h2 className="font-display text-2xl font-bold text-primary mb-2">Leven met een Bulldog</h2>
-              <p className="text-gray-600 leading-relaxed">
-                Mijn persoonlijke en praktische boek over karakter, verzorging, gezondheid en het leven met Bulldogs.
-                Met de verhalen en lessen van Molly, Tara, Binky, Sjors en Carlos.
-              </p>
+              <h2 className="font-display text-2xl font-bold text-primary mb-2">{boek.titel}</h2>
+              <p className="text-gray-600 leading-relaxed">{boek.homepageTekst}</p>
             </div>
             <Link href="/boek" className="btn-secondary shrink-0 justify-center">
               Bekijk het boek <ChevronRight size={16} />

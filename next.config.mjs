@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/Beleidsplan_Stichting_Bulldog_Steunfonds.pdf",
+        destination: "/beleidsplan-2025-2028",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

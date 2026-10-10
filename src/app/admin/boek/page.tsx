@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { BookOpen, Upload, ExternalLink, CheckCircle2, Save } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
@@ -18,6 +19,7 @@ type BoekConfig = {
 };
 
 export default function AdminBoekPage() {
+  const searchParams = useSearchParams();
   const [published, setPublished] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
@@ -40,7 +42,12 @@ export default function AdminBoekPage() {
   useEffect(() => {
     checkStatus();
     loadConfig();
-  }, []);
+    if (searchParams.get("saved") === "1") {
+      setMessage("Boekpagina en homepage zijn bijgewerkt.");
+    } else if (searchParams.get("save_error") === "1") {
+      setMessage(searchParams.get("message") || "Opslaan mislukt.");
+    }
+  }, [searchParams]);
 
   async function upload(file: File) {
     setUploading(true);
@@ -180,24 +187,25 @@ export default function AdminBoekPage() {
         </div>
 
         {boek && (
-          <section className="bg-white rounded-3xl shadow-card p-6 md:p-8 mt-6">
+          <form action="/api/admin/boek/config-form" method="post" className="bg-white rounded-3xl shadow-card p-6 md:p-8 mt-6">
             <h2 className="font-display font-bold text-primary text-xl mb-6">Teksten van de boekpagina</h2>
             <div className="grid md:grid-cols-2 gap-5">
-              <Field label="Titel" value={boek.titel} onChange={(v) => setField("titel", v)} />
-              <Field label="Auteur" value={boek.auteur} onChange={(v) => setField("auteur", v)} />
-              <Field label="Jaar" value={boek.jaar} onChange={(v) => setField("jaar", v)} />
-              <div className="md:col-span-2"><Area label="Subtitel" value={boek.subtitel} onChange={(v) => setField("subtitel", v)} rows={3} /></div>
-              <div className="md:col-span-2"><Area label="Intro tekst 1" value={boek.intro[0] || ""} onChange={(v) => setField("intro", [v, boek.intro[1] || "", boek.intro[2] || ""])} rows={4} /></div>
-              <div className="md:col-span-2"><Area label="Intro tekst 2" value={boek.intro[1] || ""} onChange={(v) => setField("intro", [boek.intro[0] || "", v, boek.intro[2] || ""])} rows={4} /></div>
-              <div className="md:col-span-2"><Area label="Intro tekst 3" value={boek.intro[2] || ""} onChange={(v) => setField("intro", [boek.intro[0] || "", boek.intro[1] || "", v])} rows={4} /></div>
-              <div className="md:col-span-2"><Area label="Voor wie is het boek?" value={boek.doelgroep} onChange={(v) => setField("doelgroep", v)} rows={5} /></div>
-              <div className="md:col-span-2"><Area label="Korte tekst op homepage" value={boek.homepageTekst} onChange={(v) => setField("homepageTekst", v)} rows={4} /></div>
+              <Field name="titel" label="Titel" value={boek.titel} onChange={(v) => setField("titel", v)} />
+              <Field name="auteur" label="Auteur" value={boek.auteur} onChange={(v) => setField("auteur", v)} />
+              <Field name="jaar" label="Jaar" value={boek.jaar} onChange={(v) => setField("jaar", v)} />
+              <div className="md:col-span-2"><Area name="subtitel" label="Subtitel" value={boek.subtitel} onChange={(v) => setField("subtitel", v)} rows={3} /></div>
+              <div className="md:col-span-2"><Area name="intro1" label="Intro tekst 1" value={boek.intro[0] || ""} onChange={(v) => setField("intro", [v, boek.intro[1] || "", boek.intro[2] || ""])} rows={4} /></div>
+              <div className="md:col-span-2"><Area name="intro2" label="Intro tekst 2" value={boek.intro[1] || ""} onChange={(v) => setField("intro", [boek.intro[0] || "", v, boek.intro[2] || ""])} rows={4} /></div>
+              <div className="md:col-span-2"><Area name="intro3" label="Intro tekst 3" value={boek.intro[2] || ""} onChange={(v) => setField("intro", [boek.intro[0] || "", boek.intro[1] || "", v])} rows={4} /></div>
+              <div className="md:col-span-2"><Area name="doelgroep" label="Voor wie is het boek?" value={boek.doelgroep} onChange={(v) => setField("doelgroep", v)} rows={5} /></div>
+              <div className="md:col-span-2"><Area name="homepageTekst" label="Korte tekst op homepage" value={boek.homepageTekst} onChange={(v) => setField("homepageTekst", v)} rows={4} /></div>
             </div>
 
-            <button onClick={save} disabled={saving} className="btn-primary mt-7 w-full justify-center">
-              <Save size={16} /> {saving ? "Opslaan..." : "Alles opslaan"}
+            <input type="hidden" name="cover" value={boek.cover} />
+            <button type="submit" className="btn-primary mt-7 w-full justify-center">
+              <Save size={16} /> Alles opslaan
             </button>
-          </section>
+          </form>
         )}
 
         {message && <div className="mt-5 p-4 rounded-xl bg-white border border-gray-100 shadow-card text-sm text-gray-700">{message}</div>}
@@ -210,20 +218,20 @@ export default function AdminBoekPage() {
   );
 }
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function Field({ name, label, value, onChange }: { name: string; label: string; value: string; onChange: (value: string) => void }) {
   return (
     <label className="block">
       <span className="block text-sm font-semibold text-gray-700 mb-2">{label}</span>
-      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-primary" />
+      <input name={name} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-primary" />
     </label>
   );
 }
 
-function Area({ label, value, onChange, rows = 4 }: { label: string; value: string; onChange: (value: string) => void; rows?: number }) {
+function Area({ name, label, value, onChange, rows = 4 }: { name: string; label: string; value: string; onChange: (value: string) => void; rows?: number }) {
   return (
     <label className="block">
       <span className="block text-sm font-semibold text-gray-700 mb-2">{label}</span>
-      <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={rows} className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-primary resize-y" />
+      <textarea name={name} value={value} onChange={(e) => onChange(e.target.value)} rows={rows} className="w-full rounded-xl border border-gray-200 px-4 py-3 outline-none focus:border-primary resize-y" />
     </label>
   );
 }

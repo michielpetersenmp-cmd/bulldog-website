@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { BookOpen, Upload, ExternalLink, CheckCircle2, Save } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
@@ -19,11 +18,9 @@ type BoekConfig = {
 };
 
 export default function AdminBoekPage() {
-  const searchParams = useSearchParams();
   const [published, setPublished] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [coverUploading, setCoverUploading] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [boek, setBoek] = useState<BoekConfig | null>(null);
 
@@ -42,12 +39,7 @@ export default function AdminBoekPage() {
   useEffect(() => {
     checkStatus();
     loadConfig();
-    if (searchParams.get("saved") === "1") {
-      setMessage("Boekpagina en homepage zijn bijgewerkt.");
-    } else if (searchParams.get("save_error") === "1") {
-      setMessage(searchParams.get("message") || "Opslaan mislukt.");
-    }
-  }, [searchParams]);
+  }, []);
 
   async function upload(file: File) {
     setUploading(true);
@@ -107,27 +99,6 @@ export default function AdminBoekPage() {
       setMessage(e?.message || "Cover uploaden mislukt.");
     } finally {
       setCoverUploading(false);
-    }
-  }
-
-  async function save() {
-    if (!boek) return;
-    setSaving(true);
-    setMessage("");
-    try {
-      const res = await fetch("/api/admin/boek/config", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ boek }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Opslaan mislukt.");
-      setBoek(data.boek);
-      setMessage("Boekpagina en homepage zijn bijgewerkt.");
-    } catch (e: any) {
-      setMessage(e?.message || "Opslaan mislukt.");
-    } finally {
-      setSaving(false);
     }
   }
 

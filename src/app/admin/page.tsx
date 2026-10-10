@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2, CalendarDays } from "lucide-react";
+import { FileText, Heart, Trophy, PawPrint, Plus, LogOut, Eye, Building2, CalendarDays, BookOpen } from "lucide-react";
 import { useRouter } from "next/navigation";
 export const dynamic = "force-dynamic";
 
@@ -79,6 +79,15 @@ export default function AdminDashboardPage() {
       color: "bg-violet-50 text-violet-600",
     },
     {
+      icon: BookOpen,
+      label: "Boek",
+      desc: "Leven met een Bulldog publiceren en vervangen",
+      href: "/admin/boek",
+      newHref: null,
+      count: null,
+      color: "bg-orange-50 text-orange-700",
+    },
+    {
       icon: CalendarDays,
       label: "Planner",
       desc: "Loterijen, veilingen, evenementen en herinneringen",
@@ -131,6 +140,8 @@ export default function AdminDashboardPage() {
               { href: "/admin/verhalen", label: "Verhalen" },
               { href: "/admin/acties", label: "Acties" },
               { href: "/admin/donateurs", label: "Donateurs" },
+              { href: "/admin/boek", label: "Boek" },
+              { href: "/admin/planner", label: "Planner" },
               { href: "/admin/stats", label: "Stats" },
             ].map((tab) => (
               <Link key={tab.href} href={tab.href}
@@ -183,9 +194,11 @@ export default function AdminDashboardPage() {
                     <p className="text-xs text-gray-500">{section.desc}</p>
                   </div>
                 </div>
-                <span className="font-display text-2xl font-bold text-primary">
-                  {loading ? "..." : section.count}
-                </span>
+                {section.count !== null && (
+                  <span className="font-display text-2xl font-bold text-primary">
+                    {loading ? "..." : section.count}
+                  </span>
+                )}
               </div>
               <div className="flex gap-3">
                 <Link href={section.href} className="btn-secondary text-sm flex-1 justify-center">

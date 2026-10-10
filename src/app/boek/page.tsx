@@ -7,9 +7,9 @@ import { getBoekConfig } from "@/lib/boek";
 import BookFlipViewer from "@/components/BookFlipViewer";
 
 export const metadata: Metadata = {
-  title: "{boek.titel}",
+  title: "Leven met een Bulldog",
   description:
-    "Lees {boek.titel} van Michiel Petersen: een eerlijke en persoonlijke gids over karakter, verzorging, gezondheid en het leven samen.",
+    "Lees Leven met een Bulldog van Michiel Petersen: een eerlijke en persoonlijke gids over karakter, verzorging, gezondheid en het leven samen.",
 };
 
 export const dynamic = "force-dynamic";
@@ -120,13 +120,7 @@ export default async function BoekPage() {
                   Groot openen <ExternalLink size={14} />
                 </a>
               </div>
-              <div className="bg-white rounded-3xl shadow-card overflow-hidden border border-gray-100">
-                <iframe
-                  src="/api/boek/pdf#view=FitH"
-                  title="{boek.titel}"
-                  className="w-full h-[78vh] min-h-[650px]"
-                />
-              </div>
+              <BookFlipViewer />
             </section>
           )}
 

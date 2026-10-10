@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BookOpen, Upload, ExternalLink, CheckCircle2 } from "lucide-react";
 import AdminNav from "@/components/AdminNav";
+import { supabase } from "@/lib/supabase";
 
 export default function AdminBoekPage() {
   const [published, setPublished] = useState(false);
@@ -20,16 +21,35 @@ export default function AdminBoekPage() {
   async function upload(file: File) {
     setUploading(true);
     setMessage("");
+
     try {
-      const form = new FormData();
-      form.append("file", file);
-      const res = await fetch("/api/admin/boek/upload", { method: "POST", body: form });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload mislukt.");
+      if (file.type && file.type !== "application/pdf") {
+        throw new Error("Kies een PDF-bestand.");
+      }
+      if (file.size > 20 * 1024 * 1024) {
+        throw new Error("De PDF mag maximaal 20 MB zijn.");
+      }
+
+      const linkRes = await fetch("/api/admin/boek/upload-link", { method: "POST" });
+      const linkData = await linkRes.json();
+      if (!linkRes.ok) {
+        throw new Error(linkData.error || "Uploadlink kon niet worden gemaakt.");
+      }
+
+      const { error } = await supabase.storage
+        .from("post-images")
+        .uploadToSignedUrl(linkData.path, linkData.token, file, {
+          contentType: "application/pdf",
+          upsert: true,
+        });
+
+      if (error) throw error;
+
+      await checkStatus();
       setPublished(true);
       setMessage("Het boek staat nu op de website.");
     } catch (e: any) {
-      setMessage(e.message);
+      setMessage(e?.message || "Upload mislukt.");
     } finally {
       setUploading(false);
     }

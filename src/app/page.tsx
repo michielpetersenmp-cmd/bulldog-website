@@ -173,17 +173,24 @@ export default async function HomePage() {
       {/* Boek */}
       <section className="py-10 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="bg-primary/5 border border-primary/10 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-5">
-            <div className="text-4xl shrink-0">📖</div>
+          <div className="bg-primary/5 border border-primary/10 rounded-3xl p-5 md:p-7 flex flex-col sm:flex-row sm:items-center gap-5">
+            <div className="relative w-24 h-36 shrink-0 rounded-xl overflow-hidden shadow-card mx-auto sm:mx-0">
+              <Image
+                src="/boeken/leven-met-een-bulldog-cover.jpg"
+                alt="Leven met een Bulldog"
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="flex-1">
               <p className="text-xs font-bold uppercase tracking-wide text-accent mb-1">Nieuw op de website</p>
               <h2 className="font-display text-2xl font-bold text-primary mb-2">Leven met een Bulldog</h2>
               <p className="text-gray-600 leading-relaxed">
-                Mijn persoonlijke boek over het leven met Bulldogs, met ervaringen rond karakter, verzorging, gezondheid
-                en natuurlijk de verhalen van Molly, Tara, Binky, Sjors en Carlos.
+                Mijn persoonlijke en praktische boek over karakter, verzorging, gezondheid en het leven met Bulldogs.
+                Met de verhalen en lessen van Molly, Tara, Binky, Sjors en Carlos.
               </p>
             </div>
-            <Link href="/boek" className="btn-secondary shrink-0">
+            <Link href="/boek" className="btn-secondary shrink-0 justify-center">
               Bekijk het boek <ChevronRight size={16} />
             </Link>
           </div>

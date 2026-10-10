@@ -22,13 +22,12 @@ export async function PUT(request: Request) {
     };
 
     const admin = getSupabaseAdmin();
-    const payload = Buffer.from(JSON.stringify(boek, null, 2), "utf-8");
-
-    const { error } = await admin.storage.from("post-images").upload(
-      "config/boek.json",
-      payload,
-      { contentType: "application/json", upsert: true, cacheControl: "60" }
-    );
+    const { error } = await admin
+      .from("site_config")
+      .upsert(
+        { key: "boek", value: boek, updated_at: new Date().toISOString() },
+        { onConflict: "key" }
+      );
     if (error) throw error;
     return NextResponse.json({ boek });
   } catch (e: any) {

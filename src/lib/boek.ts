@@ -29,10 +29,14 @@ export const standaardBoekConfig: BoekConfig = {
 export async function getBoekConfig(): Promise<BoekConfig> {
   try {
     const admin = getSupabaseAdmin();
-    const { data, error } = await admin.storage.from("post-images").download("config/boek.json");
-    if (error || !data) return standaardBoekConfig;
-    const parsed = JSON.parse(await data.text());
-    return { ...standaardBoekConfig, ...parsed };
+    const { data, error } = await admin
+      .from("site_config")
+      .select("value")
+      .eq("key", "boek")
+      .maybeSingle();
+
+    if (error || !data?.value) return standaardBoekConfig;
+    return { ...standaardBoekConfig, ...(data.value as Partial<BoekConfig>) };
   } catch {
     return standaardBoekConfig;
   }

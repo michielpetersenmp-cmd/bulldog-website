@@ -21,6 +21,7 @@ const navLinks = [
   },
   { href: "/blog", label: "Blog" },
   { href: "/updates", label: "Updates" },
+  { href: "/boek", label: "Boek" },
   { href: "/anbi", label: "Transparantie" },
   { href: "/contact", label: "Contact" },
 ];

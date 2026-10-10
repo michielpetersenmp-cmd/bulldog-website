@@ -4,6 +4,7 @@ import Image from "next/image";
 import { BookOpen, ExternalLink, Heart } from "lucide-react";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getBoekConfig } from "@/lib/boek";
+import BookFlipViewer from "@/components/BookFlipViewer";
 
 export const metadata: Metadata = {
   title: "{boek.titel}",

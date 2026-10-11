@@ -108,6 +108,21 @@ export const standaardDonateurs: Donateur[] = [
       "Durk's Dogsnacks ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid en zichtbaarheid bij aan ons werk voor bulldogs en hun baasjes."
   },
   {
+    slug: "bellobox",
+    naam: "Bellobox",
+    korteOmschrijving:
+      "Bellobox maakt verwenboxen en verkoopt 100% natuurlijke hondensnacks voor honden van verschillende leeftijden, formaten en behoeften. Naast snackboxen is er keuze uit kauwsnacks, beloningssnacks, tussendoortjes en hypoallergene opties.",
+    verhaal: [
+      "Bellobox draait om het verwennen van honden met natuurlijke snacks die zorgvuldig worden geselecteerd. De boxen worden samengesteld voor verschillende soorten honden, van pups en kleine honden tot grote en fanatieke kauwers.",
+      "Het assortiment bestaat uit 100% natuurlijke snacks en verschillende snackboxen, waaronder ook hypoallergene varianten. Bij speciale dieetwensen kan de inhoud van een box worden aangepast, zodat er voor veel honden een passende keuze mogelijk is.",
+      "Bellobox is ontstaan vanuit liefde voor honden en noemt de eigen honden Kaya en Dave hun kwaliteitskeurders. Dat persoonlijke karakter en de aandacht voor natuurlijk hondengeluk passen mooi bij de betrokkenheid die wij graag bij onze bedrijfsvrienden zien.",
+      "We zijn Bellobox dankbaar dat zij Stichting Bulldog Steunfonds Nederland een warm hart toedragen. Met zulke bedrijfsvrienden kunnen we onze stichting beter zichtbaar maken en meer betekenen voor bulldogs en hun baasjes."
+    ],
+    website: "https://www.bellobox.nl/",
+    bijdrage:
+      "Bellobox ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid bij aan ons werk voor bulldogs en hun baasjes."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:

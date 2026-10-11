@@ -122,6 +122,7 @@ export const standaardDonateurs: Donateur[] = [
     website: "https://www.bellobox.nl/",
     facebook: "https://www.facebook.com/share/1K8QMuGmKJ/?mibextid=wwXIfr",
     instagram: "https://instagram.com/belloboxnl?exln=c2J3OHl6MnJwMjdy",
+    whatsapp: "085 773 3688",
     bijdrage:
       "Bellobox ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid bij aan ons werk voor bulldogs en hun baasjes."
   },

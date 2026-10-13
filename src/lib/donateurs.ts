@@ -127,6 +127,25 @@ export const standaardDonateurs: Donateur[] = [
       "Bellobox ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en draagt met betrokkenheid bij aan ons werk voor bulldogs en hun baasjes."
   },
   {
+    slug: "stellas-pupcakes",
+    naam: "Stella's Pupcakes",
+    korteOmschrijving:
+      "Stella's Pupcakes uit Nevele-Deinze maakt gepersonaliseerde hondentaarten, verse pupcakes en andere verwennerijen voor honden. Daarnaast vind je er handgemaakte dogwear, bandana's, speeltjes, ligmatjes, slaapzakken en hondenkussens op maat.",
+    verhaal: [
+      "Stella's Pupcakes draait helemaal om het verwennen van honden met producten die met veel liefde en aandacht worden gemaakt. De gepersonaliseerde hondentaarten en pupcakes worden huisbereid met dagverse producten en zijn volgens de webshop gluten-, suiker- en lactosevrij.",
+      "Naast het lekkers voor honden heeft Stella's Pupcakes ook een uitgebreid aanbod handgemaakte accessoires. Denk aan bandana's en sliders, hondenkleding, speeltjes, ligmatjes, zachte slaapzakken en hondenkussens. Veel producten kunnen worden aangepast aan de maat en wensen van de hond.",
+      "Ook bij allergieën of bepaalde voorkeuren wordt meegedacht. Bij de pupcakes geeft Stella's Pupcakes aan dat er rekening kan worden gehouden met allergieën en smaakvoorkeuren, waardoor de persoonlijke aanpak duidelijk centraal staat.",
+      "Wij zijn blij dat Stella's Pupcakes zich als bedrijfsvriend aan Stichting Bulldog Steunfonds Nederland verbindt. Hun liefde voor honden en persoonlijke manier van werken sluiten mooi aan bij waar onze stichting voor staat."
+    ],
+    logo: "https://www.google.com/s2/favicons?domain=stellaspupcakes.be&sz=256",
+    afbeelding: "https://stellaspupcakes.be/wp-content/uploads/2022/12/WhatsApp-Image-2022-11-29-at-16.08.34-1.jpeg",
+    website: "https://stellaspupcakes.be/",
+    facebook: "https://www.facebook.com/share/19dAL4m1Dk/",
+    plaats: "Nevele - Deinze, België",
+    bijdrage:
+      "Stella's Pupcakes ondersteunt Stichting Bulldog Steunfonds Nederland als bedrijfsvriend en helpt daarmee onze stichting en het werk voor bulldogs en hun baasjes zichtbaar te maken."
+  },
+  {
     slug: "stacaravan-service",
     naam: "Stacaravan Service",
     korteOmschrijving:

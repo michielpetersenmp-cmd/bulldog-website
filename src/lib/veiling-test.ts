@@ -33,7 +33,12 @@ export async function getVeilingTestLots(): Promise<VeilingTestLot[]> {
     const { data: signed } = paths.length
       ? await admin.storage.from("veiling-test-fotos").createSignedUrls(paths, 3600)
       : { data: [] };
-    const urls = new Map((signed || []).filter(item => typeof item.path === "string" && typeof item.signedUrl === "string").map(item => [item.path, item.signedUrl]));
+    const urls = new Map<string, string>();
+    for (const item of signed || []) {
+      if (typeof item.path === "string" && typeof item.signedUrl === "string") {
+        urls.set(item.path, item.signedUrl);
+      }
+    }
     return { ...lot, image_urls: ordered, photos: ordered.map(path => ({ path, url: urls.get(path) || "" })).filter(photo => photo.url) };
   })) as VeilingTestLot[];
 }

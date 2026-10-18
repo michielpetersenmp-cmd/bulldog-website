@@ -21,7 +21,7 @@ export default async function VeilingAdminPage() {
     let signed = new Map<string, string>();
     if (paths.length) {
       const { data } = await admin.storage.from("veiling-test-fotos").createSignedUrls(paths, 3600);
-      signed = new Map((data || []).filter(item => typeof item.signedUrl === "string").map(item => [item.path, item.signedUrl]));
+      signed = new Map((data || []).filter(item => typeof item.path === "string" && typeof item.signedUrl === "string").map(item => [item.path, item.signedUrl]));
     }
     const ordered = lot.image_url ? [lot.image_url, ...(lot.image_urls || []).filter(path => path !== lot.image_url)] : (lot.image_urls || []);
     return { ...lot, image_urls: ordered, photos: ordered.map(path => ({ path, url: signed.get(path) || "" })).filter(photo => photo.url) };

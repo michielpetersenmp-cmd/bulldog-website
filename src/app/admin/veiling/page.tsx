@@ -9,7 +9,7 @@ export const metadata = { title: "Veiling testen | Websitebeheer", robots: { ind
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
   const [{ data: lots, error }, { count: bidderCount }, { count: bidCount }] = await Promise.all([
-    admin.from("veiling_test_lots").select("id,lot_number,title,sponsor,start_bid,current_bid,bid_count,active,description,image_url,sponsor_website,sponsor_facebook").order("lot_number"),
+    admin.from("veiling_test_lots").select("id,lot_number,title,sponsor,start_bid,current_bid,bid_count,active,description,image_url,sponsor_website,sponsor_facebook,image_url,sponsor_website,sponsor_facebook").order("lot_number"),
     admin.from("veiling_test_bidders").select("*", { count: "exact", head: true }),
     admin.from("veiling_test_bids").select("*", { count: "exact", head: true }),
   ]);

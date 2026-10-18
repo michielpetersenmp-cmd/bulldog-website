@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getVeilingAdmin } from "@/lib/veiling-auth";
 import VeilingLogoutButton from "./logout-button";
 import { getSupabaseAdmin } from "@/lib/supabase";
@@ -35,7 +36,7 @@ export default async function VeilingTestPage() {
             <h1 className="mt-2 text-4xl font-bold">Testomgeving</h1>
             <p className="mt-2 text-slate-600">15 november t/m 29 november 2026, sluiting 20.00 uur.</p>
           </div>
-          <VeilingLogoutButton />
+          <div className="flex flex-wrap gap-3"><Link href="/veiling/beheer/voorbeeld" className="rounded-xl bg-amber-400 px-5 py-3 font-extrabold text-[#183651]">Bekijk voorbeeld voor bezoekers →</Link><VeilingLogoutButton /></div>
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">

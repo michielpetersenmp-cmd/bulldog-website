@@ -2,12 +2,17 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
+function safeLink(value: unknown) { const s = String(value || "").trim(); if (!s) return ""; try { const u = new URL(s); return (u.protocol === "https:" || u.protocol === "http:") && s.length <= 500 ? s : null; } catch { return null; } }
 function parse(body: any) {
   const number = Number(body.lot_number), start = Number(body.start_bid);
   const title = String(body.title || "").trim();
   if (!Number.isInteger(number) || number < 1 || number > 99999 || !title || title.length > 180 ||
       !Number.isInteger(start) || start < 0 || start > 10000000) return null;
-  return { lot_number: number, title, sponsor: String(body.sponsor || "").trim().slice(0,180),
+  const sponsor_website = safeLink(body.sponsor_website), sponsor_facebook = safeLink(body.sponsor_facebook);
+  if (sponsor_website === null || sponsor_facebook === null) return null;
+  const image_url = String(body.image_url || "").trim();
+  if (image_url && !/^kavels\/[a-f0-9-]{36}\.(jpg|png|webp)$/.test(image_url)) return null;
+  return { lot_number: number, title, sponsor_website, sponsor_facebook, image_url: image_url || null, sponsor: String(body.sponsor || "").trim().slice(0,180),
     description: String(body.description || "").trim().slice(0,4000), start_bid: start, active: body.active === true };
 }
 export async function POST(request: Request) {

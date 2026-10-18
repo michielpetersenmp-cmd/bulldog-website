@@ -43,7 +43,7 @@ export default async function VeilingAdminPage() {
         <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testbiedingen</p><p className="text-2xl font-bold">{bidCount || 0}</p></div>
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
-      <Lotbeheer initialLots={lots as any} />
+      <Lotbeheer initialLots={lots} />
     </main>
   </div>;
 }

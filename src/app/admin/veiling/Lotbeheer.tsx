@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 type Photo = { path: string; url: string };
 type Lot = {
@@ -92,7 +92,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
     setMessage("Foto is van deze kavel verwijderd. Het bestand blijft in de privéopslag bewaard.");
   }
 
-  async function save(event: React.FormEvent<HTMLFormElement>) {
+  async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setMessage("");
@@ -169,7 +169,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
           <label className="block text-sm font-bold text-slate-700">Producttitel<input required maxLength={180} value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Uitgebreide beschrijving<textarea rows={6} maxLength={12000} value={form.description || ""} onChange={e => setForm({ ...form, description: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Naam sponsor<input maxLength={180} value={form.sponsor || ""} onChange={e => setForm({ ...form, sponsor: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
-          <label className="block text-sm font-bold text-slate-700">Website sponsor<input type="url" placeholder="https://..." value={form.sponsor_website || ""} onChange={e => setForm({ ...form, sponsor_website: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
+          <label className="block text-sm font-bold text-slate-700">Website sponsor<input type="text" placeholder="https://..." value={form.sponsor_website || ""} onChange={e => setForm({ ...form, sponsor_website: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Facebookpagina<input type="url" placeholder="https://facebook.com/..." value={form.sponsor_facebook || ""} onChange={e => setForm({ ...form, sponsor_facebook: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Instagram<input type="url" placeholder="https://instagram.com/..." value={form.sponsor_instagram || ""} onChange={e => setForm({ ...form, sponsor_instagram: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
 

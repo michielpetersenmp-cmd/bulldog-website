@@ -35,10 +35,10 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
 
   return (
     <>
-      <section className="bg-[#183651] px-5 py-14 text-white">
+      <section className="bg-gradient-to-br from-[#102c45] via-[#183651] to-[#304b60] px-5 py-10 text-white">
         <div className="mx-auto max-w-6xl">
           <p className="text-sm font-extrabold uppercase tracking-[.18em] text-amber-300">Stichting Bulldog Steunfonds Nederland</p>
-          <h1 className="mt-4 max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl">Bied mee voor de bulldogs!</h1>
+          <h1 className="mt-4 max-w-3xl text-3xl font-extrabold leading-tight sm:text-5xl">Bied mee voor de bulldogs!</h1>
           <p className="mt-4 max-w-2xl text-lg text-blue-100">Ontdek bijzondere kavels, steun bulldogs die een noodzakelijke operatie nodig hebben en mis jouw favoriet niet.</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a href="#kavels" className="rounded-xl bg-amber-400 px-6 py-3 font-extrabold text-[#183651]">Bekijk de kavels</a>
@@ -47,7 +47,7 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
           <p className="mt-6 text-sm text-blue-100">Veiling gepland van 15 t/m 29 november 2026 · sluiting om 20.00 uur</p>
         </div>
       </section>
-      <section id="kavels" className="mx-auto max-w-6xl px-5 py-12">
+      <section id="kavels" className="mx-auto max-w-6xl px-3 py-9 sm:px-5 sm:py-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-bold uppercase tracking-widest text-amber-700">Bekijk wat er te winnen valt</p>
@@ -59,28 +59,28 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
               className="mt-2 block w-full min-w-[250px] rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"/>
           </label>
         </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
           {filtered.map(lot => (
-            <article key={lot.id} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-              <div className="flex h-44 items-center justify-center bg-gradient-to-br from-amber-100 to-orange-50">
+            <article key={lot.id} className="overflow-hidden rounded-2xl border border-[#e5dfd3] bg-white shadow-[0_5px_22px_rgba(24,54,81,0.08)] transition-shadow hover:shadow-lg">
+              <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-[#f2e9d7] via-[#faf7ef] to-[#dce7e8]">
                 <div className="text-center text-[#183651]">
-                  <span className="block text-5xl" aria-hidden="true">🐾</span>
-                  <span className="mt-3 block text-sm font-bold">Foto volgt</span>
+                  <span className="block text-3xl sm:text-5xl" aria-hidden="true">🐾</span>
+                  <span className="mt-2 block text-[10px] font-bold uppercase tracking-wider sm:text-xs">Foto volgt</span>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Kavel {String(lot.lot_number).padStart(3,"0")}</p>
-                <h3 className="mt-2 min-h-14 text-xl font-extrabold text-[#183651]">{lot.title}</h3>
-                <p className="text-sm text-slate-500">Beschikbaar gesteld door {lot.sponsor || "test-sponsor"}</p>
-                <div className="mt-5 flex items-end justify-between border-t border-slate-100 pt-5">
+              <div className="p-3 sm:p-5">
+                <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#a47c38] sm:text-xs">Kavel {String(lot.lot_number).padStart(3,"0")}</p>
+                <h3 className="mt-2 min-h-12 text-sm font-extrabold leading-snug sm:min-h-14 sm:text-lg text-[#183651]">{lot.title}</h3>
+                <p className="mt-1 line-clamp-2 min-h-8 text-[11px] leading-snug text-slate-500 sm:text-sm">Beschikbaar gesteld door {lot.sponsor || "test-sponsor"}</p>
+                <div className="mt-3 flex flex-wrap items-end justify-between gap-1 border-t border-[#eee8dc] pt-3 sm:mt-5 sm:pt-4">
                   <div>
-                    <p className="text-xs text-slate-500">Hoogste bod</p>
-                    <p className="text-2xl font-extrabold text-[#183651]">{euro(simulated[lot.id] ?? lot.current_bid)}</p>
+                    <p className="text-[10px] text-slate-500 sm:text-xs">Hoogste bod</p>
+                    <p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(simulated[lot.id] ?? lot.current_bid)}</p>
                   </div>
-                  <p className="text-xs text-slate-500">{lot.bid_count + ((simulated[lot.id] ?? lot.current_bid) - lot.current_bid)} biedingen*</p>
+                  <p className="text-[10px] text-slate-500 sm:text-xs">{lot.bid_count + ((simulated[lot.id] ?? lot.current_bid) - lot.current_bid)} biedingen*</p>
                 </div>
-                <button onClick={() => {setSelected(lot);setNotice("");}} className="mt-5 w-full rounded-xl bg-[#183651] px-4 py-3 font-extrabold text-white">
-                  Bekijk & bied mee
+                <button onClick={() => {setSelected(lot);setNotice("");}} className="mt-3 w-full rounded-lg bg-[#183651] px-2 py-2.5 text-xs font-extrabold text-white sm:mt-5 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">
+                  Bekijk kavel & bied
                 </button>
               </div>
             </article>

@@ -43,5 +43,5 @@ export async function getVeilingTestLots(): Promise<VeilingTestLot[]> {
       }
     }
     return { ...lot, image_urls: ordered, photos: ordered.map(path => ({ path, url: urls.get(path) || "" })).filter(photo => photo.url) };
-  })) as VeilingTestLot[];
+  }));
 }

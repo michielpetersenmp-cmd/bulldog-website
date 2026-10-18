@@ -3,6 +3,11 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 function safeLink(value: unknown) { const s = String(value || "").trim(); if (!s) return ""; try { const u = new URL(s); return (u.protocol === "https:" || u.protocol === "http:") && s.length <= 500 ? s : null; } catch { return null; } }
+function safeUrl(value: unknown) {
+ const raw=String(value||"").trim();
+ if(!raw)return "";
+ try {const u=new URL(raw);return (u.protocol==="https:"||u.protocol==="http:")&&raw.length<1500?u.toString():null;}catch{return null;}
+}
 function parse(body: any) {
   const number = Number(body.lot_number), start = Number(body.start_bid);
   const title = String(body.title || "").trim();

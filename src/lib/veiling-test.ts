@@ -28,8 +28,11 @@ export async function getVeilingTestLots(): Promise<VeilingTestLot[]> {
   if (error) throw error;
 
   return Promise.all((data || []).map(async lot => {
-    const paths = Array.from(new Set([...(lot.image_urls || []), ...(lot.image_url ? [lot.image_url] : [])]));
-    const ordered = lot.image_url ? [lot.image_url, ...(lot.image_urls || []).filter(path => path !== lot.image_url)] : (lot.image_urls || []);
+    const imageUrls: string[] = Array.isArray(lot.image_urls)
+      ? lot.image_urls.filter((path: unknown): path is string => typeof path === "string")
+      : [];
+    const paths = Array.from(new Set([...imageUrls, ...(lot.image_url ? [lot.image_url] : [])]));
+    const ordered = lot.image_url ? [lot.image_url, ...imageUrls.filter((path: string) => path !== lot.image_url)] : imageUrls;
     const { data: signed } = paths.length
       ? await admin.storage.from("veiling-test-fotos").createSignedUrls(paths, 3600)
       : { data: [] };

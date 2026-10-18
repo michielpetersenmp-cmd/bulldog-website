@@ -10,7 +10,6 @@ const tabs = [
   { href: "/admin/acties", label: "Acties" },
   { href: "/admin/donateurs", label: "Donateurs" },
   { href: "/admin/boek", label: "Boek" },
-  { href: "/admin/veiling", label: "Veiling test" },
   { href: "/admin/planner", label: "Planner" },
   { href: "/admin/stats", label: "Stats" },
 ];

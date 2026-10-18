@@ -83,7 +83,10 @@ export async function PATCH(request: Request) {
   const { data: duplicate } = await admin.from(table).select("id").eq("lot_number", values.lot_number).neq("id", id).maybeSingle();
   if (duplicate) return NextResponse.json({ error: "Dit kavelnummer is al in gebruik." }, { status: 409 });
 
-  const { error } = await admin.from(table).update(values).eq("id", id);
+  const { data: existing, error: existingError } = await admin.from(table).select("bid_count").eq("id", id).maybeSingle();
+  if (existingError || !existing) return NextResponse.json({ error: "Deze kavel is niet gevonden." }, { status: 404 });
+  const updateValues = existing.bid_count === 0 ? { ...values, current_bid: values.start_bid } : values;
+  const { error } = await admin.from(table).update(updateValues).eq("id", id);
   if (error) return NextResponse.json({ error: "Kavel aanpassen is niet gelukt." }, { status: 500 });
   return NextResponse.json({ ok: true, testMode: true });
 }

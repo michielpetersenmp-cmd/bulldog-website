@@ -29,8 +29,8 @@ function parse(body: any) {
   const title = text(body?.title, 180);
   if (!Number.isInteger(lotNumber) || lotNumber < 1 || !title || !Number.isInteger(startBid) || startBid < 0) return null;
 
-  const images = Array.isArray(body?.image_urls)
-    ? Array.from(new Set(body.image_urls.filter((item: unknown) => typeof item === "string" && /^kavels\/[a-f0-9-]+\.(jpg|png|webp)$/i.test(item))))
+  const images: string[] = Array.isArray(body?.image_urls)
+    ? Array.from(new Set((body.image_urls as unknown[]).filter((item): item is string => typeof item === "string" && /^kavels\/[a-f0-9-]+\.(jpg|png|webp)$/i.test(item))))
     : [];
   const requestedPrimary = typeof body?.image_url === "string" && images.includes(body.image_url) ? body.image_url : images[0] || null;
   const orderedImages = requestedPrimary ? [requestedPrimary, ...images.filter((item: string) => item !== requestedPrimary)] : images;

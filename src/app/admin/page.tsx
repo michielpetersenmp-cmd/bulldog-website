@@ -139,6 +139,8 @@ export default function AdminDashboardPage() {
               { href: "/admin/posts", label: "Blog & Updates" },
               { href: "/admin/verhalen", label: "Verhalen" },
               { href: "/admin/acties", label: "Acties" },
+              { href: "/admin/veiling", label: "Veiling (test)" },
+  { href: "/admin/veiling", label: "Veiling (test)" },
               { href: "/admin/donateurs", label: "Donateurs" },
               { href: "/admin/boek", label: "Boek" },
               { href: "/admin/planner", label: "Planner" },

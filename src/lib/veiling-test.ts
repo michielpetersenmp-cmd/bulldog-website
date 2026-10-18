@@ -14,13 +14,16 @@ export type VeilingTestLot = {
   image_url: string | null;
   sponsor_website: string | null;
   sponsor_facebook: string | null;
+  image_url: string | null;
+  sponsor_website: string | null;
+  sponsor_facebook: string | null;
   image_preview_url?: string | null;
 };
 
 export async function getVeilingTestLots(): Promise<VeilingTestLot[]> {
   const { data, error } = await getSupabaseAdmin()
     .from("veiling_test_lots")
-    .select("id,lot_number,title,sponsor,description,start_bid,current_bid,bid_count,active,closes_at,image_url,sponsor_website,sponsor_facebook")
+    .select("id,lot_number,title,sponsor,description,start_bid,current_bid,bid_count,active,closes_at,image_url,sponsor_website,sponsor_facebook,image_url,sponsor_website,sponsor_facebook")
     .order("lot_number", { ascending: true });
   if (error) throw error;
   const lots = (data || []) as VeilingTestLot[];

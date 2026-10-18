@@ -14,6 +14,9 @@ type Lot = {
   active: boolean;
   closes_at: string;
   image_url: string | null;
+  sponsor_website: string | null;
+  sponsor_facebook: string | null;
+  image_url: string | null;
   image_preview_url?: string | null;
   sponsor_website: string | null;
   sponsor_facebook: string | null;
@@ -67,10 +70,10 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
           {filtered.map(lot => (
             <article key={lot.id} className="overflow-hidden rounded-2xl border border-[#e5dfd3] bg-white shadow-[0_5px_22px_rgba(24,54,81,0.08)] transition-shadow hover:shadow-lg">
               <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-[#f2e9d7] via-[#faf7ef] to-[#dce7e8]">
-                {lot.image_preview_url ? <img src={lot.image_preview_url} alt={lot.title} className="h-full w-full object-cover" /> : <div className="text-center text-[#183651]">
+                {lot.image_preview_url ? <img src={lot.image_preview_url} alt={lot.title} className="h-full w-full object-cover" /> : {lot.image_url ? <img src={lot.image_url} alt={lot.title} className="h-full w-full object-cover" /> : <div className="text-center text-[#183651]">
                   <span className="block text-3xl sm:text-5xl" aria-hidden="true">🐾</span>
                   <span className="mt-2 block text-[10px] font-bold uppercase tracking-wider sm:text-xs">Foto volgt</span>
-                </div>}
+                </div>}}
               </div>
               <div className="p-3 sm:p-5">
                 <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#a47c38] sm:text-xs">Kavel {String(lot.lot_number).padStart(3,"0")}</p>
@@ -101,7 +104,13 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
               <button aria-label="Sluiten" onClick={() => setSelected(null)} className="rounded-full border px-3 py-1 text-xl">×</button>
             </div>
             <h2 className="mt-2 text-2xl font-extrabold text-[#183651]">{selected.title}</h2>
+            {selected.image_url && <img src={selected.image_url} alt={selected.title} className="mt-4 max-h-52 w-full rounded-xl object-contain" />}
             <p className="mt-3 text-slate-600">{selected.description || "Voorbeeldproduct voor de veiling."}</p>
+            <p className="mt-2 text-sm font-semibold text-slate-600">Aangeboden door {selected.sponsor || "sponsor"}</p>
+            <div className="mt-3 flex flex-wrap gap-3 text-sm font-bold text-[#183651]">
+              {selected.sponsor_website && <a href={selected.sponsor_website} target="_blank" rel="noopener noreferrer" className="underline">Website sponsor ↗</a>}
+              {selected.sponsor_facebook && <a href={selected.sponsor_facebook} target="_blank" rel="noopener noreferrer" className="underline">Facebook sponsor ↗</a>}
+            </div>
             <div className="mt-4 flex flex-wrap gap-3 text-sm font-semibold">{selected.sponsor_website && <a href={selected.sponsor_website} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">Website sponsor</a>}{selected.sponsor_facebook && <a href={selected.sponsor_facebook} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">Facebook sponsor</a>}</div><p className="mt-6 text-sm text-slate-500">Huidig voorbeeldbod</p>
             <p className="text-3xl font-extrabold text-[#183651]">{euro(simulated[selected.id] ?? selected.current_bid)}</p>
             <button onClick={() => tryBid(selected)} className="mt-6 w-full rounded-xl bg-amber-400 px-5 py-4 font-extrabold text-[#183651]">

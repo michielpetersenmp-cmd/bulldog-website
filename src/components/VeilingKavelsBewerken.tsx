@@ -9,6 +9,7 @@ export default function VeilingKavelsBewerken({lots}:{lots:Lot[]}) {
  const [item,setItem] = useState<Lot|null>(null);
  const [busy,setBusy] = useState(false);
  const [uploading,setUploading] = useState(false);
+ const [uploading,setUploading] = useState(false);
  const [message,setMessage] = useState("");
  async function uploadPhoto(file:File) {
   setUploading(true); setMessage("");
@@ -21,6 +22,16 @@ export default function VeilingKavelsBewerken({lots}:{lots:Lot[]}) {
   finally{setUploading(false);}
  }
  function edit(lot:Lot) {setItem({...lot});setMessage("");}
+ async function upload(file:File) {
+  setUploading(true);setMessage("");
+  try {const form=new FormData();form.append("foto",file);
+   const res=await fetch("/api/admin/veiling-foto",{method:"POST",body:form});
+   const result=await res.json();if(!res.ok)throw new Error(result.error||"Foto uploaden mislukt.");
+   setItem(prev=>prev?{...prev,image_url:result.image_url}:prev);
+   setMessage("Foto geüpload. Klik op Kavel opslaan om deze te bewaren.");
+  }catch(err){setMessage(err instanceof Error?err.message:"Foto uploaden mislukt.");}
+  finally{setUploading(false);}
+ }
  async function save(e:React.FormEvent) {
   e.preventDefault(); if(!item)return;
   setBusy(true);setMessage("");
@@ -57,6 +68,13 @@ export default function VeilingKavelsBewerken({lots}:{lots:Lot[]}) {
     <label className="block text-sm font-semibold">Foto kavel (maximaal 5 MB)
       <input type="file" accept="image/jpeg,image/png,image/webp" className="mt-1 block w-full text-sm" onChange={e=>{const file=e.target.files?.[0];if(file)void uploadPhoto(file);}}/>
       <span className="mt-1 block text-xs font-normal text-slate-500">{uploading?"Foto wordt geüpload...":item.image_url?"Foto toegevoegd. Je kunt een andere foto kiezen.":"Kies een foto vanaf je telefoon."}</span>
+    </label>
+    <label className="block text-sm font-semibold">Website sponsor<input type="url" placeholder="https://..." className="mt-1 w-full rounded-lg border p-3" value={item.sponsor_website||""} onChange={e=>setItem({...item,sponsor_website:e.target.value})}/></label>
+    <label className="block text-sm font-semibold">Facebook sponsor<input type="url" placeholder="https://www.facebook.com/..." className="mt-1 w-full rounded-lg border p-3" value={item.sponsor_facebook||""} onChange={e=>setItem({...item,sponsor_facebook:e.target.value})}/></label>
+    <label className="block text-sm font-semibold">Kavelfoto (JPG, PNG of WebP, max. 5 MB)
+      <input type="file" accept="image/jpeg,image/png,image/webp" className="mt-1 w-full text-sm" disabled={uploading} onChange={e=>{const file=e.target.files?.[0];if(file)void upload(file);}}/>
+      {uploading&&<span className="mt-1 block text-blue-700">Foto uploaden...</span>}
+      {item.image_url&&<span className="mt-1 block text-green-700">Foto toegevoegd</span>}
     </label>
     <label className="block text-sm font-semibold">Omschrijving<textarea rows={5} maxLength={4000} className="mt-1 w-full rounded-lg border p-3" value={item.description||""} onChange={e=>setItem({...item,description:e.target.value})}/></label>
     <label className="block text-sm font-semibold">Startbod (hele euro's)<input required type="number" min="0" step="1" className="mt-1 w-full rounded-lg border p-3" value={item.start_bid} disabled={item.bid_count>0} onChange={e=>setItem({...item,start_bid:Number(e.target.value)})}/></label>

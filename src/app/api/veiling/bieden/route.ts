@@ -8,6 +8,12 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 export async function GET() {
+  if (process.env.VERCEL_ENV === "production") {
+    return NextResponse.json(
+      { biddingEnabled: false, states: [] },
+      { headers: { "Cache-Control": "private, no-store, max-age=0" } }
+    );
+  }
   const admin = getSupabaseAdmin();
   const [{ data: settings }, { data: states, error }] = await Promise.all([
     admin.from("veiling_participant_test_settings").select("bidding_enabled").eq("id", true).maybeSingle(),
@@ -21,6 +27,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (process.env.VERCEL_ENV === "production") {
+    return NextResponse.json({ error: "Bieden is nog niet geopend." }, { status: 409 });
+  }
   const participant = await getCurrentVeilingParticipant();
   if (!participant) return NextResponse.json({ error: "Log eerst in om te kunnen bieden.", loginRequired: true }, { status: 401 });
 

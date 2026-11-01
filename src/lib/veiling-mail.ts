@@ -40,7 +40,7 @@ function base64Lines(value: string) {
   return Buffer.from(value, "utf8").toString("base64").match(/.{1,76}/g)?.join("\r\n") || "";
 }
 
-export async function sendVeilingTestMail() {
+export async function sendVeilingTestMail(message?: { subject: string; html: string }) {
   const value = settings();
   if (!value.password) throw new Error("SMTP_NOT_CONFIGURED");
   if (!Number.isInteger(value.port) || value.port < 1 || value.port > 65535) throw new Error("SMTP_INVALID_PORT");
@@ -103,19 +103,22 @@ export async function sendVeilingTestMail() {
     expect(await command(`RCPT TO:<${value.testRecipient}>`), [250, 251]);
     expect(await command("DATA"), [354]);
 
-    const html = `<!doctype html><html lang="nl"><body style="font-family:Arial,sans-serif;color:#12304a"><h1>Testmail veiling</h1><p>De beveiligde e-mailverbinding tussen het veilingbeheer en MijnDomein werkt.</p><p>Deze test heeft geen deelnemer benaderd en verwerkt geen meldingen uit de wachtrij.</p><p>Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></body></html>`;
-    const message = [
+    const content = message || {
+      subject: "Testmail veilingsysteem",
+      html: "<p>De beveiligde e-mailverbinding tussen het veilingbeheer en MijnDomein werkt.</p>",
+    };
+    const email = [
       `From: ${encodeHeader(value.fromName)} <${value.user}>`,
       `To: <${value.testRecipient}>`,
-      `Subject: ${encodeHeader("Testmail veilingsysteem")}`,
+      `Subject: ${encodeHeader(content.subject)}`,
       "MIME-Version: 1.0",
       'Content-Type: text/html; charset="UTF-8"',
       "Content-Transfer-Encoding: base64",
       "",
-      base64Lines(html),
+      base64Lines(content.html),
     ].join("\r\n");
 
-    socket.write(message + "\r\n.\r\n");
+    socket.write(email + "\r\n.\r\n");
     expect(await response(), [250]);
     expect(await command("QUIT"), [221]);
     socket.end();

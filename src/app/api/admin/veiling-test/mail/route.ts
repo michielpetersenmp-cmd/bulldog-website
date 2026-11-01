@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getVeilingMailStatus, sendVeilingTestMail } from "@/lib/veiling-mail";
+import { getVeilingTestTemplate, veilingMailTemplateTypes, type VeilingMailTemplateType } from "@/lib/veiling-mail-templates";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,9 +11,14 @@ export async function GET() {
   return NextResponse.json(getVeilingMailStatus(), { headers: noStore });
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
-    const result = await sendVeilingTestMail();
+    const body = await request.json().catch(() => null);
+    const requested = typeof body?.template === "string" ? body.template : "connection";
+    const template: VeilingMailTemplateType = veilingMailTemplateTypes.includes(requested as VeilingMailTemplateType)
+      ? requested as VeilingMailTemplateType
+      : "connection";
+    const result = await sendVeilingTestMail(getVeilingTestTemplate(template));
     return NextResponse.json({ ok: true, recipient: result.recipient }, { headers: noStore });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";

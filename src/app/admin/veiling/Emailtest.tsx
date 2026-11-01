@@ -12,6 +12,7 @@ type MailStatus = {
 export default function Emailtest() {
   const [status, setStatus] = useState<MailStatus | null>(null);
   const [busy, setBusy] = useState(false);
+  const [template, setTemplate] = useState("connection");
   const [feedback, setFeedback] = useState<{ text: string; error: boolean } | null>(null);
 
   useEffect(() => {
@@ -25,7 +26,11 @@ export default function Emailtest() {
     setBusy(true);
     setFeedback(null);
     try {
-      const response = await fetch("/api/admin/veiling-test/mail", { method: "POST" });
+      const response = await fetch("/api/admin/veiling-test/mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ template }),
+      });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "De testmail kon niet worden verzonden.");
       setFeedback({ text: `Testmail verzonden naar ${result.recipient}. Controleer ook de map Ongewenst.`, error: false });
@@ -47,8 +52,18 @@ export default function Emailtest() {
         <p className="mt-1"><strong>Echte deelnemersmails:</strong> {status?.liveDeliveryEnabled ? "Ingeschakeld" : "Uitgeschakeld"}</p>
       </div>
       {feedback && <p role={feedback.error ? "alert" : "status"} className={`mt-4 rounded-lg border-2 px-4 py-3 font-bold ${feedback.error ? "border-red-400 bg-red-50 text-red-950" : "border-green-400 bg-green-50 text-green-950"}`}>{feedback.text}</p>}
+      <label className="mt-4 block max-w-xl text-sm font-semibold">
+        Kies een testmail
+        <select value={template} onChange={event => setTemplate(event.target.value)} className="mt-1 w-full rounded-lg border bg-white px-3 py-2">
+          <option value="connection">Verbindingstest</option>
+          <option value="registration">Bevestiging van aanmelding</option>
+          <option value="started">De veiling is begonnen</option>
+          <option value="outbid">Deelnemer is overboden</option>
+          <option value="winner">Winnaar van een kavel</option>
+        </select>
+      </label>
       <button type="button" onClick={sendTest} disabled={busy || !status?.configured} className="mt-4 rounded-lg bg-primary px-5 py-3 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50">
-        {busy ? "Testmail wordt verzonden…" : "Stuur testmail naar mijzelf"}
+        {busy ? "Testmail wordt verzonden…" : "Stuur gekozen testmail naar mijzelf"}
       </button>
       {!status?.configured && <p className="mt-2 text-xs text-slate-500">De knop wordt beschikbaar nadat het mailboxwachtwoord als afgeschermde Vercel-instelling is toegevoegd.</p>}
     </section>

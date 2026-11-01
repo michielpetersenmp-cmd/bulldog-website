@@ -7,6 +7,7 @@ type Bid = { id: number; lot_id: number; bidder_id: string; amount: number; crea
 type Lot = { id: number; lot_number: number; title: string; current_bid: number; current_bidder_id: string | null; closes_at: string };
 type OutboxItem = { id: number; event_type: string; bidder_id: string | null; lot_id: number | null; delivered: boolean; created_at: string };
 type Props = { bidders: Bidder[]; bids: Bid[]; lots: Lot[]; outbox: OutboxItem[] };
+type Diagnostics = { projectRef: string; keyRole: string };
 
 function dateTime(value: string) {
   return new Intl.DateTimeFormat("nl-NL", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
@@ -21,6 +22,7 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
   const [lots, setLots] = useState(initialLots);
   const [outbox, setOutbox] = useState(initialOutbox);
   const [refreshError, setRefreshError] = useState("");
+  const [diagnostics, setDiagnostics] = useState<Diagnostics | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -29,6 +31,7 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
       try {
         const response = await fetch("/api/admin/veiling-test/overview", { cache: "no-store" });
         const result = await response.json();
+        if (result.diagnostics) setDiagnostics(result.diagnostics);
         if (!response.ok) throw new Error(result.error || "Testoverzicht vernieuwen is niet gelukt.");
         if (!active) return;
         setBidders(Array.isArray(result.bidders) ? result.bidders : []);
@@ -58,6 +61,19 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
   const closedLots = lots.filter(lot => new Date(lot.closes_at).getTime() <= Date.now());
   return (
     <section className="mt-10 space-y-8">
+      {diagnostics && bidders.length === 0 && bids.length === 0 && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+          <strong>Controle van de dataverbinding</strong>
+          <p className="mt-1">Deze beheerpagina leest Supabase-project <code>{diagnostics.projectRef}</code> met sleutelrol <code>{diagnostics.keyRole}</code>.</p>
+          {diagnostics.projectRef !== "kgmqkiwfowvhvqcnkmrl" ? (
+            <p className="mt-1">Dit is niet het project waarin de testdeelnemer staat. De Vercel-koppeling moet naar <code>kgmqkiwfowvhvqcnkmrl</code> wijzen.</p>
+          ) : diagnostics.keyRole === "anon" ? (
+            <p className="mt-1">De server gebruikt een openbare sleutel; de testgegevens zijn daardoor niet zichtbaar. De Supabase service-role sleutel moet in Vercel staan.</p>
+          ) : (
+            <p className="mt-1">De verbinding meldt het juiste project, maar levert geen testdeelnemers of biedingen terug.</p>
+          )}
+        </div>
+      )}
       {refreshError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{refreshError}</p>}
       <div>
         <div><h2 className="text-2xl font-extrabold text-primary">Deelnemers, biedingen en uitslag</h2><p className="mt-1 text-sm text-slate-600">Alle gegevens hieronder zijn testgegevens. E-mailmeldingen worden niet verzonden.</p></div>

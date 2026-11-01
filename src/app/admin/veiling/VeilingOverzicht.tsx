@@ -57,7 +57,8 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
   for (const lot of lots) lotById.set(lot.id, lot);
   const closedLots = lots.filter(lot => new Date(lot.closes_at).getTime() <= Date.now());
   return (
-    <section className="mt-10 space-y-8">\n      {refreshError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{refreshError}</p>}
+    <section className="mt-10 space-y-8">
+      {refreshError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{refreshError}</p>}
       <div>
         <div><h2 className="text-2xl font-extrabold text-primary">Deelnemers, biedingen en uitslag</h2><p className="mt-1 text-sm text-slate-600">Alle gegevens hieronder zijn testgegevens. E-mailmeldingen worden niet verzonden.</p></div>
         <div className="mt-4 grid gap-6 xl:grid-cols-2">

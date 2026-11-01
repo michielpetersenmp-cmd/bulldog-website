@@ -34,10 +34,17 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
         if (result.diagnostics) setDiagnostics(result.diagnostics);
         if (!response.ok) throw new Error(result.error || "Testoverzicht vernieuwen is niet gelukt.");
         if (!active) return;
-        setBidders(Array.isArray(result.bidders) ? result.bidders : []);
-        setBids(Array.isArray(result.bids) ? result.bids : []);
-        setLots(Array.isArray(result.lots) ? result.lots : []);
-        setOutbox(Array.isArray(result.outbox) ? result.outbox : []);
+        const nextBidders = Array.isArray(result.bidders) ? result.bidders : [];
+        const nextBids = Array.isArray(result.bids) ? result.bids : [];
+        const nextLots = Array.isArray(result.lots) ? result.lots : [];
+        const nextOutbox = Array.isArray(result.outbox) ? result.outbox : [];
+        setBidders(nextBidders);
+        setBids(nextBids);
+        setLots(nextLots);
+        setOutbox(nextOutbox);
+        window.dispatchEvent(new CustomEvent("veiling-test-overview-updated", {
+          detail: { bidders: nextBidders, lots: nextLots },
+        }));
         setRefreshError("");
       } catch (error) {
         if (active) {
@@ -48,9 +55,11 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
 
     const handleTestDataUpdated = () => { void refreshOverview(); };
     void refreshOverview();
+    const interval = window.setInterval(() => { void refreshOverview(); }, 5000);
     window.addEventListener("veiling-test-updated", handleTestDataUpdated);
     return () => {
       active = false;
+      window.clearInterval(interval);
       window.removeEventListener("veiling-test-updated", handleTestDataUpdated);
     };
   }, []);
@@ -61,6 +70,11 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
   const closedLots = lots.filter(lot => new Date(lot.closes_at).getTime() <= Date.now());
   return (
     <section className="mt-10 space-y-8">
+      <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testkavels</p><p className="text-2xl font-bold">{lots.length}</p></div>
+        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testbieders</p><p className="text-2xl font-bold">{bidders.length}</p></div>
+        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testbiedingen</p><p className="text-2xl font-bold">{bids.length}</p></div>
+      </div>
       {diagnostics && bidders.length === 0 && bids.length === 0 && (
         <div className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
           <strong>Controle van de dataverbinding</strong>
@@ -76,7 +90,7 @@ export default function VeilingOverzicht({ bidders: initialBidders, bids: initia
       )}
       {refreshError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{refreshError}</p>}
       <div>
-        <div><h2 className="text-2xl font-extrabold text-primary">Deelnemers, biedingen en uitslag</h2><p className="mt-1 text-sm text-slate-600">Alle gegevens hieronder zijn testgegevens. E-mailmeldingen worden niet verzonden.</p></div>
+        <div><h2 className="text-2xl font-extrabold text-primary">Deelnemers, biedingen en uitslag</h2><p className="mt-1 text-sm text-slate-600">Alle gegevens hieronder zijn testgegevens. E-mailmeldingen worden niet verzonden. Dit overzicht wordt automatisch bijgewerkt om de 5 seconden.</p></div>
         <div className="mt-4 grid gap-6 xl:grid-cols-2">
           <div className="overflow-hidden rounded-2xl border bg-white">
             <div className="border-b px-5 py-4"><h3 className="font-extrabold text-primary">Testdeelnemers ({bidders.length})</h3></div>

@@ -35,7 +35,7 @@ export async function GET() {
         .order("created_at", { ascending: false })
         .limit(50),
       admin.from("veiling_test_lots")
-        .select("id,lot_number,title,current_bid,current_bidder_id,closes_at")
+        .select("id,lot_number,title,current_bid,current_bidder_id,active,closes_at")
         .order("lot_number", { ascending: true }),
       admin.from("veiling_test_outbox")
         .select("id,event_type,bidder_id,lot_id,delivered,created_at")

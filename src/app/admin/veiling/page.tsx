@@ -10,12 +10,10 @@ export const metadata = { title: "Veiling testen | Websitebeheer", robots: { ind
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
-  const [{ data: rows, error }, { count: bidderCount }, { count: bidCount }, { data: bidders }, { data: bids }, { data: outbox }] = await Promise.all([
+  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }] = await Promise.all([
     admin.from("veiling_test_lots")
       .select("id,lot_number,title,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls")
       .order("lot_number"),
-    admin.from("veiling_test_bidders").select("*", { count: "exact", head: true }),
-    admin.from("veiling_test_bids").select("*", { count: "exact", head: true }),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
     admin.from("veiling_test_outbox").select("id,event_type,bidder_id,lot_id,delivered,created_at").order("created_at", { ascending: false }).limit(50),
@@ -48,11 +46,6 @@ export default async function VeilingAdminPage() {
       <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
         <div><p className="text-sm font-bold uppercase tracking-widest text-amber-700">Stichting Bulldog Steunfonds Nederland</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Veilingbeheer</h1><p className="mt-2 text-gray-600">Beheer kavels, foto’s en sponsorinformatie voor het afgeschermde voorbeeld.</p></div>
         <Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Bekijk bezoekersvoorbeeld →</Link>
-      </div>
-      <div className="mt-7 grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testkavels</p><p className="text-2xl font-bold">{lots.length}</p></div>
-        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testbieders</p><p className="text-2xl font-bold">{bidderCount || 0}</p></div>
-        <div className="rounded-xl bg-white p-4"><p className="text-sm text-gray-500">Testbiedingen</p><p className="text-2xl font-bold">{bidCount || 0}</p></div>
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
       <Lotbeheer initialLots={lots} />

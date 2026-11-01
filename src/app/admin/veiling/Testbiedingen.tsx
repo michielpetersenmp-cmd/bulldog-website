@@ -1,15 +1,26 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 type TestBidder = { id: string; name: string; email: string };
 type TestLot = { id: number; lot_number: number; title: string; current_bid: number; active: boolean; closes_at: string };
 
-export default function Testbiedingen({ initialBidders, lots }: { initialBidders: TestBidder[]; lots: TestLot[] }) {
+export default function Testbiedingen({ initialBidders, lots: initialLots }: { initialBidders: TestBidder[]; lots: TestLot[] }) {
   const router = useRouter();
   const [bidders, setBidders] = useState(initialBidders);
+  const [lots, setLots] = useState(initialLots);
   const availableLots = lots.filter(lot => lot.active && new Date(lot.closes_at).getTime() > Date.now());
+
+  useEffect(() => {
+    function handleOverviewUpdated(event: Event) {
+      const detail = (event as CustomEvent<{ bidders?: TestBidder[]; lots?: TestLot[] }>).detail;
+      if (Array.isArray(detail?.bidders)) setBidders(detail.bidders);
+      if (Array.isArray(detail?.lots)) setLots(detail.lots);
+    }
+    window.addEventListener("veiling-test-overview-updated", handleOverviewUpdated);
+    return () => window.removeEventListener("veiling-test-overview-updated", handleOverviewUpdated);
+  }, []);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [bidderId, setBidderId] = useState(initialBidders[0]?.id || "");
@@ -18,6 +29,12 @@ export default function Testbiedingen({ initialBidders, lots }: { initialBidders
   const [amount, setAmount] = useState(String((selectedLot?.current_bid || 0) + 1));
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (selectedLot && Number(amount) <= selectedLot.current_bid) {
+      setAmount(String(selectedLot.current_bid + 1));
+    }
+  }, [amount, selectedLot?.current_bid]);
 
   async function createBidder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

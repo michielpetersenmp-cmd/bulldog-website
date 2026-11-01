@@ -109,6 +109,7 @@ async function sendSmtpMail(recipient: string, message: MailMessage) {
 
     const email = [
       `From: ${encodeHeader(value.fromName)} <${value.user}>`,
+      `Reply-To: <${value.user}>`,
       `To: <${recipient}>`,
       `Subject: ${encodeHeader(message.subject)}`,
       "MIME-Version: 1.0",

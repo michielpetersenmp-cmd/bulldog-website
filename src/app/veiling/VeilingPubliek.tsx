@@ -142,7 +142,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
           <label className="block w-full text-sm font-semibold text-[#183651] sm:w-auto">Zoek een kavel<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Naam of sponsor..." className="mt-1 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 sm:min-w-[260px]" /></label>
         </div>
         <div className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
-          Verzendkosten binnen Nederland: € 6,95 boven op je winnende bod. Voor verzending naar België gelden hogere verzendkosten; het exacte bedrag wordt vooraf doorgegeven. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.
+          Verzendkosten binnen Nederland: € 6,95 boven op je winnende bod. Voor verzending naar België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.
         </div>
         <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
           {visibleLots.map(lot => <article key={lot.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
@@ -151,7 +151,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
               <p className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 sm:text-xs">Kavel {String(lot.lot_number).padStart(3, "0")}</p>
               <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-extrabold leading-snug text-[#183651] sm:mt-2 sm:min-h-14 sm:text-lg">{lot.title}</h3>
               {lot.sponsor && <p className="mt-1 line-clamp-2 text-[10px] text-slate-500 sm:text-sm">Mogelijk gemaakt door <strong>{lot.sponsor}</strong></p>}
-              <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4"><p className="text-[10px] text-slate-500 sm:text-xs">{biddingEnabled && lot.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p><p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(biddingEnabled ? lot.current_bid : lot.start_bid)}</p><p className="mt-1 text-[9px] font-semibold text-slate-500 sm:text-xs">+ verzending: NL € 6,95 · België hoger tarief</p><button onClick={() => openLot(lot)} className="mt-2 w-full rounded-lg bg-[#183651] px-2 py-2 text-xs font-extrabold text-white sm:mt-4 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">{biddingEnabled ? "Bekijk en bied" : "Bekijk kavel"}</button></div>
+              <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4"><p className="text-[10px] text-slate-500 sm:text-xs">{biddingEnabled && lot.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p><p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(biddingEnabled ? lot.current_bid : lot.start_bid)}</p><p className="mt-1 text-[9px] font-semibold text-slate-500 sm:text-xs">+ verzending: NL € 6,95 · België € 10,00</p><button onClick={() => openLot(lot)} className="mt-2 w-full rounded-lg bg-[#183651] px-2 py-2 text-xs font-extrabold text-white sm:mt-4 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">{biddingEnabled ? "Bekijk en bied" : "Bekijk kavel"}</button></div>
             </div>
           </article>)}
         </div>
@@ -172,7 +172,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
               <div className="mt-6 rounded-2xl bg-[#f6f4ef] p-4">
                 <p className="text-sm text-slate-500">{biddingEnabled && selected.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p>
                 <p className="text-3xl font-extrabold text-[#183651]">{euro(biddingEnabled ? selected.current_bid : selected.start_bid)}</p>
-                <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-950">Binnen Nederland komt € 6,95 verzendkosten boven op het eindbod. Voor België gelden hogere verzendkosten; het exacte bedrag wordt vooraf doorgegeven. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>
+                <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-950">Binnen Nederland komt € 6,95 verzendkosten boven op het eindbod. Voor België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>
                 {biddingEnabled ? loggedIn ? <form onSubmit={placeBid} className="mt-4">
                   <label className="block text-sm font-bold text-[#183651]">Jouw bod in hele euro’s<input type="number" required min={selected.current_bid + 1} step={1} value={bidAmount} onChange={event => setBidAmount(event.target.value)} className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-lg font-bold text-slate-900" /></label>
                   <p className="mt-2 text-xs text-slate-500">Minimaal {euro(selected.current_bid + 1)}. Dit is een proefbod en telt niet mee bij de echte veiling.</p>

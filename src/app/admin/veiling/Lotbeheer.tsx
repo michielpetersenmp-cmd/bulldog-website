@@ -179,7 +179,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
               {busy ? "Bezig…" : "＋ Kies foto’s vanaf telefoon of computer"}
               <input type="file" accept="image/jpeg,image/png,image/webp" multiple className="sr-only" disabled={busy} onChange={e => { void upload(e.target.files); e.currentTarget.value = ""; }} />
             </label>
-            <p className="mt-1 text-xs text-slate-500">JPG, PNG of WebP · maximaal 5 MB per foto. De eerste foto is de hoofdfoto.</p>
+            <p className="mt-1 text-xs text-slate-500">JPG, PNG of WebP · maximaal 5 MB per foto. Na upload zie je de foto hieronder. Druk daarna op ‘Kavel opslaan’ om hem aan deze kavel te koppelen. De eerste foto is de hoofdfoto.</p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               {form.photos.map((photo, index) => (
                 <div key={photo.path} className="relative overflow-hidden rounded-xl border">

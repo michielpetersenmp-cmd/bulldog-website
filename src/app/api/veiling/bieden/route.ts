@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { getCurrentVeilingParticipant } from "@/lib/veiling-participant-session";
+import { sendVeilingParticipantMail } from "@/lib/veiling-mail";
+import { getVeilingOutbidTemplate } from "@/lib/veiling-mail-templates";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -44,5 +46,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Je bod kon niet worden opgeslagen. Probeer het opnieuw." }, { status: 500 });
   }
 
-  return NextResponse.json({ ...data, testMode: true });
+  let notificationSent = false;
+  if (data?.outbox_id) {
+    const { data: outbox } = await admin
+      .from("veiling_participant_test_outbox")
+      .select("id,participant_id,lot_id")
+      .eq("id", data.outbox_id)
+      .maybeSingle();
+
+    if (outbox) {
+      const [{ data: previousParticipant }, { data: lot }] = await Promise.all([
+        admin.from("veiling_preregistrations").select("name,email").eq("id", outbox.participant_id).maybeSingle(),
+        admin.from("veiling_test_lots").select("lot_number,title").eq("id", outbox.lot_id).maybeSingle(),
+      ]);
+      if (previousParticipant && lot) {
+        const origin = new URL(request.url).origin;
+        const template = getVeilingOutbidTemplate(
+          previousParticipant.name,
+          lot.lot_number,
+          lot.title,
+          Number(data.amount),
+          `${origin}/veiling#kavels`,
+          true
+        );
+        try {
+          await sendVeilingParticipantMail(previousParticipant.email, template);
+          await admin.from("veiling_participant_test_outbox").update({ delivered: true }).eq("id", outbox.id);
+          notificationSent = true;
+        } catch {
+          notificationSent = false;
+        }
+      }
+    }
+  }
+
+  return NextResponse.json({ ...data, testMode: true, notificationSent });
 }

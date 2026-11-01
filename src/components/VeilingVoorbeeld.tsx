@@ -14,9 +14,6 @@ type Lot = {
   active: boolean;
   closes_at: string;
   image_url: string | null;
-  sponsor_website: string | null;
-  sponsor_facebook: string | null;
-  image_url: string | null;
   image_preview_url?: string | null;
   sponsor_website: string | null;
   sponsor_facebook: string | null;

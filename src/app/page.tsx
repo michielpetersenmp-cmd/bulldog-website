@@ -133,7 +133,7 @@ export default async function HomePage() {
                   De Bulldogveiling staat online — bekijk de kavels!
                 </h2>
                 <p className="text-gray-600 leading-relaxed">
-                  De eerste kavels staan nu online en de komende weken worden er nog veel meer toegevoegd. Bekijk alvast wat onze sponsors beschikbaar hebben gesteld en meld je aan, zodat je bericht krijgt wanneer de veiling op 15 november begint en je direct kunt bieden. De volledige opbrengst gaat naar het werk van Stichting Bulldog Steunfonds Nederland.
+                  De eerste kavels staan nu online en de komende weken worden er nog veel meer toegevoegd. Bekijk alvast wat onze sponsors beschikbaar hebben gesteld en meld je aan, zodat je bericht krijgt wanneer de veiling op 15 november begint en je direct kunt bieden. De volledige opbrengst gaat naar Stichting Bulldog Steunfonds Nederland.
                 </p>
               </div>
               <Link href="/veiling" className="btn-primary shrink-0">

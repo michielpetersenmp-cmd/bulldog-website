@@ -14,6 +14,7 @@ type Lot = {
   sponsor_facebook: string | null;
   sponsor_instagram: string | null;
   start_bid: number;
+  retail_value: number | null;
   current_bid: number;
   bid_count: number;
   active: boolean;
@@ -26,11 +27,14 @@ type Form = Omit<Lot, "id" | "current_bid" | "bid_count" | "photos"> & { id?: nu
 const blank = (lots: Lot[]): Form => ({
   lot_number: Math.max(0, ...lots.map(lot => lot.lot_number)) + 1,
   title: "", category: "Overig", description: "", sponsor: "", sponsor_website: "", sponsor_facebook: "", sponsor_instagram: "",
-  start_bid: 1, active: true, image_url: null, image_urls: [], photos: [],
+  start_bid: 1, retail_value: null, active: true, image_url: null, image_urls: [], photos: [],
 });
 
 function euro(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
+}
+function retailEuro(value: number) {
+  return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 }
 
 export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
@@ -45,7 +49,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
       id: lot.id, lot_number: lot.lot_number, title: lot.title, category: lot.category || "Overig", description: lot.description || "",
       sponsor: lot.sponsor || "", sponsor_website: lot.sponsor_website || "",
       sponsor_facebook: lot.sponsor_facebook || "", sponsor_instagram: lot.sponsor_instagram || "",
-      start_bid: lot.start_bid, active: lot.active, image_url: lot.image_url,
+      start_bid: lot.start_bid, retail_value: lot.retail_value, active: lot.active, image_url: lot.image_url,
       image_urls: lot.image_urls || [], photos: lot.photos || [],
     });
     setMessage("");
@@ -121,7 +125,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
     const body = {
       id: lot.id, lot_number: lot.lot_number, title: lot.title, category: lot.category, description: lot.description,
       sponsor: lot.sponsor, sponsor_website: lot.sponsor_website, sponsor_facebook: lot.sponsor_facebook,
-      sponsor_instagram: lot.sponsor_instagram, start_bid: lot.start_bid, active: !lot.active,
+      sponsor_instagram: lot.sponsor_instagram, start_bid: lot.start_bid, retail_value: lot.retail_value, active: !lot.active,
       image_url: lot.image_url, image_urls: lot.image_urls || [],
     };
     const response = await fetch("/api/admin/veiling-test/lots", {
@@ -148,6 +152,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
                 <p className="mt-2 inline-flex rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-800">{lot.category || "Overig"}</p>
                 <h3 className="mt-2 line-clamp-2 min-h-12 font-extrabold text-primary">{lot.title}</h3>
                 <p className="mt-1 truncate text-xs text-slate-500">{lot.sponsor || "Geen sponsor ingevuld"}</p>
+                {lot.retail_value !== null && <p className="mt-2 text-xs font-bold text-slate-600">Winkelwaarde {retailEuro(lot.retail_value)}</p>}
                 <p className="mt-3 text-lg font-extrabold text-primary">{euro(lot.current_bid)}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button type="button" onClick={() => edit(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">Aanpassen</button>
@@ -168,6 +173,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
             <label className="text-sm font-bold text-slate-700">Kavelnummer<input required type="number" min="1" value={form.lot_number} onChange={e => setForm({ ...form, lot_number: Number(e.target.value) })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
             <label className="text-sm font-bold text-slate-700">Startbod (€)<input required type="number" min="0" step="1" value={form.start_bid} onChange={e => setForm({ ...form, start_bid: Number(e.target.value) })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           </div>
+          <label className="block text-sm font-bold text-slate-700">Winkelwaarde (€) <span className="font-normal text-slate-500">optioneel</span><input type="number" min="0" step="0.01" value={form.retail_value ?? ""} onChange={e => setForm({ ...form, retail_value: e.target.value === "" ? null : Number(e.target.value) })} placeholder="Bijvoorbeeld 59,95" className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Producttitel<input required maxLength={180} value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Categorie<input required list="veiling-categorieen" maxLength={80} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Kies of typ een categorie" className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <datalist id="veiling-categorieen"><option value="Voeding & snacks" /><option value="Tuigjes & accessoires" /><option value="Verzorging" /><option value="Wonen & decoratie" /><option value="Kunst & handgemaakt" /><option value="Cadeaubonnen & belevenissen" /><option value="Overig" /></datalist>
@@ -217,7 +223,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
               <h2 className="mt-2 text-3xl font-extrabold text-primary">{preview.title || "Producttitel"}</h2>
               {preview.sponsor && <p className="mt-3 text-sm text-slate-600">Mogelijk gemaakt door <strong>{preview.sponsor}</strong></p>}
               {(preview.sponsor_website || preview.sponsor_facebook || preview.sponsor_instagram) && <div className="mt-3 flex flex-wrap gap-2">{preview.sponsor_website && <a href={preview.sponsor_website} target="_blank" rel="noreferrer" className="rounded-xl border bg-white px-3 py-2 text-sm font-bold text-primary">🌐 Website</a>}{preview.sponsor_facebook && <a href={preview.sponsor_facebook} target="_blank" rel="noreferrer" className="rounded-xl bg-[#1877F2] px-3 py-2 text-sm font-bold text-white">f Facebook</a>}{preview.sponsor_instagram && <a href={preview.sponsor_instagram} target="_blank" rel="noreferrer" className="rounded-xl bg-gradient-to-r from-fuchsia-600 to-orange-500 px-3 py-2 text-sm font-bold text-white">◎ Instagram</a>}</div>}
-              <div className="mt-6 rounded-2xl bg-amber-50 p-4"><p className="text-sm text-slate-600">Hoogste bod</p><p className="text-3xl font-extrabold text-primary">{"current_bid" in preview ? euro(preview.current_bid) : euro(preview.start_bid)}</p><button type="button" className="mt-3 w-full rounded-xl bg-amber-400 px-4 py-3 font-extrabold text-primary">Bied mee</button></div>
+              <div className="mt-6 rounded-2xl bg-amber-50 p-4">{preview.retail_value !== null && <p className="mb-2 text-sm font-bold text-slate-700">Oorspronkelijke winkelwaarde {retailEuro(preview.retail_value)}</p>}<p className="text-sm text-slate-600">Hoogste bod</p><p className="text-3xl font-extrabold text-primary">{"current_bid" in preview ? euro(preview.current_bid) : euro(preview.start_bid)}</p><button type="button" className="mt-3 w-full rounded-xl bg-amber-400 px-4 py-3 font-extrabold text-primary">Bied mee</button></div>
               <div className="mt-6 border-t pt-5"><h3 className="font-extrabold text-primary">Beschrijving</h3><div className="mt-3 whitespace-pre-wrap leading-relaxed text-slate-700">{preview.description || "De uitgebreide productomschrijving komt hier te staan."}</div></div>
               <p className="mt-5 text-xs text-slate-500">Bezoekersvoorbeeld · testmodus · er wordt geen bod opgeslagen.</p>
             </div>

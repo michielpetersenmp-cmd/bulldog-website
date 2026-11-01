@@ -56,3 +56,16 @@ export function getVeilingTestTemplate(type: VeilingMailTemplateType) {
     html: layout("Testmail veiling", "De beveiligde e-mailverbinding werkt.", '<p style="font-size:16px;line-height:1.6">De beveiligde e-mailverbinding tussen het veilingbeheer en MijnDomein werkt.</p>'),
   };
 }
+
+
+export function getVeilingLoginTemplate(name: string, loginUrl: string, testMode: boolean) {
+  const safeName = escapeHtml(name);
+  const safeUrl = escapeHtml(loginUrl);
+  const testNotice = testMode
+    ? '<div style="border:2px solid #f7c84b;background:#fff9df;padding:12px;border-radius:9px;font-weight:700">TESTMODUS — deze mail is alleen naar de eigen mailbox van de stichting gestuurd.</div>'
+    : "";
+  return {
+    subject: testMode ? "[TEST] Inloggen bij Mijn veiling" : "Inloggen bij Mijn veiling",
+    html: `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">Inloggen bij Mijn veiling</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px">${testNotice}<p style="font-size:17px;line-height:1.6">Beste ${safeName},</p><p style="font-size:16px;line-height:1.6">Klik op de knop hieronder om veilig in te loggen bij Mijn veiling. Je hebt geen wachtwoord nodig.</p><p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#123d63;color:#fff;text-decoration:none;padding:14px 22px;border-radius:9px;font-weight:700">Open Mijn veiling</a></p><p style="font-size:14px;line-height:1.6;color:#64748b">Deze inloglink is 30 minuten geldig en kan één keer worden gebruikt.</p><p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></div></div></body></html>`,
+  };
+}

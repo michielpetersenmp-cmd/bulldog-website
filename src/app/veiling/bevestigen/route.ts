@@ -1,17 +1,16 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { createVeilingParticipantSession, VEILING_SESSION_COOKIE, veilingSessionCookieOptions } from "@/lib/veiling-participant-session";
 
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const token = url.searchParams.get("token") || "";
-  const destination = new URL("/veiling/bevestigd", url.origin);
 
   if (!/^[a-f0-9]{64}$/.test(token)) {
-    destination.searchParams.set("status", "ongeldig");
-    return NextResponse.redirect(destination);
+    return NextResponse.redirect(new URL("/veiling/bevestigd?status=ongeldig", url.origin));
   }
 
   const hash = createHash("sha256").update(token).digest("hex");
@@ -25,8 +24,7 @@ export async function GET(request: Request) {
     .maybeSingle();
 
   if (error || !data) {
-    destination.searchParams.set("status", "ongeldig");
-    return NextResponse.redirect(destination);
+    return NextResponse.redirect(new URL("/veiling/bevestigd?status=ongeldig", url.origin));
   }
 
   const { error: updateError } = await admin
@@ -40,6 +38,12 @@ export async function GET(request: Request) {
     })
     .eq("id", data.id);
 
-  destination.searchParams.set("status", updateError ? "fout" : "bevestigd");
-  return NextResponse.redirect(destination);
+  if (updateError) {
+    return NextResponse.redirect(new URL("/veiling/bevestigd?status=fout", url.origin));
+  }
+
+  const sessionToken = await createVeilingParticipantSession(data.id);
+  const response = NextResponse.redirect(new URL("/veiling/mijn-account?welkom=1", url.origin));
+  response.cookies.set(VEILING_SESSION_COOKIE, sessionToken, veilingSessionCookieOptions());
+  return response;
 }

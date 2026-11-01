@@ -142,3 +142,8 @@ export async function sendVeilingRegistrationMail(recipient: string, message: Ma
   const result = await sendSmtpMail(actualRecipient, message);
   return { ...result, testMode: !value.liveDeliveryEnabled };
 }
+
+
+export async function sendVeilingParticipantMail(recipient: string, message: MailMessage) {
+  return sendVeilingRegistrationMail(recipient, message);
+}

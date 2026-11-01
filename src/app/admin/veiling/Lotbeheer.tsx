@@ -164,7 +164,7 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
     <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(340px,.8fr)]">
       <section>
         <div className="flex items-end justify-between gap-3">
-          <div><h2 className="text-2xl font-extrabold text-primary">Kavels beheren</h2><p className="mt-1 text-sm text-gray-600">Alle wijzigingen blijven in de testveiling.</p></div>
+          <div><h2 className="text-2xl font-extrabold text-primary">Kavels beheren</h2><p className="mt-1 text-sm text-gray-600">Wijzigingen worden direct zichtbaar op de openbare veilingpagina.</p></div>
           <button type="button" onClick={() => { setForm(blank(lots)); setMessage(""); }} className="rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white">+ Nieuwe kavel</button>
         </div>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -228,7 +228,7 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
               ))}
             </div>
           </div>
-          <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={form.active} onChange={e => setForm({ ...form, active: e.target.checked })} /> Zichtbaar in bezoekersvoorbeeld</label>
+          <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><input type="checkbox" checked={form.active} onChange={e => setForm({ ...form, active: e.target.checked })} /> Zichtbaar op de veilingpagina</label>
           {message && <p role="status" className="rounded-lg bg-blue-50 p-3 text-sm text-blue-900">{message}</p>}
           <div className="flex gap-2">
             <button disabled={busy} className="flex-1 rounded-xl bg-primary px-4 py-3 font-extrabold text-white disabled:opacity-50">{busy ? "Bezig…" : "Kavel opslaan"}</button>
@@ -251,7 +251,7 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
               {(preview.sponsor_website || preview.sponsor_facebook || preview.sponsor_instagram) && <div className="mt-3 flex flex-wrap gap-2">{preview.sponsor_website && <a href={preview.sponsor_website} target="_blank" rel="noreferrer" className="rounded-xl border bg-white px-3 py-2 text-sm font-bold text-primary">🌐 Website</a>}{preview.sponsor_facebook && <a href={preview.sponsor_facebook} target="_blank" rel="noreferrer" className="rounded-xl bg-[#1877F2] px-3 py-2 text-sm font-bold text-white">f Facebook</a>}{preview.sponsor_instagram && <a href={preview.sponsor_instagram} target="_blank" rel="noreferrer" className="rounded-xl bg-gradient-to-r from-fuchsia-600 to-orange-500 px-3 py-2 text-sm font-bold text-white">◎ Instagram</a>}</div>}
               <div className="mt-6 rounded-2xl bg-amber-50 p-4">{preview.retail_value !== null && <p className="mb-2 text-sm font-bold text-slate-700">Oorspronkelijke winkelwaarde {retailEuro(preview.retail_value)}</p>}<p className="text-sm text-slate-600">Hoogste bod</p><p className="text-3xl font-extrabold text-primary">{"current_bid" in preview ? euro(preview.current_bid) : euro(preview.start_bid)}</p><button type="button" className="mt-3 w-full rounded-xl bg-amber-400 px-4 py-3 font-extrabold text-primary">Bied mee</button></div>
               <div className="mt-6 border-t pt-5"><h3 className="font-extrabold text-primary">Beschrijving</h3><div className="mt-3 whitespace-pre-wrap leading-relaxed text-slate-700">{preview.description || "De uitgebreide productomschrijving komt hier te staan."}</div></div>
-              <p className="mt-5 text-xs text-slate-500">Bezoekersvoorbeeld · testmodus · er wordt geen bod opgeslagen.</p>
+              <p className="mt-5 text-xs text-slate-500">Bezoekersvoorbeeld · er wordt geen bod opgeslagen.</p>
             </div>
           </div>
         </div>

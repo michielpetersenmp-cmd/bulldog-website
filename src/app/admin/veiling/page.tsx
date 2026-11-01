@@ -14,7 +14,7 @@ export const metadata = { title: "Veiling testen | Websitebeheer", robots: { ind
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
-  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }] = await Promise.all([
+  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }, { data: categories }] = await Promise.all([
     admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,retail_value,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
@@ -25,6 +25,7 @@ export default async function VeilingAdminPage() {
     admin.from("veiling_participant_test_outbox").select("id,participant_id,lot_id,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_participant_test_settings").select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
     admin.from("veiling_participant_test_winners").select("lot_id,participant_id,amount,notified").order("lot_id"),
+    admin.from("veiling_test_categories").select("id,name").order("name"),
   ]);
 
   const lots = await Promise.all((rows || []).map(async lot => {
@@ -61,7 +62,7 @@ export default async function VeilingAdminPage() {
           };
         })}
       />
-      <Lotbeheer initialLots={lots} />
+      <Lotbeheer initialLots={lots} initialCategories={(categories || []) as { id: number; name: string }[]} />
       <Vooraanmeldingen registrations={(registrations || []) as never[]} />
       <Deelnemersbiedingen
         initialRegistrations={(registrations || []).filter(item => item.status === "confirmed") as never[]}

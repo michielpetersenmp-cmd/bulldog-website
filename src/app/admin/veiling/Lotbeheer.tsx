@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 
 type Photo = { path: string; url: string };
+type Category = { id: number; name: string };
 type Lot = {
   id: number;
   lot_number: number;
@@ -37,8 +38,10 @@ function retailEuro(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 }
 
-export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
+export default function Lotbeheer({ initialLots, initialCategories }: { initialLots: Lot[]; initialCategories: Category[] }) {
   const [lots, setLots] = useState(initialLots);
+  const [categories, setCategories] = useState(initialCategories);
+  const [newCategory, setNewCategory] = useState("");
   const [form, setForm] = useState<Form>(() => blank(initialLots));
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -95,6 +98,27 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
       return { ...current, photos, image_url: photos[0]?.path || null, image_urls: photos.map(photo => photo.path) };
     });
     setMessage("Foto is van deze kavel verwijderd. Het bestand blijft in de privéopslag bewaard.");
+  }
+
+  async function addCategory() {
+    const name = newCategory.trim();
+    if (!name) { setMessage("Vul eerst een categorienaam in."); return; }
+    setBusy(true);
+    setMessage("");
+    try {
+      const response = await fetch("/api/admin/veiling-test/categories", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Categorie opslaan is niet gelukt.");
+      const category = result.category as Category;
+      setCategories(current => current.some(item => item.id === category.id) ? current : [...current, category].sort((a, b) => a.name.localeCompare(b.name, "nl")));
+      setForm(current => ({ ...current, category: category.name }));
+      setNewCategory("");
+      setMessage(`Categorie ‘${category.name}’ is opgeslagen en geselecteerd.`);
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Categorie opslaan is niet gelukt.");
+    } finally { setBusy(false); }
   }
 
   async function save(event: FormEvent<HTMLFormElement>) {
@@ -175,8 +199,10 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
           </div>
           <label className="block text-sm font-bold text-slate-700">Winkelwaarde (€) <span className="font-normal text-slate-500">optioneel</span><input type="number" min="0" step="0.01" value={form.retail_value ?? ""} onChange={e => setForm({ ...form, retail_value: e.target.value === "" ? null : Number(e.target.value) })} placeholder="Bijvoorbeeld 59,95" className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Producttitel<input required maxLength={180} value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
-          <label className="block text-sm font-bold text-slate-700">Categorie<input required list="veiling-categorieen" maxLength={80} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Kies of typ een categorie" className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
-          <datalist id="veiling-categorieen"><option value="Voeding & snacks" /><option value="Tuigjes & accessoires" /><option value="Verzorging" /><option value="Wonen & decoratie" /><option value="Kunst & handgemaakt" /><option value="Cadeaubonnen & belevenissen" /><option value="Overig" /></datalist>
+          <div>
+            <label className="block text-sm font-bold text-slate-700">Categorie<select required value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="mt-1 w-full rounded-lg border bg-white px-3 py-2"><option value="">Kies een categorie</option>{categories.map(item => <option key={item.id} value={item.name}>{item.name}</option>)}</select></label>
+            <div className="mt-2 flex gap-2"><input maxLength={80} value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Nieuwe categorie aanmaken" className="min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm" /><button type="button" disabled={busy} onClick={() => void addCategory()} className="rounded-lg border border-primary px-3 py-2 text-sm font-bold text-primary disabled:opacity-50">Toevoegen</button></div>
+          </div>
           <label className="block text-sm font-bold text-slate-700">Uitgebreide beschrijving<textarea rows={6} maxLength={12000} value={form.description || ""} onChange={e => setForm({ ...form, description: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Naam sponsor<input maxLength={180} value={form.sponsor || ""} onChange={e => setForm({ ...form, sponsor: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Website sponsor<input type="text" placeholder="https://..." value={form.sponsor_website || ""} onChange={e => setForm({ ...form, sponsor_website: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>

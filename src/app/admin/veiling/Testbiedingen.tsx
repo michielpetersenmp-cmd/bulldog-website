@@ -36,7 +36,7 @@ export default function Testbiedingen({ initialBidders, lots }: { initialBidders
       setBidderId(created.id);
       setName("");
       setEmail("");
-      setMessage("Testdeelnemer toegevoegd. Er is geen e-mail verstuurd.");
+      setMessage("Testdeelnemer toegevoegd. Er is geen e-mail verstuurd.");\n      window.dispatchEvent(new Event("veiling-test-updated"));
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Testdeelnemer aanmaken is niet gelukt.");
@@ -58,7 +58,7 @@ export default function Testbiedingen({ initialBidders, lots }: { initialBidders
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Testbod plaatsen is niet gelukt.");
-      setMessage("Testbod opgeslagen. Een eventuele melding staat alleen in de testwachtrij.");
+      setMessage("Testbod opgeslagen. Een eventuele melding staat alleen in de testwachtrij.");\n      window.dispatchEvent(new Event("veiling-test-updated"));
       router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Testbod plaatsen is niet gelukt.");

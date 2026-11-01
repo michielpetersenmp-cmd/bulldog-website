@@ -27,7 +27,11 @@ function parse(body: any) {
   const lotNumber = Number(body?.lot_number);
   const startBid = Number(body?.start_bid);
   const title = text(body?.title, 180);
+  const retailValue = body?.retail_value === null || body?.retail_value === "" || body?.retail_value === undefined
+    ? null
+    : Number(body.retail_value);
   if (!Number.isInteger(lotNumber) || lotNumber < 1 || !title || !Number.isInteger(startBid) || startBid < 0) return null;
+  if (retailValue !== null && (!Number.isFinite(retailValue) || retailValue < 0)) return null;
 
   const images: string[] = Array.isArray(body?.image_urls)
     ? Array.from(new Set((body.image_urls as unknown[]).filter((item): item is string => typeof item === "string" && /^kavels\/[a-f0-9-]+\.(jpg|png|webp)$/i.test(item))))
@@ -50,6 +54,7 @@ function parse(body: any) {
     sponsor_facebook: facebook,
     sponsor_instagram: instagram,
     start_bid: startBid,
+    retail_value: retailValue,
     active: body?.active !== false,
     image_url: requestedPrimary,
     image_urls: orderedImages,

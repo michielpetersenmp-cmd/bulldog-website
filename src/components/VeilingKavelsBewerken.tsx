@@ -9,7 +9,6 @@ export default function VeilingKavelsBewerken({lots}:{lots:Lot[]}) {
  const [item,setItem] = useState<Lot|null>(null);
  const [busy,setBusy] = useState(false);
  const [uploading,setUploading] = useState(false);
- const [uploading,setUploading] = useState(false);
  const [message,setMessage] = useState("");
  async function uploadPhoto(file:File) {
   setUploading(true); setMessage("");

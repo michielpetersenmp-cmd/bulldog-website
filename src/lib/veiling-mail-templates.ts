@@ -10,6 +10,22 @@ function layout(title: string, intro: string, content: string, button?: { label:
   return `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="display:none;max-height:0;overflow:hidden">${intro}</div><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">${title}</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px"><div style="border:2px solid #f7c84b;background:#fff9df;padding:12px;border-radius:9px;font-weight:700">TESTMAIL — alleen verzonden naar de eigen mailbox van de stichting.</div><p style="font-size:17px;line-height:1.6">Beste testdeelnemer,</p>${content}${buttonHtml}<p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p><p style="font-size:12px;color:#64748b;margin-top:28px">Deze test verwerkt geen echte deelnemer en wijzigt niets in de meldingenwachtrij.</p></div></div></body></html>`;
 }
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[character] || character));
+}
+
+export function getVeilingRegistrationTemplate(name: string, confirmUrl: string, testMode: boolean) {
+  const safeName = escapeHtml(name);
+  const safeUrl = escapeHtml(confirmUrl);
+  const testNotice = testMode
+    ? '<div style="border:2px solid #f7c84b;background:#fff9df;padding:12px;border-radius:9px;font-weight:700">TESTMODUS — deze mail is alleen naar de eigen mailbox van de stichting gestuurd.</div>'
+    : "";
+  return {
+    subject: testMode ? "[TEST] Bevestig je aanmelding voor de veiling" : "Bevestig je aanmelding voor de Bulldogveiling",
+    html: `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">Bevestig je aanmelding</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px">${testNotice}<p style="font-size:17px;line-height:1.6">Beste ${safeName},</p><p style="font-size:16px;line-height:1.6">Bedankt voor je aanmelding voor onze veiling. Bevestig je e-mailadres zodat we je kunnen laten weten wanneer de veiling begint en je straks veilig kunt bieden.</p><p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#123d63;color:#fff;text-decoration:none;padding:14px 22px;border-radius:9px;font-weight:700">Bevestig mijn e-mailadres</a></p><p style="font-size:14px;line-height:1.6;color:#64748b">Deze bevestigingslink is 48 uur geldig.</p><p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></div></div></body></html>`,
+  };
+}
+
 export function getVeilingTestTemplate(type: VeilingMailTemplateType) {
   if (type === "registration") {
     return {

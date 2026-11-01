@@ -9,7 +9,10 @@ type SmtpSettings = {
   password: string;
   fromName: string;
   testRecipient: string;
+  liveDeliveryEnabled: boolean;
 };
+
+type MailMessage = { subject: string; html: string };
 
 function settings(): SmtpSettings {
   return {
@@ -19,6 +22,7 @@ function settings(): SmtpSettings {
     password: process.env.VEILING_SMTP_PASSWORD || "",
     fromName: (process.env.VEILING_SMTP_FROM_NAME || "Stichting Bulldog Steunfonds Nederland").trim(),
     testRecipient: (process.env.VEILING_TEST_EMAIL || DEFAULT_ADDRESS).trim().toLowerCase(),
+    liveDeliveryEnabled: process.env.VEILING_MAIL_ENABLED === "true",
   };
 }
 
@@ -28,7 +32,7 @@ export function getVeilingMailStatus() {
     configured: Boolean(value.password),
     sender: value.user,
     testRecipient: value.testRecipient,
-    liveDeliveryEnabled: process.env.VEILING_MAIL_ENABLED === "true",
+    liveDeliveryEnabled: value.liveDeliveryEnabled,
   };
 }
 
@@ -40,7 +44,7 @@ function base64Lines(value: string) {
   return Buffer.from(value, "utf8").toString("base64").match(/.{1,76}/g)?.join("\r\n") || "";
 }
 
-export async function sendVeilingTestMail(message?: { subject: string; html: string }) {
+async function sendSmtpMail(recipient: string, message: MailMessage) {
   const value = settings();
   if (!value.password) throw new Error("SMTP_NOT_CONFIGURED");
   if (!Number.isInteger(value.port) || value.port < 1 || value.port > 65535) throw new Error("SMTP_INVALID_PORT");
@@ -100,22 +104,18 @@ export async function sendVeilingTestMail(message?: { subject: string; html: str
     expect(await command(Buffer.from(value.user).toString("base64")), [334]);
     expect(await command(Buffer.from(value.password).toString("base64")), [235]);
     expect(await command(`MAIL FROM:<${value.user}>`), [250]);
-    expect(await command(`RCPT TO:<${value.testRecipient}>`), [250, 251]);
+    expect(await command(`RCPT TO:<${recipient}>`), [250, 251]);
     expect(await command("DATA"), [354]);
 
-    const content = message || {
-      subject: "Testmail veilingsysteem",
-      html: "<p>De beveiligde e-mailverbinding tussen het veilingbeheer en MijnDomein werkt.</p>",
-    };
     const email = [
       `From: ${encodeHeader(value.fromName)} <${value.user}>`,
-      `To: <${value.testRecipient}>`,
-      `Subject: ${encodeHeader(content.subject)}`,
+      `To: <${recipient}>`,
+      `Subject: ${encodeHeader(message.subject)}`,
       "MIME-Version: 1.0",
       'Content-Type: text/html; charset="UTF-8"',
       "Content-Transfer-Encoding: base64",
       "",
-      base64Lines(content.html),
+      base64Lines(message.html),
     ].join("\r\n");
 
     socket.write(email + "\r\n.\r\n");
@@ -125,5 +125,20 @@ export async function sendVeilingTestMail(message?: { subject: string; html: str
   })();
 
   await Promise.race([conversation, connectionError]);
-  return { recipient: value.testRecipient };
+  return { recipient };
+}
+
+export async function sendVeilingTestMail(message?: MailMessage) {
+  const value = settings();
+  return sendSmtpMail(value.testRecipient, message || {
+    subject: "Testmail veilingsysteem",
+    html: "<p>De beveiligde e-mailverbinding tussen het veilingbeheer en MijnDomein werkt.</p>",
+  });
+}
+
+export async function sendVeilingRegistrationMail(recipient: string, message: MailMessage) {
+  const value = settings();
+  const actualRecipient = value.liveDeliveryEnabled ? recipient : value.testRecipient;
+  const result = await sendSmtpMail(actualRecipient, message);
+  return { ...result, testMode: !value.liveDeliveryEnabled };
 }

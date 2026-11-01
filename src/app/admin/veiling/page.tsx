@@ -5,19 +5,21 @@ import Lotbeheer from "./Lotbeheer";
 import VeilingOverzicht from "./VeilingOverzicht";
 import Testbiedingen from "./Testbiedingen";
 import Emailtest from "./Emailtest";
+import Vooraanmeldingen from "./Vooraanmeldingen";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Veiling testen | Websitebeheer", robots: { index: false, follow: false } };
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
-  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }] = await Promise.all([
+  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }] = await Promise.all([
     admin.from("veiling_test_lots")
       .select("id,lot_number,title,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls")
       .order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
     admin.from("veiling_test_outbox").select("id,event_type,bidder_id,lot_id,delivered,created_at").order("created_at", { ascending: false }).limit(50),
+    admin.from("veiling_preregistrations").select("id,name,email,status,created_at,confirmed_at").order("created_at", { ascending: false }).limit(500),
   ]);
 
   const lots = await Promise.all((rows || []).map(async lot => {
@@ -42,14 +44,18 @@ export default async function VeilingAdminPage() {
     <AdminNav />
     <main className="mx-auto max-w-7xl px-4 py-8">
       <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-amber-900">
-        <strong>Veiling in testmodus.</strong> Alleen beschikbaar achter het bestaande websitebeheer. Er worden geen echte meldingen verstuurd en publiceren staat uit.
+        <strong>Veiling in testmodus.</strong> Alleen beschikbaar achter het bestaande websitebeheer. Echte deelnemers worden nog niet gemaild en publiceren staat uit.
       </div>
       <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
-        <div><p className="text-sm font-bold uppercase tracking-widest text-amber-700">Stichting Bulldog Steunfonds Nederland</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Veilingbeheer</h1><p className="mt-2 text-gray-600">Beheer kavels, foto’s en sponsorinformatie voor het afgeschermde voorbeeld.</p></div>
-        <Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Bekijk bezoekersvoorbeeld →</Link>
+        <div><p className="text-sm font-bold uppercase tracking-widest text-amber-700">Stichting Bulldog Steunfonds Nederland</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Veilingbeheer</h1><p className="mt-2 text-gray-600">Beheer kavels, foto’s, sponsorinformatie en vooraanmeldingen.</p></div>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/veiling" target="_blank" className="rounded-xl border border-primary bg-white px-5 py-3 font-bold text-primary">Nieuwe bezoekerspagina ↗</Link>
+          <Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Testbiedingen bekijken →</Link>
+        </div>
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
       <Lotbeheer initialLots={lots} />
+      <Vooraanmeldingen registrations={(registrations || []) as never[]} />
       <VeilingOverzicht bidders={bidders || []} bids={bids || []} lots={rows || []} outbox={outbox || []} />
       <Testbiedingen initialBidders={bidders || []} lots={(rows || []).map(lot => ({ id: lot.id, lot_number: lot.lot_number, title: lot.title, current_bid: lot.current_bid, active: lot.active, closes_at: lot.closes_at }))} />
       <Emailtest />

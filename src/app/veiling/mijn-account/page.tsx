@@ -18,11 +18,12 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
   if (!participant) redirect("/veiling/inloggen");
 
   const admin = getSupabaseAdmin();
-  const [{ data: bids }, { data: states }, { data: lots }, { data: settings }] = await Promise.all([
+  const [{ data: bids }, { data: states }, { data: lots }, { data: settings }, { data: winners }] = await Promise.all([
     admin.from("veiling_participant_test_bids").select("id,lot_id,amount,created_at").eq("participant_id", participant.id).order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_participant_test_lot_state").select("lot_id,current_bidder_id,current_bid"),
     admin.from("veiling_test_lots").select("id,lot_number,title").order("lot_number"),
-    admin.from("veiling_participant_test_settings").select("bidding_enabled").eq("id", true).maybeSingle(),
+    admin.from("veiling_participant_test_settings").select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
+    admin.from("veiling_participant_test_winners").select("lot_id,amount").eq("participant_id", participant.id),
   ]);
   const lotById = new Map((lots || []).map(lot => [Number(lot.id), lot]));
   const stateByLot = new Map((states || []).map(state => [Number(state.lot_id), state]));
@@ -46,12 +47,12 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
           </form>
         </div>
 
-        {settings?.bidding_enabled && <p className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 font-semibold text-amber-950"><strong>Proefbieden is actief.</strong> Deze biedingen zijn alleen om de werking te testen en tellen niet mee bij de echte veiling.</p>}
+        {settings?.bidding_enabled && <p className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 font-semibold text-amber-950"><strong>Proefbieden is actief.</strong> Deze biedingen zijn alleen om de werking te testen en tellen niet mee bij de echte veiling.</p>}{settings?.closed_at && <p className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 font-semibold text-green-800"><strong>De proefveiling is afgesloten.</strong> Je hebt {winners?.length || 0} proefkavel(s) gewonnen.</p>}
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Accountstatus</p><p className="mt-2 text-xl font-extrabold text-green-700">E-mailadres bevestigd</p></section>
           <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Kavels waarop ik bood</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{ownLotBids.length}</p><p className="mt-1 text-xs text-slate-500">{bids?.length || 0} bod(en) geplaatst</p></section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Nu hoogste bieder</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{leadingLots.size}</p></section>
+          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">{settings?.closed_at ? "Gewonnen proefkavels" : "Nu hoogste bieder"}</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{settings?.closed_at ? (winners?.length || 0) : leadingLots.size}</p></section>
         </div>
 
         {ownLotBids.length > 0 && <section className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white">

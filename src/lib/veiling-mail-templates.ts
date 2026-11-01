@@ -98,3 +98,30 @@ export function getVeilingOutbidTemplate(
     html: `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">Je bent overboden</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px">${testNotice}<p style="font-size:17px;line-height:1.6">Beste ${safeName},</p><p style="font-size:16px;line-height:1.6">Op <strong>kavel ${formattedLot} · ${safeTitle}</strong> is een hoger bod geplaatst. Het hoogste bod is nu <strong>${formattedAmount}</strong>. Wil je nog kans maken? Je kunt direct terug naar de veiling.</p><p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#123d63;color:#fff;text-decoration:none;padding:14px 22px;border-radius:9px;font-weight:700">Bied opnieuw</a></p><p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></div></div></body></html>`,
   };
 }
+
+
+export function getVeilingWinnerTemplate(
+  name: string,
+  lotNumber: number,
+  title: string,
+  amount: number,
+  accountUrl: string,
+  testMode: boolean
+) {
+  const safeName = escapeHtml(name);
+  const safeTitle = escapeHtml(title);
+  const safeUrl = escapeHtml(accountUrl);
+  const formattedLot = String(lotNumber).padStart(3, "0");
+  const formattedAmount = new Intl.NumberFormat("nl-NL", {
+    style: "currency", currency: "EUR", maximumFractionDigits: 0,
+  }).format(amount);
+  const testNotice = testMode
+    ? '<div style="border:2px solid #f7c84b;background:#fff9df;padding:12px;border-radius:9px;font-weight:700">TESTMODUS — deze winnaar-mail is alleen naar de eigen mailbox van de stichting gestuurd.</div>'
+    : "";
+  return {
+    subject: testMode
+      ? `[TEST] Gefeliciteerd, je hebt kavel ${formattedLot} gewonnen`
+      : `Gefeliciteerd, je hebt kavel ${formattedLot} gewonnen`,
+    html: `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">Gefeliciteerd!</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px">${testNotice}<p style="font-size:17px;line-height:1.6">Beste ${safeName},</p><p style="font-size:16px;line-height:1.6">Je bent de winnaar van <strong>kavel ${formattedLot} · ${safeTitle}</strong> met een eindbod van <strong>${formattedAmount}</strong>. Binnenkort ontvang je informatie over betaling en het ontvangen van je kavel.</p><p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#123d63;color:#fff;text-decoration:none;padding:14px 22px;border-radius:9px;font-weight:700">Bekijk Mijn veiling</a></p><p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></div></div></body></html>`,
+  };
+}

@@ -7,13 +7,14 @@ import Testbiedingen from "./Testbiedingen";
 import Emailtest from "./Emailtest";
 import Vooraanmeldingen from "./Vooraanmeldingen";
 import Deelnemersbiedingen from "./Deelnemersbiedingen";
+import VeilingTestStatus from "./VeilingTestStatus";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Veiling testen | Websitebeheer", robots: { index: false, follow: false } };
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
-  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }] = await Promise.all([
+  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }] = await Promise.all([
     admin.from("veiling_test_lots").select("id,lot_number,title,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
@@ -22,6 +23,8 @@ export default async function VeilingAdminPage() {
     admin.from("veiling_participant_test_bids").select("id,lot_id,participant_id,amount,created_at").order("created_at", { ascending: false }).limit(200),
     admin.from("veiling_participant_test_lot_state").select("lot_id,current_bidder_id,current_bid"),
     admin.from("veiling_participant_test_outbox").select("id,participant_id,lot_id,created_at").order("created_at", { ascending: false }).limit(100),
+    admin.from("veiling_participant_test_settings").select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
+    admin.from("veiling_participant_test_winners").select("lot_id,participant_id,amount,notified").order("lot_id"),
   ]);
 
   const lots = await Promise.all((rows || []).map(async lot => {
@@ -45,6 +48,19 @@ export default async function VeilingAdminPage() {
         <div className="flex flex-wrap gap-3"><Link href="/veiling" target="_blank" className="rounded-xl border border-primary bg-white px-5 py-3 font-bold text-primary">Bezoekerspagina ↗</Link><Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Oude testbiedingen →</Link></div>
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
+      <VeilingTestStatus
+        initialEnabled={Boolean(testSettings?.bidding_enabled)}
+        initialClosedAt={testSettings?.closed_at || null}
+        initialWinners={(testWinners || []).map(winner => {
+          const participant = (registrations || []).find(item => item.id === winner.participant_id);
+          const lot = (rows || []).find(item => Number(item.id) === Number(winner.lot_id));
+          return {
+            lot_id: Number(winner.lot_id), lot_number: Number(lot?.lot_number || 0),
+            title: lot?.title || "Kavel", participant_name: participant?.name || "Onbekend",
+            participant_email: participant?.email || "", amount: Number(winner.amount), notified: Boolean(winner.notified),
+          };
+        })}
+      />
       <Lotbeheer initialLots={lots} />
       <Vooraanmeldingen registrations={(registrations || []) as never[]} />
       <Deelnemersbiedingen

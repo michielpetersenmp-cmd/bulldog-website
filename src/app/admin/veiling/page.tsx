@@ -10,10 +10,11 @@ import Deelnemersbiedingen from "./Deelnemersbiedingen";
 import VeilingTestStatus from "./VeilingTestStatus";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Veiling testen | Websitebeheer", robots: { index: false, follow: false } };
+export const metadata = { title: "Veilingbeheer | Websitebeheer", robots: { index: false, follow: false } };
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
+  const isProduction = process.env.VERCEL_ENV === "production";
   const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }, { data: categories }] = await Promise.all([
     admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,retail_value,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
@@ -43,12 +44,13 @@ export default async function VeilingAdminPage() {
   return <div className="min-h-screen bg-bg">
     <AdminNav />
     <main className="mx-auto max-w-7xl px-4 py-8">
-      <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-amber-900"><strong>Veiling in testmodus.</strong> Proefbiedingen vanuit deelnemersaccounts staan aan. Ze blijven apart en er worden geen echte overbodenmails verzonden.</div>
+      {!isProduction && <div className="rounded-2xl border border-amber-300 bg-amber-50 p-5 text-amber-900"><strong>Veiling in testmodus.</strong> Proefbiedingen vanuit deelnemersaccounts staan aan. Ze blijven apart en er worden geen echte overbodenmails verzonden.</div>}
       <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
-        <div><p className="text-sm font-bold uppercase tracking-widest text-amber-700">Stichting Bulldog Steunfonds Nederland</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Veilingbeheer</h1><p className="mt-2 text-gray-600">Beheer kavels, foto’s, sponsorinformatie, vooraanmeldingen en proefbiedingen.</p></div>
-        <div className="flex flex-wrap gap-3"><Link href="/veiling" target="_blank" className="rounded-xl border border-primary bg-white px-5 py-3 font-bold text-primary">Bezoekerspagina ↗</Link><Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Oude testbiedingen →</Link></div>
+        <div><p className="text-sm font-bold uppercase tracking-widest text-amber-700">Stichting Bulldog Steunfonds Nederland</p><h1 className="mt-2 text-3xl font-extrabold text-primary">Veilingbeheer</h1><p className="mt-2 text-gray-600">{isProduction ? "Beheer kavels, foto’s, sponsorinformatie en aanmeldingen." : "Beheer kavels, foto’s, sponsorinformatie, vooraanmeldingen en proefbiedingen."}</p></div>
+        <div className="flex flex-wrap gap-3"><Link href="/veiling" target="_blank" className="rounded-xl border border-primary bg-white px-5 py-3 font-bold text-primary">Bezoekerspagina ↗</Link>{!isProduction && <Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Oude testbiedingen →</Link>}</div>
       </div>
-      {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
+      {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de kavels niet ophalen. Controleer de databaseverbinding.</p>}
+      {!isProduction && <>
       <VeilingTestStatus
         initialEnabled={Boolean(testSettings?.bidding_enabled)}
         initialClosedAt={testSettings?.closed_at || null}
@@ -62,8 +64,10 @@ export default async function VeilingAdminPage() {
           };
         })}
       />
+      </>}
       <Lotbeheer initialLots={lots} initialCategories={(categories || []) as { id: number; name: string }[]} />
       <Vooraanmeldingen registrations={(registrations || []) as never[]} />
+      {!isProduction && <>
       <Deelnemersbiedingen
         initialRegistrations={(registrations || []).filter(item => item.status === "confirmed") as never[]}
         initialLots={(rows || []).map(item => ({ id: item.id, lot_number: item.lot_number, title: item.title }))}
@@ -74,6 +78,7 @@ export default async function VeilingAdminPage() {
       <VeilingOverzicht bidders={bidders || []} bids={bids || []} lots={rows || []} outbox={outbox || []} />
       <Testbiedingen initialBidders={bidders || []} lots={(rows || []).map(lot => ({ id: lot.id, lot_number: lot.lot_number, title: lot.title, current_bid: lot.current_bid, active: lot.active, closes_at: lot.closes_at }))} />
       <Emailtest />
+      </>}
     </main>
   </div>;
 }

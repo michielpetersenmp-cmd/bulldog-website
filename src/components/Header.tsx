@@ -19,6 +19,7 @@ const navLinks = [
       { href: "/shop", label: "🛍️ Shop", external: true },
     ],
   },
+  { href: "/veiling", label: "Veiling" },
   { href: "/blog", label: "Blog" },
   { href: "/updates", label: "Updates" },
   { href: "/boek", label: "Boek" },

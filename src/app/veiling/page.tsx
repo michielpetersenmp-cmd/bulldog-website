@@ -13,7 +13,7 @@ export const metadata = {
 export default async function VeilingPage() {
   const admin = getSupabaseAdmin();
   const [lots, participant, settingsResult] = await Promise.all([
-    getVeilingTestLots(),
+    getVeilingTestLots(process.env.VERCEL_ENV !== "production"),
     getCurrentVeilingParticipant(),
     admin.from("veiling_participant_test_settings").select("bidding_enabled").eq("id", true).maybeSingle(),
   ]);

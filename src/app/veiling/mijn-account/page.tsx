@@ -25,11 +25,15 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
     admin.from("veiling_participant_test_settings").select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
     admin.from("veiling_participant_test_winners").select("lot_id,amount").eq("participant_id", participant.id),
   ]);
+  const isProduction = process.env.VERCEL_ENV === "production";
+  const accountBids = isProduction ? [] : (bids || []);
+  const accountSettings = isProduction ? null : settings;
+  const accountWinners = isProduction ? [] : (winners || []);
   const lotById = new Map((lots || []).map(lot => [Number(lot.id), lot]));
   const stateByLot = new Map((states || []).map(state => [Number(state.lot_id), state]));
-  const leadingLots = new Set((states || []).filter(state => state.current_bidder_id === participant.id).map(state => Number(state.lot_id)));
+  const leadingLots = new Set((isProduction ? [] : (states || [])).filter(state => state.current_bidder_id === participant.id).map(state => Number(state.lot_id)));
   const latestByLot = new Map<number, { id: number; lot_id: number; amount: number; created_at: string }>();
-  for (const bid of bids || []) if (!latestByLot.has(Number(bid.lot_id))) latestByLot.set(Number(bid.lot_id), bid);
+  for (const bid of accountBids) if (!latestByLot.has(Number(bid.lot_id))) latestByLot.set(Number(bid.lot_id), bid);
   const ownLotBids = Array.from(latestByLot.values());
 
   return (
@@ -47,13 +51,13 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
           </form>
         </div>
 
-        {settings?.bidding_enabled && <p className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 font-semibold text-amber-950"><strong>Proefbieden is actief.</strong> Deze biedingen zijn alleen om de werking te testen en tellen niet mee bij de echte veiling.</p>}{settings?.closed_at && <p className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 font-semibold text-green-800"><strong>De proefveiling is afgesloten.</strong> Je hebt {winners?.length || 0} proefkavel(s) gewonnen.</p>}
+        {accountSettings?.bidding_enabled && <p className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 font-semibold text-amber-950"><strong>Proefbieden is actief.</strong> Deze biedingen zijn alleen om de werking te testen en tellen niet mee bij de echte veiling.</p>}{accountSettings?.closed_at && <p className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 font-semibold text-green-800"><strong>De proefveiling is afgesloten.</strong> Je hebt {accountWinners.length} proefkavel(s) gewonnen.</p>}
         <p className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700"><strong className="text-[#183651]">Verzendkosten binnen Nederland € 6,95.</strong> Voor verzending naar België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Accountstatus</p><p className="mt-2 text-xl font-extrabold text-green-700">E-mailadres bevestigd</p></section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Kavels waarop ik bood</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{ownLotBids.length}</p><p className="mt-1 text-xs text-slate-500">{bids?.length || 0} bod(en) geplaatst</p></section>
-          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">{settings?.closed_at ? "Gewonnen proefkavels" : "Nu hoogste bieder"}</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{settings?.closed_at ? (winners?.length || 0) : leadingLots.size}</p></section>
+          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Kavels waarop ik bood</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{ownLotBids.length}</p><p className="mt-1 text-xs text-slate-500">{accountBids.length} bod(en) geplaatst</p></section>
+          <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">{accountSettings?.closed_at ? "Gewonnen proefkavels" : "Nu hoogste bieder"}</p><p className="mt-2 text-3xl font-extrabold text-[#183651]">{accountSettings?.closed_at ? (accountWinners.length) : leadingLots.size}</p></section>
         </div>
 
         {ownLotBids.length > 0 && <section className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white">
@@ -67,9 +71,9 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
         </section>}
 
         <section className="mt-6 rounded-3xl bg-[#183651] p-6 text-white sm:p-8">
-          <p className="text-sm font-bold text-amber-300">{settings?.bidding_enabled ? "Proefbieden staat nu aan" : "De veiling begint op 15 november 2026"}</p>
-          <h2 className="mt-2 text-2xl font-extrabold">{settings?.bidding_enabled ? "Test het bieden op een kavel" : "Bekijk nu alvast alle kavels"}</h2>
-          <p className="mt-2 max-w-2xl text-blue-100">{settings?.bidding_enabled ? "Open een kavel, plaats een proefbod en controleer hier direct of je nog het hoogste bod hebt." : "Zodra de veiling begint kun je vanuit dit account bieden en zie je hier direct of je nog het hoogste bod hebt."}</p>
+          <p className="text-sm font-bold text-amber-300">{accountSettings?.bidding_enabled ? "Proefbieden staat nu aan" : "De veiling begint op 15 november 2026"}</p>
+          <h2 className="mt-2 text-2xl font-extrabold">{accountSettings?.bidding_enabled ? "Test het bieden op een kavel" : "Bekijk nu alvast alle kavels"}</h2>
+          <p className="mt-2 max-w-2xl text-blue-100">{accountSettings?.bidding_enabled ? "Open een kavel, plaats een proefbod en controleer hier direct of je nog het hoogste bod hebt." : "Zodra de veiling begint kun je vanuit dit account bieden en zie je hier direct of je nog het hoogste bod hebt."}</p>
           <Link href="/veiling#kavels" className="mt-5 inline-block rounded-xl bg-amber-400 px-5 py-3 font-extrabold text-[#183651]">Bekijk de kavels</Link>
         </section>
       </div>

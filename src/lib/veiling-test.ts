@@ -4,6 +4,7 @@ export type VeilingTestLot = {
   id: number;
   lot_number: number;
   title: string;
+  category: string;
   sponsor: string | null;
   sponsor_website: string | null;
   sponsor_facebook: string | null;
@@ -24,7 +25,7 @@ export async function getVeilingTestLots(): Promise<VeilingTestLot[]> {
   const [{ data, error }, { data: states, error: stateError }] = await Promise.all([
     admin
       .from("veiling_test_lots")
-      .select("id,lot_number,title,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,description,start_bid,current_bid,bid_count,active,closes_at,image_url,image_urls")
+      .select("id,lot_number,title,category,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,description,start_bid,current_bid,bid_count,active,closes_at,image_url,image_urls")
       .order("lot_number", { ascending: true }),
     admin
       .from("veiling_participant_test_lot_state")

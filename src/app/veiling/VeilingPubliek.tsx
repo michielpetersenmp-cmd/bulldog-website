@@ -42,9 +42,10 @@ export default function VeilingPubliek({ lots }: { lots: Lot[] }) {
 
   async function register(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setSending(true);
     setResult(null);
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/veiling/aanmelden", {
         method: "POST",
@@ -65,7 +66,7 @@ export default function VeilingPubliek({ lots }: { lots: Lot[] }) {
             ? "Testaanmelding opgeslagen. De bevestigingsmail is naar de mailbox van de stichting gestuurd."
             : "Gelukt! Open de bevestigingsmail die we je zojuist hebben gestuurd.",
       });
-      event.currentTarget.reset();
+      formElement.reset();
     } catch (error) {
       setResult({ type: "error", text: error instanceof Error ? error.message : "Aanmelden is niet gelukt." });
     } finally {

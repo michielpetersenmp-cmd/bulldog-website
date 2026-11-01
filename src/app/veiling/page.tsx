@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Bulldogveiling",
   description: "Bekijk de kavels van de Bulldogveiling en meld je aan zodat je de start niet mist.",
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
 };
 
 export default async function VeilingPage() {

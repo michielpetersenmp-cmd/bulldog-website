@@ -15,7 +15,7 @@ export const metadata = { title: "Veiling testen | Websitebeheer", robots: { ind
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
   const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }] = await Promise.all([
-    admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
+    admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,retail_value,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
     admin.from("veiling_test_outbox").select("id,event_type,bidder_id,lot_id,delivered,created_at").order("created_at", { ascending: false }).limit(50),

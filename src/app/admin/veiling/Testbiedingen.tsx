@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 type TestBidder = { id: string; name: string; email: string };
 type TestLot = { id: number; lot_number: number; title: string; current_bid: number; active: boolean; closes_at: string };
+type FormFeedback = { text: string; tone: "success" | "error" } | null;
 
 export default function Testbiedingen({ initialBidders, lots: initialLots }: { initialBidders: TestBidder[]; lots: TestLot[] }) {
   const router = useRouter();
@@ -28,7 +29,8 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
   const selectedLot = availableLots.find(lot => String(lot.id) === lotId);
   const [amount, setAmount] = useState(String((selectedLot?.current_bid || 0) + 1));
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState("");
+  const [participantFeedback, setParticipantFeedback] = useState<FormFeedback>(null);
+  const [bidFeedback, setBidFeedback] = useState<FormFeedback>(null);
 
   useEffect(() => {
     if (selectedLot && Number(amount) <= selectedLot.current_bid) {
@@ -39,7 +41,7 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
   async function createBidder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
-    setMessage("");
+    setParticipantFeedback(null);
     try {
       const response = await fetch("/api/admin/veiling-test/bidders", {
         method: "POST",
@@ -53,11 +55,11 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
       setBidderId(created.id);
       setName("");
       setEmail("");
-      setMessage("Testdeelnemer toegevoegd. Er is geen e-mail verstuurd.");
+      setParticipantFeedback({ text: "Testdeelnemer toegevoegd. Er is geen e-mail verstuurd.", tone: "success" });
       window.dispatchEvent(new Event("veiling-test-updated"));
       router.refresh();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Testdeelnemer aanmaken is niet gelukt.");
+      setParticipantFeedback({ text: error instanceof Error ? error.message : "Testdeelnemer aanmaken is niet gelukt.", tone: "error" });
     } finally {
       setBusy(false);
     }
@@ -67,7 +69,7 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
     event.preventDefault();
     if (!bidderId || !lotId) return;
     setBusy(true);
-    setMessage("");
+    setBidFeedback(null);
     try {
       const response = await fetch("/api/admin/veiling-test/bid", {
         method: "POST",
@@ -76,11 +78,11 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Testbod plaatsen is niet gelukt.");
-      setMessage("Testbod opgeslagen. Een eventuele melding staat alleen in de testwachtrij.");
+      setBidFeedback({ text: "Testbod opgeslagen. Een eventuele melding staat alleen in de testwachtrij.", tone: "success" });
       window.dispatchEvent(new Event("veiling-test-updated"));
       router.refresh();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Testbod plaatsen is niet gelukt.");
+      setBidFeedback({ text: error instanceof Error ? error.message : "Testbod plaatsen is niet gelukt.", tone: "error" });
     } finally {
       setBusy(false);
     }
@@ -95,6 +97,7 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
           <h3 className="font-bold text-primary">Testdeelnemer toevoegen</h3>
           <label className="block text-sm font-semibold">Naam<input required maxLength={180} value={name} onChange={e => setName(e.target.value)} className="mt-1 w-full rounded-lg border bg-white px-3 py-2" /></label>
           <label className="block text-sm font-semibold">Test-e-mailadres<input required type="email" maxLength={254} value={email} onChange={e => setEmail(e.target.value)} className="mt-1 w-full rounded-lg border bg-white px-3 py-2" /></label>
+          {participantFeedback && <p role={participantFeedback.tone === "error" ? "alert" : "status"} aria-live={participantFeedback.tone === "error" ? "assertive" : "polite"} className={`rounded-lg border px-4 py-3 text-sm font-semibold ${participantFeedback.tone === "error" ? "border-red-300 bg-red-50 text-red-900" : "border-green-300 bg-green-50 text-green-900"}`}>{participantFeedback.text}</p>}
           <button type="submit" disabled={busy} className="rounded-lg bg-primary px-4 py-2 font-bold text-white disabled:opacity-50">{busy ? "Bezig…" : "Testdeelnemer toevoegen"}</button>
           <p className="text-xs text-slate-500">Gebruik testadressen zoals test1@example.com. Deze testregistratie controleert geen e-mailadres.</p>
         </form>
@@ -103,10 +106,10 @@ export default function Testbiedingen({ initialBidders, lots: initialLots }: { i
           <label className="block text-sm font-semibold">Deelnemer<select required value={bidderId} onChange={e => setBidderId(e.target.value)} className="mt-1 w-full rounded-lg border bg-white px-3 py-2"><option value="">Kies een testdeelnemer</option>{bidders.map(bidder => <option key={bidder.id} value={bidder.id}>{bidder.name} · {bidder.email}</option>)}</select></label>
           <label className="block text-sm font-semibold">Kavel<select required value={lotId} onChange={e => { setLotId(e.target.value); const lot = availableLots.find(item => String(item.id) === e.target.value); if (lot) setAmount(String(lot.current_bid + 1)); }} className="mt-1 w-full rounded-lg border bg-white px-3 py-2"><option value="">Kies een open testkavel</option>{availableLots.map(lot => <option key={lot.id} value={lot.id}>Kavel {String(lot.lot_number).padStart(3, "0")} · {lot.title} · huidig bod {lot.current_bid}</option>)}</select></label>
           <label className="block text-sm font-semibold">Testbod (€)<input required type="number" min={(selectedLot?.current_bid || 0) + 1} step="1" value={amount} onChange={e => setAmount(e.target.value)} className="mt-1 w-full rounded-lg border bg-white px-3 py-2" /></label>
+          {bidFeedback && <p role={bidFeedback.tone === "error" ? "alert" : "status"} aria-live={bidFeedback.tone === "error" ? "assertive" : "polite"} className={`rounded-lg border-2 px-4 py-3 text-base font-bold shadow-sm ${bidFeedback.tone === "error" ? "border-red-400 bg-red-50 text-red-950" : "border-green-400 bg-green-50 text-green-950"}`}>{bidFeedback.text}</p>}
           <button type="submit" disabled={busy || !bidderId || !lotId} className="rounded-lg bg-amber-400 px-4 py-2 font-extrabold text-primary disabled:opacity-50">{busy ? "Bezig…" : "Testbod opslaan"}</button>
         </form>
       </div>
-      {message && <p role="status" className="mt-4 rounded-lg bg-blue-50 p-3 text-sm text-blue-900">{message}</p>}
     </section>
   );
 }

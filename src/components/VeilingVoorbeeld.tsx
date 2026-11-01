@@ -67,10 +67,10 @@ export default function VeilingVoorbeeld({ lots }: { lots: Lot[] }) {
           {filtered.map(lot => (
             <article key={lot.id} className="overflow-hidden rounded-2xl border border-[#e5dfd3] bg-white shadow-[0_5px_22px_rgba(24,54,81,0.08)] transition-shadow hover:shadow-lg">
               <div className="relative flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-[#f2e9d7] via-[#faf7ef] to-[#dce7e8]">
-                {lot.image_preview_url ? <img src={lot.image_preview_url} alt={lot.title} className="h-full w-full object-cover" /> : {lot.image_url ? <img src={lot.image_url} alt={lot.title} className="h-full w-full object-cover" /> : <div className="text-center text-[#183651]">
+                {lot.image_preview_url ? <img src={lot.image_preview_url} alt={lot.title} className="h-full w-full object-cover" /> : lot.image_url ? <img src={lot.image_url} alt={lot.title} className="h-full w-full object-cover" /> : <div className="text-center text-[#183651]">
                   <span className="block text-3xl sm:text-5xl" aria-hidden="true">🐾</span>
                   <span className="mt-2 block text-[10px] font-bold uppercase tracking-wider sm:text-xs">Foto volgt</span>
-                </div>}}
+                </div>}
               </div>
               <div className="p-3 sm:p-5">
                 <p className="text-[10px] font-extrabold uppercase tracking-widest text-[#a47c38] sm:text-xs">Kavel {String(lot.lot_number).padStart(3,"0")}</p>

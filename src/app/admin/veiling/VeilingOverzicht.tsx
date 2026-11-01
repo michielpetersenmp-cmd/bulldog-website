@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 type Bidder = { id: string; name: string; email: string; created_at: string };
 type Bid = { id: number; lot_id: number; bidder_id: string; amount: number; created_at: string };
 type Lot = { id: number; lot_number: number; title: string; current_bid: number; current_bidder_id: string | null; closes_at: string };
@@ -11,14 +15,49 @@ function money(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
 }
 
-export default function VeilingOverzicht({ bidders, bids, lots, outbox }: Props) {
+export default function VeilingOverzicht({ bidders: initialBidders, bids: initialBids, lots: initialLots, outbox: initialOutbox }: Props) {
+  const [bidders, setBidders] = useState(initialBidders);
+  const [bids, setBids] = useState(initialBids);
+  const [lots, setLots] = useState(initialLots);
+  const [outbox, setOutbox] = useState(initialOutbox);
+  const [refreshError, setRefreshError] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function refreshOverview() {
+      try {
+        const response = await fetch("/api/admin/veiling-test/overview", { cache: "no-store" });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || "Testoverzicht vernieuwen is niet gelukt.");
+        if (!active) return;
+        setBidders(Array.isArray(result.bidders) ? result.bidders : []);
+        setBids(Array.isArray(result.bids) ? result.bids : []);
+        setLots(Array.isArray(result.lots) ? result.lots : []);
+        setOutbox(Array.isArray(result.outbox) ? result.outbox : []);
+        setRefreshError("");
+      } catch (error) {
+        if (active) {
+          setRefreshError(error instanceof Error ? error.message : "Testoverzicht vernieuwen is niet gelukt.");
+        }
+      }
+    }
+
+    const handleTestDataUpdated = () => { void refreshOverview(); };
+    void refreshOverview();
+    window.addEventListener("veiling-test-updated", handleTestDataUpdated);
+    return () => {
+      active = false;
+      window.removeEventListener("veiling-test-updated", handleTestDataUpdated);
+    };
+  }, []);
   const bidderById = new Map<string, Bidder>();
   for (const bidder of bidders) bidderById.set(bidder.id, bidder);
   const lotById = new Map<number, Lot>();
   for (const lot of lots) lotById.set(lot.id, lot);
   const closedLots = lots.filter(lot => new Date(lot.closes_at).getTime() <= Date.now());
   return (
-    <section className="mt-10 space-y-8">
+    <section className="mt-10 space-y-8">\n      {refreshError && <p role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-800">{refreshError}</p>}
       <div>
         <div><h2 className="text-2xl font-extrabold text-primary">Deelnemers, biedingen en uitslag</h2><p className="mt-1 text-sm text-slate-600">Alle gegevens hieronder zijn testgegevens. E-mailmeldingen worden niet verzonden.</p></div>
         <div className="mt-4 grid gap-6 xl:grid-cols-2">

@@ -12,8 +12,10 @@ function money(value: number) {
 }
 
 export default function VeilingOverzicht({ bidders, bids, lots, outbox }: Props) {
-  const bidderById = new Map(bidders.map(bidder => [bidder.id, bidder]));
-  const lotById = new Map(lots.map(lot => [lot.id, lot]));
+  const bidderById = new Map<string, Bidder>();
+  for (const bidder of bidders) bidderById.set(bidder.id, bidder);
+  const lotById = new Map<number, Lot>();
+  for (const lot of lots) lotById.set(lot.id, lot);
   const closedLots = lots.filter(lot => new Date(lot.closes_at).getTime() <= Date.now());
   return (
     <section className="mt-10 space-y-8">

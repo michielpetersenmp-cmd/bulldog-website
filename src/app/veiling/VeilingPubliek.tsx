@@ -4,7 +4,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Photo = { path: string; url: string };
 type Lot = {
-  id: number; lot_number: number; title: string; sponsor: string | null;
+  id: number; lot_number: number; title: string; category: string; sponsor: string | null;
   sponsor_website: string | null; sponsor_facebook: string | null; sponsor_instagram: string | null;
   description: string | null; start_bid: number; current_bid: number; bid_count: number;
   active: boolean; closes_at: string; photos: Photo[];
@@ -20,6 +20,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
   const [liveLots, setLiveLots] = useState(lots);
   const [biddingEnabled, setBiddingEnabled] = useState(initialBiddingEnabled);
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("Alle categorieën");
   const [selected, setSelected] = useState<Lot | null>(null);
   const [heroPhoto, setHeroPhoto] = useState("");
   const [bidAmount, setBidAmount] = useState("");
@@ -28,9 +29,17 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<{ type: "ok" | "error"; text: string } | null>(null);
 
+  const categories = useMemo(
+    () => Array.from(new Set(liveLots.filter(lot => lot.active).map(lot => lot.category || "Overig"))).sort((a, b) => a.localeCompare(b, "nl")),
+    [liveLots]
+  );
   const visibleLots = useMemo(
-    () => liveLots.filter(lot => lot.active && [lot.title, lot.sponsor || "", lot.description || ""].join(" ").toLowerCase().includes(search.toLowerCase())),
-    [liveLots, search]
+    () => liveLots.filter(lot =>
+      lot.active &&
+      (category === "Alle categorieën" || (lot.category || "Overig") === category) &&
+      [lot.title, lot.category || "", lot.sponsor || "", lot.description || ""].join(" ").toLowerCase().includes(search.toLowerCase())
+    ),
+    [liveLots, search, category]
   );
 
   useEffect(() => {
@@ -139,7 +148,10 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
       <section id="kavels" className="mx-auto max-w-7xl px-3 py-10 sm:px-5 sm:py-14">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div><p className="text-xs font-bold uppercase tracking-widest text-amber-700 sm:text-sm">{biddingEnabled ? "Proefbieden actief" : "Alvast rondkijken"}</p><h2 className="mt-2 text-3xl font-extrabold text-[#183651]">Kavels in deze veiling</h2><p className="mt-2 text-sm text-slate-600">{biddingEnabled ? "Open een kavel om een proefbod te plaatsen. Minimaal € 1 hoger dan het huidige bod." : "Je kunt de kavels bekijken. Bieden wordt actief zodra de veiling begint."}</p></div>
-          <label className="block w-full text-sm font-semibold text-[#183651] sm:w-auto">Zoek een kavel<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Naam of sponsor..." className="mt-1 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 sm:min-w-[260px]" /></label>
+          <div className="grid w-full gap-3 sm:w-auto sm:grid-cols-2">
+            <label className="block text-sm font-semibold text-[#183651]">Categorie<select value={category} onChange={event => setCategory(event.target.value)} className="mt-1 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900"><option>Alle categorieën</option>{categories.map(item => <option key={item}>{item}</option>)}</select></label>
+            <label className="block text-sm font-semibold text-[#183651]">Zoek een kavel<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Naam of sponsor..." className="mt-1 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 sm:min-w-[240px]" /></label>
+          </div>
         </div>
         <div className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
           Verzendkosten binnen Nederland: € 6,95 boven op je winnende bod. Voor verzending naar België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.
@@ -148,7 +160,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
           {visibleLots.map(lot => <article key={lot.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:rounded-3xl">
             {lot.photos[0]?.url ? <img src={lot.photos[0].url} alt={lot.title} className="h-28 w-full object-cover sm:h-48" /> : <div className="flex h-28 items-center justify-center bg-gradient-to-br from-amber-100 to-orange-50 text-center text-xs font-bold text-[#183651] sm:h-48 sm:text-sm">🐾<br />Foto volgt</div>}
             <div className="p-3 sm:p-5">
-              <p className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 sm:text-xs">Kavel {String(lot.lot_number).padStart(3, "0")}</p>
+              <div className="flex flex-wrap items-center gap-1"><p className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 sm:text-xs">Kavel {String(lot.lot_number).padStart(3, "0")}</p><span className="rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-bold text-amber-800 sm:text-[10px]">{lot.category || "Overig"}</span></div>
               <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-extrabold leading-snug text-[#183651] sm:mt-2 sm:min-h-14 sm:text-lg">{lot.title}</h3>
               {lot.sponsor && <p className="mt-1 line-clamp-2 text-[10px] text-slate-500 sm:text-sm">Mogelijk gemaakt door <strong>{lot.sponsor}</strong></p>}
               <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4"><p className="text-[10px] text-slate-500 sm:text-xs">{biddingEnabled && lot.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p><p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(biddingEnabled ? lot.current_bid : lot.start_bid)}</p><p className="mt-1 text-[9px] font-semibold text-slate-500 sm:text-xs">+ verzending: NL € 6,95 · België € 10,00</p><button onClick={() => openLot(lot)} className="mt-2 w-full rounded-lg bg-[#183651] px-2 py-2 text-xs font-extrabold text-white sm:mt-4 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">{biddingEnabled ? "Bekijk en bied" : "Bekijk kavel"}</button></div>
@@ -159,7 +171,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
 
       {selected && <div className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto bg-black/70 p-3 sm:p-5" onClick={() => setSelected(null)}>
         <div role="dialog" aria-modal="true" aria-label={selected.title} className="my-3 max-h-[94vh] w-full max-w-4xl overflow-y-auto rounded-3xl bg-white shadow-2xl" onClick={event => event.stopPropagation()}>
-          <div className="flex items-center justify-between border-b px-5 py-3 sm:px-7"><p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Kavel {String(selected.lot_number).padStart(3, "0")}</p><button aria-label="Sluiten" onClick={() => setSelected(null)} className="rounded-full border px-3 py-1 text-xl">×</button></div>
+          <div className="flex items-center justify-between border-b px-5 py-3 sm:px-7"><div className="flex flex-wrap items-center gap-2"><p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Kavel {String(selected.lot_number).padStart(3, "0")}</p><span className="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-800">{selected.category || "Overig"}</span></div><button aria-label="Sluiten" onClick={() => setSelected(null)} className="rounded-full border px-3 py-1 text-xl">×</button></div>
           <div className="grid md:grid-cols-2">
             <div className="bg-slate-100 p-2 sm:p-4">
               {heroPhoto ? <img src={heroPhoto} alt={selected.title} className="h-64 w-full rounded-2xl object-cover sm:h-96" /> : <div className="flex h-64 items-center justify-center rounded-2xl bg-amber-50 text-slate-500 sm:h-96">Foto volgt</div>}
@@ -168,7 +180,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
             <div className="p-5 sm:p-7">
               <h2 className="text-2xl font-extrabold leading-tight text-[#183651] sm:text-3xl">{selected.title}</h2>
               {selected.sponsor && <div className="mt-3 rounded-xl bg-amber-50 p-3 text-sm text-slate-700">Beschikbaar gesteld door <strong className="text-[#183651]">{selected.sponsor}</strong></div>}
-              <div className="mt-5 whitespace-pre-wrap leading-relaxed text-slate-700">{selected.description || "Meer informatie over dit kavel volgt."}</div>
+              {(selected.sponsor_website || selected.sponsor_facebook || selected.sponsor_instagram) && <div className="mt-3 flex flex-wrap gap-2">{selected.sponsor_website && <a href={selected.sponsor_website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-[#183651] shadow-sm">🌐 Website</a>}{selected.sponsor_facebook && <a href={selected.sponsor_facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#1877F2] px-3 py-2 text-sm font-bold text-white shadow-sm"><span aria-hidden="true">f</span> Facebook</a>}{selected.sponsor_instagram && <a href={selected.sponsor_instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 to-orange-500 px-3 py-2 text-sm font-bold text-white shadow-sm">◎ Instagram</a>}</div>}
               <div className="mt-6 rounded-2xl bg-[#f6f4ef] p-4">
                 <p className="text-sm text-slate-500">{biddingEnabled && selected.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p>
                 <p className="text-3xl font-extrabold text-[#183651]">{euro(biddingEnabled ? selected.current_bid : selected.start_bid)}</p>
@@ -180,7 +192,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
                   {bidResult && <p role="status" className={"mt-3 rounded-xl p-3 text-sm font-semibold " + (bidResult.type === "ok" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800")}>{bidResult.text}</p>}
                 </form> : <div className="mt-4"><a href="/veiling/inloggen" className="block w-full rounded-xl bg-amber-400 px-5 py-4 text-center font-extrabold text-[#183651]">Log in om proef te bieden</a><p className="mt-2 text-center text-xs text-slate-500">Je hebt een bevestigd deelnemersaccount nodig.</p></div> : <div className="mt-4"><a href="#aanmelden" onClick={() => setSelected(null)} className="block w-full rounded-xl bg-amber-400 px-5 py-4 text-center font-extrabold text-[#183651]">Meld mij aan voor de start</a><p className="mt-3 text-center text-xs text-slate-500">Bieden is mogelijk zodra de veiling is begonnen.</p></div>}
               </div>
-              {(selected.sponsor_website || selected.sponsor_facebook || selected.sponsor_instagram) && <div className="mt-5 border-t pt-4"><p className="font-bold text-[#183651]">Meer over de sponsor</p><div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-800">{selected.sponsor_website && <a href={selected.sponsor_website} target="_blank" rel="noopener noreferrer">Website ↗</a>}{selected.sponsor_facebook && <a href={selected.sponsor_facebook} target="_blank" rel="noopener noreferrer">Facebook ↗</a>}{selected.sponsor_instagram && <a href={selected.sponsor_instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a>}</div></div>}
+              <div className="mt-6 border-t pt-5"><h3 className="font-extrabold text-[#183651]">Beschrijving</h3><div className="mt-3 whitespace-pre-wrap leading-relaxed text-slate-700">{selected.description || "Meer informatie over dit kavel volgt."}</div></div>
             </div>
           </div>
         </div>

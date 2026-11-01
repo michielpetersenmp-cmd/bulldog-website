@@ -43,6 +43,7 @@ function parse(body: any) {
   return {
     lot_number: lotNumber,
     title,
+    category: text(body?.category, 80) || "Overig",
     description: text(body?.description, 12000) || null,
     sponsor: text(body?.sponsor, 180) || null,
     sponsor_website: website,

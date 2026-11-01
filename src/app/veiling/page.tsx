@@ -17,5 +17,6 @@ export default async function VeilingPage() {
     getCurrentVeilingParticipant(),
     admin.from("veiling_participant_test_settings").select("bidding_enabled").eq("id", true).maybeSingle(),
   ]);
-  return <VeilingPubliek lots={lots} loggedIn={Boolean(participant)} biddingEnabled={Boolean(settingsResult.data?.bidding_enabled)} />;
+  const testBiddingEnabled = process.env.VERCEL_ENV !== "production" && Boolean(settingsResult.data?.bidding_enabled);
+  return <VeilingPubliek lots={lots} loggedIn={Boolean(participant)} biddingEnabled={testBiddingEnabled} />;
 }

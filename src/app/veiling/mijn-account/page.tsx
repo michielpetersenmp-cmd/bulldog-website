@@ -48,7 +48,7 @@ export default async function MijnAccount({ searchParams }: { searchParams: { we
         </div>
 
         {settings?.bidding_enabled && <p className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 font-semibold text-amber-950"><strong>Proefbieden is actief.</strong> Deze biedingen zijn alleen om de werking te testen en tellen niet mee bij de echte veiling.</p>}{settings?.closed_at && <p className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 font-semibold text-green-800"><strong>De proefveiling is afgesloten.</strong> Je hebt {winners?.length || 0} proefkavel(s) gewonnen.</p>}
-        <p className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700"><strong className="text-[#183651]">Verzendkosten € 6,95.</strong> Dit bedrag komt boven op het eindbod. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>
+        <p className="mt-4 rounded-2xl border border-slate-200 bg-white p-4 text-sm font-semibold text-slate-700"><strong className="text-[#183651]">Verzendkosten binnen Nederland € 6,95.</strong> Voor verzending naar België geldt een hoger tarief; het exacte bedrag wordt vooraf doorgegeven. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>
 
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           <section className="rounded-2xl border border-slate-200 bg-white p-5"><p className="text-sm text-slate-500">Accountstatus</p><p className="mt-2 text-xl font-extrabold text-green-700">E-mailadres bevestigd</p></section>

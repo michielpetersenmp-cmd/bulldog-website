@@ -4,7 +4,25 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+function getDiagnostics() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+  let projectRef = "onbekend";
+  try { projectRef = new URL(supabaseUrl).hostname.split(".")[0] || "onbekend"; } catch {}
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  let keyRole = "niet vast te stellen";
+  try {
+    const payload = key.split(".")[1];
+    const role = payload ? JSON.parse(Buffer.from(payload, "base64url").toString("utf8")).role : null;
+    if (typeof role === "string") keyRole = role;
+    else if (key.startsWith("sb_secret_")) keyRole = "Supabase secret key";
+  } catch {
+    if (key.startsWith("sb_secret_")) keyRole = "Supabase secret key";
+  }
+  return { projectRef, keyRole };
+}
+
 export async function GET() {
+  const diagnostics = getDiagnostics();
   try {
     const admin = getSupabaseAdmin();
     const [biddersResult, bidsResult, lotsResult, outboxResult] = await Promise.all([
@@ -28,13 +46,14 @@ export async function GET() {
     const error = biddersResult.error || bidsResult.error || lotsResult.error || outboxResult.error;
     if (error) {
       return NextResponse.json(
-        { error: "Het testoverzicht kon niet worden opgehaald." },
+        { error: "Het testoverzicht kon niet worden opgehaald.", diagnostics },
         { status: 500, headers: { "Cache-Control": "private, no-store, max-age=0" } }
       );
     }
 
     return NextResponse.json(
       {
+        diagnostics,
         bidders: biddersResult.data || [],
         bids: bidsResult.data || [],
         lots: lotsResult.data || [],

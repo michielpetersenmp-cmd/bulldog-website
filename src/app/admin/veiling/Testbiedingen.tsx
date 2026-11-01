@@ -37,6 +37,7 @@ export default function Testbiedingen({ initialBidders, lots }: { initialBidders
       setName("");
       setEmail("");
       setMessage("Testdeelnemer toegevoegd. Er is geen e-mail verstuurd.");
+      router.refresh();
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Testdeelnemer aanmaken is niet gelukt.");
     } finally {

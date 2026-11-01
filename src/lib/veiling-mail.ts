@@ -22,7 +22,7 @@ function settings(): SmtpSettings {
     password: process.env.VEILING_SMTP_PASSWORD || "",
     fromName: (process.env.VEILING_SMTP_FROM_NAME || "Stichting Bulldog Steunfonds Nederland").trim(),
     testRecipient: (process.env.VEILING_TEST_EMAIL || DEFAULT_ADDRESS).trim().toLowerCase(),
-    liveDeliveryEnabled: process.env.VEILING_MAIL_ENABLED === "true",
+    liveDeliveryEnabled: process.env.VERCEL_ENV === "production" && process.env.VEILING_MAIL_ENABLED === "true",
   };
 }
 

@@ -156,7 +156,10 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
             <label className="block text-sm font-semibold text-[#183651]">Zoek een kavel<input value={search} onChange={event => setSearch(event.target.value)} placeholder="Naam of sponsor..." className="mt-1 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 sm:min-w-[240px]" /></label>
           </div>
         </div>
-        <div className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+        {!biddingEnabled && <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-4 text-sm font-semibold text-[#183651]">
+          🐾 De komende weken worden nog veel meer kavels toegevoegd. Kom daarom regelmatig terug om te zien wat er nieuw bij is.
+        </div>}
+        <div className={`${biddingEnabled ? "mt-6" : "mt-3"} rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950`}>
           Verzendkosten binnen Nederland: € 6,95 boven op je winnende bod. Voor verzending naar België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.
         </div>
         <div className="mt-7 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">

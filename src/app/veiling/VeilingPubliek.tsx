@@ -91,7 +91,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Aanmelden is niet gelukt.");
-      setResult({ type: "ok", text: data.alreadyConfirmed ? "Dit e-mailadres is al bevestigd. Je kunt inloggen bij Mijn veiling." : data.testMode ? "Testaanmelding opgeslagen. De bevestigingsmail is naar de mailbox van de stichting gestuurd." : "Gelukt! Open de bevestigingsmail die we je zojuist hebben gestuurd." });
+      setResult({ type: "ok", text: data.alreadyConfirmed ? "Dit e-mailadres is al bevestigd. Je kunt inloggen bij Mijn veiling." : data.testMode ? "Testaanmelding opgeslagen. De bevestigingsmail is naar de mailbox van de stichting gestuurd." : "Gelukt! We hebben je een bevestigingsmail gestuurd.\n\nKlik in die e-mail op ‘Bevestig mijn e-mailadres’ om je aanmelding af te ronden. Zie je de mail niet? Controleer dan ook je map Spam of Ongewenste e-mail." });
       formElement.reset();
     } catch (error) {
       setResult({ type: "error", text: error instanceof Error ? error.message : "Aanmelden is niet gelukt." });
@@ -142,7 +142,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
             <label className="mt-4 block text-sm font-bold text-[#183651]">E-mailadres<input name="email" required type="email" maxLength={254} autoComplete="email" className="mt-1 w-full rounded-xl border border-slate-300 px-4 py-3 font-normal text-slate-900" /></label>
             <label className="hidden" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
             <button disabled={sending} className="mt-5 w-full rounded-xl bg-amber-400 px-5 py-3 font-extrabold text-[#183651] disabled:opacity-60">{sending ? "Aanmelden..." : "Aanmelden voor de veiling"}</button>
-            {result && <p role="status" className={"mt-4 rounded-xl p-3 text-sm font-semibold " + (result.type === "ok" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800")}>{result.text}</p>}
+            {result && <p role="status" className={"mt-4 whitespace-pre-line rounded-xl p-3 text-sm font-semibold leading-relaxed " + (result.type === "ok" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800")}>{result.text}</p>}
             <p className="mt-4 text-xs leading-relaxed text-slate-500">We gebruiken je gegevens alleen voor deelname en berichten over deze veiling.</p>
           </form>
         </div>

@@ -6,12 +6,15 @@ type Photo = { path: string; url: string };
 type Lot = {
   id: number; lot_number: number; title: string; category: string; sponsor: string | null;
   sponsor_website: string | null; sponsor_facebook: string | null; sponsor_instagram: string | null;
-  description: string | null; start_bid: number; current_bid: number; bid_count: number;
+  description: string | null; start_bid: number; retail_value: number | null; current_bid: number; bid_count: number;
   active: boolean; closes_at: string; photos: Photo[];
 };
 
 function euro(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
+}
+function retailEuro(value: number) {
+  return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 }
 
 export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initialBiddingEnabled }: {
@@ -163,7 +166,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
               <div className="flex flex-wrap items-center gap-1"><p className="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 sm:text-xs">Kavel {String(lot.lot_number).padStart(3, "0")}</p><span className="rounded-full bg-amber-50 px-2 py-0.5 text-[9px] font-bold text-amber-800 sm:text-[10px]">{lot.category || "Overig"}</span></div>
               <h3 className="mt-1 line-clamp-2 min-h-10 text-sm font-extrabold leading-snug text-[#183651] sm:mt-2 sm:min-h-14 sm:text-lg">{lot.title}</h3>
               {lot.sponsor && <p className="mt-1 line-clamp-2 text-[10px] text-slate-500 sm:text-sm">Mogelijk gemaakt door <strong>{lot.sponsor}</strong></p>}
-              <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4"><p className="text-[10px] text-slate-500 sm:text-xs">{biddingEnabled && lot.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p><p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(biddingEnabled ? lot.current_bid : lot.start_bid)}</p><p className="mt-1 text-[9px] font-semibold text-slate-500 sm:text-xs">+ verzending: NL € 6,95 · België € 10,00</p><button onClick={() => openLot(lot)} className="mt-2 w-full rounded-lg bg-[#183651] px-2 py-2 text-xs font-extrabold text-white sm:mt-4 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">{biddingEnabled ? "Bekijk en bied" : "Bekijk kavel"}</button></div>
+              <div className="mt-3 border-t border-slate-100 pt-3 sm:mt-4">{lot.retail_value !== null && <p className="mb-1 text-[9px] font-bold text-slate-500 sm:text-xs">Winkelwaarde {retailEuro(lot.retail_value)}</p>}<p className="text-[10px] text-slate-500 sm:text-xs">{biddingEnabled && lot.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p><p className="text-lg font-extrabold text-[#183651] sm:text-2xl">{euro(biddingEnabled ? lot.current_bid : lot.start_bid)}</p><p className="mt-1 text-[9px] font-semibold text-slate-500 sm:text-xs">+ verzending: NL € 6,95 · België € 10,00</p><button onClick={() => openLot(lot)} className="mt-2 w-full rounded-lg bg-[#183651] px-2 py-2 text-xs font-extrabold text-white sm:mt-4 sm:rounded-xl sm:px-4 sm:py-3 sm:text-sm">{biddingEnabled ? "Bekijk en bied" : "Bekijk kavel"}</button></div>
             </div>
           </article>)}
         </div>
@@ -182,6 +185,7 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
               {selected.sponsor && <div className="mt-3 rounded-xl bg-amber-50 p-3 text-sm text-slate-700">Beschikbaar gesteld door <strong className="text-[#183651]">{selected.sponsor}</strong></div>}
               {(selected.sponsor_website || selected.sponsor_facebook || selected.sponsor_instagram) && <div className="mt-3 flex flex-wrap gap-2">{selected.sponsor_website && <a href={selected.sponsor_website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-[#183651] shadow-sm">🌐 Website</a>}{selected.sponsor_facebook && <a href={selected.sponsor_facebook} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#1877F2] px-3 py-2 text-sm font-bold text-white shadow-sm"><span aria-hidden="true">f</span> Facebook</a>}{selected.sponsor_instagram && <a href={selected.sponsor_instagram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-600 to-orange-500 px-3 py-2 text-sm font-bold text-white shadow-sm">◎ Instagram</a>}</div>}
               <div className="mt-6 rounded-2xl bg-[#f6f4ef] p-4">
+                {selected.retail_value !== null && <div className="mb-3 flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-white px-3 py-2"><span className="text-sm font-semibold text-slate-600">Oorspronkelijke winkelwaarde</span><strong className="text-lg text-[#183651]">{retailEuro(selected.retail_value)}</strong></div>}
                 <p className="text-sm text-slate-500">{biddingEnabled && selected.bid_count > 0 ? "Hoogste proefbod" : "Startbod"}</p>
                 <p className="text-3xl font-extrabold text-[#183651]">{euro(biddingEnabled ? selected.current_bid : selected.start_bid)}</p>
                 <p className="mt-2 rounded-xl bg-amber-50 p-3 text-sm font-semibold text-amber-950">Binnen Nederland komt € 6,95 verzendkosten boven op het eindbod. Voor België zijn de verzendkosten € 10,00. Win je meerdere kavels, dan betaal je de verzendkosten maar één keer.</p>

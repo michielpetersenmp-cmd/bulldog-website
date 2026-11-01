@@ -2,18 +2,22 @@ import Link from "next/link";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import AdminNav from "@/components/AdminNav";
 import Lotbeheer from "./Lotbeheer";
+import VeilingOverzicht from "./VeilingOverzicht";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Veiling testen | Websitebeheer", robots: { index: false, follow: false } };
 
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
-  const [{ data: rows, error }, { count: bidderCount }, { count: bidCount }] = await Promise.all([
+  const [{ data: rows, error }, { count: bidderCount }, { count: bidCount }, { data: bidders }, { data: bids }, { data: outbox }] = await Promise.all([
     admin.from("veiling_test_lots")
-      .select("id,lot_number,title,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,bid_count,active,image_url,image_urls")
+      .select("id,lot_number,title,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls")
       .order("lot_number"),
     admin.from("veiling_test_bidders").select("*", { count: "exact", head: true }),
     admin.from("veiling_test_bids").select("*", { count: "exact", head: true }),
+    admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
+    admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
+    admin.from("veiling_test_outbox").select("id,event_type,bidder_id,lot_id,delivered,created_at").order("created_at", { ascending: false }).limit(50),
   ]);
 
   const lots = await Promise.all((rows || []).map(async lot => {
@@ -51,6 +55,7 @@ export default async function VeilingAdminPage() {
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
       <Lotbeheer initialLots={lots} />
+      <VeilingOverzicht bidders={bidders || []} bids={bids || []} lots={rows || []} outbox={outbox || []} />
     </main>
   </div>;
 }

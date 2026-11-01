@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getVeilingTestLots } from "@/lib/veiling-test";
-import VeilingVoorbeeld from "@/app/veiling/beheer/voorbeeld/voorbeeld";
+import VeilingVoorbeeld from "./VeilingVoorbeeld";
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Bezoekersvoorbeeld veiling | Test", robots: { index: false, follow: false } };
 export default async function AdminVeilingVoorbeeld() {

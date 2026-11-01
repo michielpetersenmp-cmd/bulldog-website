@@ -7,6 +7,7 @@ type Lot = {
   id: number;
   lot_number: number;
   title: string;
+  category: string;
   description: string | null;
   sponsor: string | null;
   sponsor_website: string | null;
@@ -24,7 +25,7 @@ type Lot = {
 type Form = Omit<Lot, "id" | "current_bid" | "bid_count" | "photos"> & { id?: number; photos: Photo[] };
 const blank = (lots: Lot[]): Form => ({
   lot_number: Math.max(0, ...lots.map(lot => lot.lot_number)) + 1,
-  title: "", description: "", sponsor: "", sponsor_website: "", sponsor_facebook: "", sponsor_instagram: "",
+  title: "", category: "Overig", description: "", sponsor: "", sponsor_website: "", sponsor_facebook: "", sponsor_instagram: "",
   start_bid: 1, active: true, image_url: null, image_urls: [], photos: [],
 });
 
@@ -41,7 +42,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
 
   function edit(lot: Lot) {
     setForm({
-      id: lot.id, lot_number: lot.lot_number, title: lot.title, description: lot.description || "",
+      id: lot.id, lot_number: lot.lot_number, title: lot.title, category: lot.category || "Overig", description: lot.description || "",
       sponsor: lot.sponsor || "", sponsor_website: lot.sponsor_website || "",
       sponsor_facebook: lot.sponsor_facebook || "", sponsor_instagram: lot.sponsor_instagram || "",
       start_bid: lot.start_bid, active: lot.active, image_url: lot.image_url,
@@ -118,7 +119,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
 
   async function toggleActive(lot: Lot) {
     const body = {
-      id: lot.id, lot_number: lot.lot_number, title: lot.title, description: lot.description,
+      id: lot.id, lot_number: lot.lot_number, title: lot.title, category: lot.category, description: lot.description,
       sponsor: lot.sponsor, sponsor_website: lot.sponsor_website, sponsor_facebook: lot.sponsor_facebook,
       sponsor_instagram: lot.sponsor_instagram, start_bid: lot.start_bid, active: !lot.active,
       image_url: lot.image_url, image_urls: lot.image_urls || [],
@@ -144,6 +145,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
               {lot.photos?.[0]?.url ? <img src={lot.photos[0].url} alt="" className="h-32 w-full object-cover" /> : <div className="flex h-32 items-center justify-center bg-amber-50 text-sm font-bold text-amber-800">Foto ontbreekt</div>}
               <div className="p-4">
                 <div className="flex items-center justify-between gap-2"><span className="text-xs font-extrabold uppercase tracking-wide text-amber-700">Kavel {String(lot.lot_number).padStart(3, "0")}</span><span className={lot.active ? "rounded-full bg-green-100 px-2 py-1 text-xs font-bold text-green-800" : "rounded-full bg-slate-100 px-2 py-1 text-xs font-bold text-slate-600"}>{lot.active ? "Zichtbaar" : "Verborgen"}</span></div>
+                <p className="mt-2 inline-flex rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-800">{lot.category || "Overig"}</p>
                 <h3 className="mt-2 line-clamp-2 min-h-12 font-extrabold text-primary">{lot.title}</h3>
                 <p className="mt-1 truncate text-xs text-slate-500">{lot.sponsor || "Geen sponsor ingevuld"}</p>
                 <p className="mt-3 text-lg font-extrabold text-primary">{euro(lot.current_bid)}</p>
@@ -167,6 +169,8 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
             <label className="text-sm font-bold text-slate-700">Startbod (€)<input required type="number" min="0" step="1" value={form.start_bid} onChange={e => setForm({ ...form, start_bid: Number(e.target.value) })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           </div>
           <label className="block text-sm font-bold text-slate-700">Producttitel<input required maxLength={180} value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
+          <label className="block text-sm font-bold text-slate-700">Categorie<input required list="veiling-categorieen" maxLength={80} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} placeholder="Kies of typ een categorie" className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
+          <datalist id="veiling-categorieen"><option value="Voeding & snacks" /><option value="Tuigjes & accessoires" /><option value="Verzorging" /><option value="Wonen & decoratie" /><option value="Kunst & handgemaakt" /><option value="Cadeaubonnen & belevenissen" /><option value="Overig" /></datalist>
           <label className="block text-sm font-bold text-slate-700">Uitgebreide beschrijving<textarea rows={6} maxLength={12000} value={form.description || ""} onChange={e => setForm({ ...form, description: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Naam sponsor<input maxLength={180} value={form.sponsor || ""} onChange={e => setForm({ ...form, sponsor: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
           <label className="block text-sm font-bold text-slate-700">Website sponsor<input type="text" placeholder="https://..." value={form.sponsor_website || ""} onChange={e => setForm({ ...form, sponsor_website: e.target.value })} className="mt-1 w-full rounded-lg border px-3 py-2" /></label>
@@ -209,7 +213,7 @@ export default function Lotbeheer({ initialLots }: { initialLots: Lot[] }) {
               <div className="grid grid-cols-4 gap-1 p-2">{preview.photos?.slice(1).map(photo => <img key={photo.path} src={photo.url} alt="" className="h-16 w-full rounded object-cover" />)}</div>
             </div>
             <div className="p-6 sm:p-8">
-              <p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Kavel {String(preview.lot_number).padStart(3, "0")}</p>
+              <div className="flex flex-wrap items-center gap-2"><p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Kavel {String(preview.lot_number).padStart(3, "0")}</p><span className="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-bold text-amber-800">{preview.category || "Overig"}</span></div>
               <h2 className="mt-2 text-3xl font-extrabold text-primary">{preview.title || "Producttitel"}</h2>
               {preview.sponsor && <p className="mt-3 text-sm text-slate-600">Mogelijk gemaakt door <strong>{preview.sponsor}</strong></p>}
               <div className="mt-6 whitespace-pre-wrap leading-relaxed text-slate-700">{preview.description || "De uitgebreide productomschrijving komt hier te staan."}</div>

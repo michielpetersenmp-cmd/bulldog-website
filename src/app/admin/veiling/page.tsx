@@ -3,6 +3,7 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 import AdminNav from "@/components/AdminNav";
 import Lotbeheer from "./Lotbeheer";
 import VeilingOverzicht from "./VeilingOverzicht";
+import Testbiedingen from "./Testbiedingen";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Veiling testen | Websitebeheer", robots: { index: false, follow: false } };
@@ -56,6 +57,7 @@ export default async function VeilingAdminPage() {
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de testkavels niet ophalen. Controleer de databaseverbinding.</p>}
       <Lotbeheer initialLots={lots} />
       <VeilingOverzicht bidders={bidders || []} bids={bids || []} lots={rows || []} outbox={outbox || []} />
+      <Testbiedingen initialBidders={bidders || []} lots={(rows || []).map(lot => ({ id: lot.id, lot_number: lot.lot_number, title: lot.title, current_bid: lot.current_bid, active: lot.active, closes_at: lot.closes_at }))} />
     </main>
   </div>;
 }

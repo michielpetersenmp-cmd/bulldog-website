@@ -20,7 +20,7 @@ export function getVeilingTestTemplate(type: VeilingMailTemplateType) {
   if (type === "started") {
     return {
       subject: "[TEST] De Bulldogveiling is begonnen",
-      html: layout("De veiling is begonnen!", "Bekijk de kavels en breng je bod uit.", '<p style="font-size:16px;line-height:1.6">De kavels staan klaar. Bekijk alle bijzondere producten, lees de verhalen van onze sponsors en breng je bod uit. Met ieder bod help je bulldogs die noodzakelijke medische zorg nodig hebben.</p>', { label: "Bekijk de veiling", url: siteUrl }),
+      html: layout("De veiling is begonnen!", "Bekijk de kavels en breng je bod uit.", '<p style="font-size:16px;line-height:1.6">De veiling is nu begonnen. Je kunt vanaf nu de kavels bekijken en je bod uitbrengen. Bekijk alle bijzondere producten en lees de verhalen van onze sponsors. Met ieder bod help je bulldogs die noodzakelijke medische zorg nodig hebben.</p>', { label: "Bekijk de veiling", url: siteUrl }),
     };
   }
   if (type === "outbid") {

@@ -59,6 +59,28 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
     document.getElementById("kavel-form")?.scrollIntoView({ behavior: "smooth" });
   }
 
+  function copyLot(lot: Lot) {
+    const nextNumber = Math.max(0, ...lots.map(item => item.lot_number)) + 1;
+    setForm({
+      lot_number: nextNumber,
+      title: lot.title,
+      category: lot.category || "Overig",
+      description: lot.description || "",
+      sponsor: lot.sponsor || "",
+      sponsor_website: lot.sponsor_website || "",
+      sponsor_facebook: lot.sponsor_facebook || "",
+      sponsor_instagram: lot.sponsor_instagram || "",
+      start_bid: lot.start_bid,
+      retail_value: lot.retail_value,
+      active: false,
+      image_url: lot.image_url,
+      image_urls: [...(lot.image_urls || [])],
+      photos: [...(lot.photos || [])],
+    });
+    setMessage(`Kavel ${String(lot.lot_number).padStart(3, "0")} is gekopieerd naar nieuw kavel ${String(nextNumber).padStart(3, "0")}. Pas de gegevens aan en klik daarna op ‘Kavel opslaan’. De kopie staat standaard verborgen.`);
+    document.getElementById("kavel-form")?.scrollIntoView({ behavior: "smooth" });
+  }
+
   async function upload(files: FileList | null) {
     if (!files?.length) return;
     setBusy(true);
@@ -180,6 +202,7 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
                 <p className="mt-3 text-lg font-extrabold text-primary">{euro(lot.current_bid)}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button type="button" onClick={() => edit(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">Aanpassen</button>
+                  <button type="button" onClick={() => copyLot(lot)} className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900">Kopiëren</button>
                   <button type="button" onClick={() => toggleActive(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">{lot.active ? "Verbergen" : "Activeren"}</button>
                   <button type="button" onClick={() => setPreview(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">Bezoekersbeeld</button>
                 </div>

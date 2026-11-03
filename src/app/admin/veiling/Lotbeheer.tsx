@@ -72,12 +72,12 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
       sponsor_instagram: lot.sponsor_instagram || "",
       start_bid: lot.start_bid,
       retail_value: lot.retail_value,
-      active: false,
+      active: true,
       image_url: lot.image_url,
       image_urls: [...(lot.image_urls || [])],
       photos: [...(lot.photos || [])],
     });
-    setMessage(`Kavel ${String(lot.lot_number).padStart(3, "0")} is gekopieerd naar nieuw kavel ${String(nextNumber).padStart(3, "0")}. Pas de gegevens aan en klik daarna op ‘Kavel opslaan’. De kopie staat standaard verborgen.`);
+    setMessage(`Kavel ${String(lot.lot_number).padStart(3, "0")} is gekopieerd naar nieuw kavel ${String(nextNumber).padStart(3, "0")}. Pas de gegevens aan en klik daarna op ‘Kavel opslaan’. De kopie wordt zichtbaar op de veilingpagina.`);
     document.getElementById("kavel-form")?.scrollIntoView({ behavior: "smooth" });
   }
 

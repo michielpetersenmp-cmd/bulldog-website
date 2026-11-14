@@ -17,8 +17,8 @@ function retailEuro(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 2 }).format(value);
 }
 
-export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initialBiddingEnabled, auctionClosed, testMode }: {
-  lots: Lot[]; loggedIn: boolean; biddingEnabled: boolean; auctionClosed: boolean; testMode: boolean;
+export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initialBiddingEnabled, auctionClosed, testMode, initialLotId }: {
+  lots: Lot[]; loggedIn: boolean; biddingEnabled: boolean; auctionClosed: boolean; testMode: boolean; initialLotId?: number;
 }) {
   const [liveLots, setLiveLots] = useState(lots);
   const [biddingEnabled, setBiddingEnabled] = useState(initialBiddingEnabled);
@@ -77,6 +77,12 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
     setBidAmount(String(lot.current_bid + 1));
     setBidResult(null);
   }
+
+  useEffect(() => {
+    if (!initialLotId) return;
+    const lot = lots.find(item => item.id === initialLotId && item.active);
+    if (lot) openLot(lot);
+  }, [initialLotId, lots]);
 
   async function register(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

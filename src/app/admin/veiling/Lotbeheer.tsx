@@ -46,6 +46,23 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState<Lot | Form | null>(null);
+  const [shareLot, setShareLot] = useState<Lot | null>(null);
+
+  function shareUrl(lot: Lot) {
+    return `https://stichtingbulldogsteunfondsnederland.nl/veiling?kavel=${lot.id}`;
+  }
+
+  function shareText(lot: Lot) {
+    const sponsor = lot.sponsor ? `\nBeschikbaar gesteld door ${lot.sponsor}.` : "";
+    const retail = lot.retail_value !== null ? `\nWinkelwaarde: ${retailEuro(lot.retail_value)}.` : "";
+    const bidLabel = lot.bid_count > 0 ? "Hoogste bod" : "Startbod";
+    return `🐾 KAVEL ${String(lot.lot_number).padStart(3, "0")} UITGELICHT 🐾\n\n${lot.title}${sponsor}${retail}\n${bidLabel}: ${euro(lot.current_bid)}.\n\nBekijk dit kavel en bied direct mee:\n${shareUrl(lot)}\n\nDe Bulldogveiling eindigt op 29 november 2026. Met ieder bod help je bulldogs die noodzakelijke medische zorg nodig hebben. ❤️🐾\n\n#Bulldogveiling #BulldogSteunfonds #BiedMee`;
+  }
+
+  async function copyShareText(lot: Lot) {
+    await navigator.clipboard.writeText(shareText(lot));
+    setMessage(`Facebookbericht voor kavel ${String(lot.lot_number).padStart(3, "0")} is gekopieerd.`);
+  }
 
   function edit(lot: Lot) {
     setForm({
@@ -205,6 +222,7 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
                   <button type="button" onClick={() => copyLot(lot)} className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900">Kopiëren</button>
                   <button type="button" onClick={() => toggleActive(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">{lot.active ? "Verbergen" : "Activeren"}</button>
                   <button type="button" onClick={() => setPreview(lot)} className="rounded-lg border px-3 py-2 text-xs font-bold text-primary">Bezoekersbeeld</button>
+                  <button type="button" disabled={!lot.active} onClick={() => setShareLot(lot)} className="rounded-lg bg-[#1877F2] px-3 py-2 text-xs font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">f Uitlichten</button>
                 </div>
               </div>
             </article>
@@ -277,6 +295,21 @@ export default function Lotbeheer({ initialLots, initialCategories }: { initialL
               <p className="mt-5 text-xs text-slate-500">Bezoekersvoorbeeld · er wordt geen bod opgeslagen.</p>
             </div>
           </div>
+        </div>
+      </div>}
+
+      {shareLot && <div className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto bg-black/70 p-3" onClick={() => setShareLot(null)}>
+        <div role="dialog" aria-modal="true" aria-label="Kavel uitlichten op Facebook" onClick={event => event.stopPropagation()} className="my-4 w-full max-w-2xl rounded-3xl bg-white p-5 shadow-2xl sm:p-7">
+          <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-extrabold uppercase tracking-widest text-[#1877F2]">Facebook</p><h2 className="mt-1 text-2xl font-extrabold text-primary">Kavel {String(shareLot.lot_number).padStart(3, "0")} uitlichten</h2><p className="mt-2 text-sm text-slate-600">Dit hulpmiddel wijzigt niets aan het kavel of de veiling. Controleer het bericht en plaats het daarna zelf op Facebook.</p></div><button type="button" onClick={() => setShareLot(null)} className="rounded-full border px-3 py-1 text-xl" aria-label="Sluiten">×</button></div>
+          {shareLot.photos?.[0]?.url && <img src={shareLot.photos[0].url} alt={shareLot.title} className="mt-5 h-52 w-full rounded-2xl object-cover sm:h-72" />}
+          <label className="mt-5 block text-sm font-bold text-slate-700">Kant-en-klaar bericht<textarea readOnly rows={12} value={shareText(shareLot)} className="mt-2 w-full rounded-xl border bg-slate-50 p-3 text-sm font-normal leading-relaxed text-slate-900" /></label>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <button type="button" onClick={() => void copyShareText(shareLot)} className="rounded-xl bg-primary px-4 py-3 font-extrabold text-white">Bericht kopiëren</button>
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl(shareLot))}`} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-[#1877F2] px-4 py-3 text-center font-extrabold text-white">Facebook openen ↗</a>
+            {shareLot.photos?.[0]?.url && <a href={shareLot.photos[0].url} target="_blank" rel="noopener noreferrer" className="rounded-xl border px-4 py-3 text-center font-bold text-primary">Hoofdfoto openen ↗</a>}
+            <a href={shareUrl(shareLot)} target="_blank" rel="noopener noreferrer" className="rounded-xl border px-4 py-3 text-center font-bold text-primary">Kavellink testen ↗</a>
+          </div>
+          <p className="mt-4 rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-950">Op Facebook: plak eerst het gekopieerde bericht en voeg eventueel de hoofdfoto toe. De link brengt bezoekers rechtstreeks naar dit kavel.</p>
         </div>
       </div>}
     </div>

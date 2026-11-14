@@ -10,7 +10,7 @@ export const metadata = {
   robots: { index: true, follow: true },
 };
 
-export default async function VeilingPage() {
+export default async function VeilingPage({ searchParams }: { searchParams?: { kavel?: string } }) {
   const admin = getSupabaseAdmin();
   const testMode = process.env.VERCEL_ENV !== "production";
   const settingsTable = testMode ? "veiling_participant_test_settings" : "veiling_settings";
@@ -25,5 +25,6 @@ export default async function VeilingPage() {
     biddingEnabled={Boolean(settingsResult.data?.bidding_enabled)}
     auctionClosed={Boolean(settingsResult.data?.closed_at)}
     testMode={testMode}
+    initialLotId={Number(searchParams?.kavel) || undefined}
   />;
 }

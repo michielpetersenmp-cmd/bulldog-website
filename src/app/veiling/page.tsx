@@ -12,11 +12,18 @@ export const metadata = {
 
 export default async function VeilingPage() {
   const admin = getSupabaseAdmin();
+  const testMode = process.env.VERCEL_ENV !== "production";
+  const settingsTable = testMode ? "veiling_participant_test_settings" : "veiling_settings";
   const [lots, participant, settingsResult] = await Promise.all([
-    getVeilingTestLots(process.env.VERCEL_ENV !== "production"),
+    getVeilingTestLots(testMode ? "test" : "live"),
     getCurrentVeilingParticipant(),
-    admin.from("veiling_participant_test_settings").select("bidding_enabled").eq("id", true).maybeSingle(),
+    admin.from(settingsTable).select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
   ]);
-  const testBiddingEnabled = process.env.VERCEL_ENV !== "production" && Boolean(settingsResult.data?.bidding_enabled);
-  return <VeilingPubliek lots={lots} loggedIn={Boolean(participant)} biddingEnabled={testBiddingEnabled} />;
+  return <VeilingPubliek
+    lots={lots}
+    loggedIn={Boolean(participant)}
+    biddingEnabled={Boolean(settingsResult.data?.bidding_enabled)}
+    auctionClosed={Boolean(settingsResult.data?.closed_at)}
+    testMode={testMode}
+  />;
 }

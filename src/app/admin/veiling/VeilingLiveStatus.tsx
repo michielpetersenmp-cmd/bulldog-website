@@ -11,13 +11,13 @@ function money(value: number) {
   return new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(value);
 }
 
-export default function VeilingLiveStatus({ initialEnabled, initialClosedAt, initialWinners }: {
-  initialEnabled: boolean; initialClosedAt: string | null; initialWinners: Winner[];
+export default function VeilingLiveStatus({ initialEnabled, initialClosedAt, initialWinners, initialStartMailFailures }: {
+  initialEnabled: boolean; initialClosedAt: string | null; initialWinners: Winner[]; initialStartMailFailures: number;
 }) {
   const [enabled, setEnabled] = useState(initialEnabled);
   const [closedAt, setClosedAt] = useState(initialClosedAt);
   const [winners, setWinners] = useState(initialWinners);
-  const [startMailFailures, setStartMailFailures] = useState(0);
+  const [startMailFailures, setStartMailFailures] = useState(initialStartMailFailures);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 

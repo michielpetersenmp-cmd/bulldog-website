@@ -21,7 +21,7 @@ export default async function VeilingAdminPage() {
   const outboxTable = isProduction ? "veiling_outbox" : "veiling_participant_test_outbox";
   const settingsTable = isProduction ? "veiling_settings" : "veiling_participant_test_settings";
   const winnersTable = isProduction ? "veiling_winners" : "veiling_participant_test_winners";
-  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }, { data: categories }] = await Promise.all([
+  const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }, { data: categories }, { count: pendingStartMails }] = await Promise.all([
     admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,retail_value,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
@@ -35,6 +35,9 @@ export default async function VeilingAdminPage() {
     admin.from(settingsTable).select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
     admin.from(winnersTable).select("lot_id,participant_id,amount,notified").order("lot_id"),
     admin.from("veiling_test_categories").select("id,name").order("name"),
+    isProduction
+      ? admin.from("veiling_outbox").select("id", { count: "exact", head: true }).eq("event_type", "started").eq("delivered", false)
+      : Promise.resolve({ count: 0 }),
   ]);
 
   const lots = await Promise.all((rows || []).map(async lot => {
@@ -61,6 +64,7 @@ export default async function VeilingAdminPage() {
       {isProduction ? <VeilingLiveStatus
         initialEnabled={Boolean(testSettings?.bidding_enabled)}
         initialClosedAt={testSettings?.closed_at || null}
+        initialStartMailFailures={Number(pendingStartMails || 0)}
         initialWinners={(testWinners || []).map(winner => {
           const participant = (registrations || []).find(item => item.id === winner.participant_id);
           const lot = (rows || []).find(item => Number(item.id) === Number(winner.lot_id));

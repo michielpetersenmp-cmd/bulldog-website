@@ -21,15 +21,15 @@ export type VeilingTestLot = {
   photos: { path: string; url: string }[];
 };
 
-export async function getVeilingTestLots(includeTestBidState = true): Promise<VeilingTestLot[]> {
+export async function getVeilingTestLots(bidState: "test" | "live" | "none" = "test"): Promise<VeilingTestLot[]> {
   const admin = getSupabaseAdmin();
   const [{ data, error }, { data: states, error: stateError }] = await Promise.all([
     admin
       .from("veiling_test_lots")
       .select("id,lot_number,title,category,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,description,start_bid,retail_value,current_bid,bid_count,active,closes_at,image_url,image_urls")
       .order("lot_number", { ascending: true }),
-    includeTestBidState
-      ? admin.from("veiling_participant_test_lot_state").select("lot_id,current_bid,bid_count")
+    bidState !== "none"
+      ? admin.from(bidState === "live" ? "veiling_lot_state" : "veiling_participant_test_lot_state").select("lot_id,current_bid,bid_count")
       : Promise.resolve({ data: [], error: null }),
   ]);
   if (error) throw error;

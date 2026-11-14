@@ -15,12 +15,14 @@ function dateTime(value: string) {
   return new Intl.DateTimeFormat("nl-NL", { dateStyle: "short", timeStyle: "short" }).format(new Date(value));
 }
 
-export default function Deelnemersbiedingen({ initialRegistrations, initialLots, initialBids, initialStates, initialOutbox }: {
+export default function Deelnemersbiedingen({ initialRegistrations, initialLots, initialBids, initialStates, initialOutbox, testMode = true, endpoint = "/api/admin/veiling-participant-test/overview" }: {
   initialRegistrations: Registration[];
   initialLots: Lot[];
   initialBids: Bid[];
   initialStates: State[];
   initialOutbox: OutboxItem[];
+  testMode?: boolean;
+  endpoint?: string;
 }) {
   const [registrations, setRegistrations] = useState(initialRegistrations);
   const [lots, setLots] = useState(initialLots);
@@ -33,7 +35,7 @@ export default function Deelnemersbiedingen({ initialRegistrations, initialLots,
     let active = true;
     async function refresh() {
       try {
-        const response = await fetch("/api/admin/veiling-participant-test/overview", { cache: "no-store" });
+        const response = await fetch(endpoint, { cache: "no-store" });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || "Overzicht vernieuwen is niet gelukt.");
         if (!active) return;
@@ -50,7 +52,7 @@ export default function Deelnemersbiedingen({ initialRegistrations, initialLots,
     void refresh();
     const interval = window.setInterval(() => void refresh(), 5000);
     return () => { active = false; window.clearInterval(interval); };
-  }, []);
+  }, [endpoint]);
 
   const participantById = useMemo(() => new Map(registrations.map(item => [item.id, item])), [registrations]);
   const lotById = useMemo(() => new Map(lots.map(item => [Number(item.id), item])), [lots]);
@@ -59,11 +61,11 @@ export default function Deelnemersbiedingen({ initialRegistrations, initialLots,
   return (
     <section className="mt-10">
       <h2 className="text-2xl font-extrabold text-primary">Biedingen vanuit deelnemersaccounts</h2>
-      <p className="mt-1 text-sm text-slate-600">Dit zijn aparte proefbiedingen. Ze worden iedere 5 seconden bijgewerkt en gaan niet mee naar de echte veiling.</p>
+      <p className="mt-1 text-sm text-slate-600">{testMode ? "Dit zijn aparte proefbiedingen. Ze worden iedere 5 seconden bijgewerkt en gaan niet mee naar de echte veiling." : "De echte biedingen worden iedere 5 seconden bijgewerkt."}</p>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-sm text-red-800">{error}</p>}
       <div className="mt-4 grid gap-6 xl:grid-cols-[1.3fr_.7fr]">
         <div className="overflow-hidden rounded-2xl border bg-white">
-          <div className="border-b px-5 py-4"><h3 className="font-extrabold text-primary">Recente proefbiedingen ({bids.length})</h3></div>
+          <div className="border-b px-5 py-4"><h3 className="font-extrabold text-primary">Recente {testMode ? "proefbiedingen" : "biedingen"} ({bids.length})</h3></div>
           {bids.length ? <div className="overflow-x-auto"><table className="w-full text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase text-slate-500"><tr><th className="px-4 py-3">Kavel</th><th className="px-4 py-3">Deelnemer</th><th className="px-4 py-3">Bod</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Tijd</th></tr></thead>
             <tbody>{bids.map(bid => {
@@ -75,8 +77,8 @@ export default function Deelnemersbiedingen({ initialRegistrations, initialLots,
           </table></div> : <p className="px-5 py-6 text-sm text-slate-500">Er zijn nog geen biedingen vanuit een deelnemersaccount.</p>}
         </div>
         <div className="overflow-hidden rounded-2xl border bg-white">
-          <div className="border-b px-5 py-4"><h3 className="font-extrabold text-primary">Testmeldingen ({outbox.length})</h3><p className="mt-1 text-xs text-slate-500">Geen van deze meldingen wordt per e-mail verzonden.</p></div>
-          {outbox.length ? <div className="divide-y">{outbox.map(item => <div key={item.id} className="px-5 py-4 text-sm"><p className="font-bold text-primary">Overboden</p><p className="mt-1 text-slate-600">{participantById.get(item.participant_id)?.email || "Onbekende deelnemer"} · kavel {String(lotById.get(Number(item.lot_id))?.lot_number || "").padStart(3, "0")}</p><p className="mt-1 text-xs text-slate-500">{dateTime(item.created_at)} · niet verzonden</p></div>)}</div> : <p className="px-5 py-6 text-sm text-slate-500">Nog geen overbodenmeldingen.</p>}
+          <div className="border-b px-5 py-4"><h3 className="font-extrabold text-primary">{testMode ? "Testmeldingen" : "Meldingen"} ({outbox.length})</h3><p className="mt-1 text-xs text-slate-500">{testMode ? "Testmails gaan alleen naar de mailbox van de stichting." : "Hier zie je de aangemaakte overbodenmeldingen."}</p></div>
+          {outbox.length ? <div className="divide-y">{outbox.map(item => <div key={item.id} className="px-5 py-4 text-sm"><p className="font-bold text-primary">Overboden</p><p className="mt-1 text-slate-600">{participantById.get(item.participant_id)?.email || "Onbekende deelnemer"} · kavel {String(lotById.get(Number(item.lot_id))?.lot_number || "").padStart(3, "0")}</p><p className="mt-1 text-xs text-slate-500">{dateTime(item.created_at)}</p></div>)}</div> : <p className="px-5 py-6 text-sm text-slate-500">Nog geen overbodenmeldingen.</p>}
         </div>
       </div>
     </section>

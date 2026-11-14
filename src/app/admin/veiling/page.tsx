@@ -8,6 +8,7 @@ import Emailtest from "./Emailtest";
 import Vooraanmeldingen from "./Vooraanmeldingen";
 import Deelnemersbiedingen from "./Deelnemersbiedingen";
 import VeilingTestStatus from "./VeilingTestStatus";
+import VeilingLiveStatus from "./VeilingLiveStatus";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Veilingbeheer | Websitebeheer", robots: { index: false, follow: false } };
@@ -15,17 +16,24 @@ export const metadata = { title: "Veilingbeheer | Websitebeheer", robots: { inde
 export default async function VeilingAdminPage() {
   const admin = getSupabaseAdmin();
   const isProduction = process.env.VERCEL_ENV === "production";
+  const bidTable = isProduction ? "veiling_bids" : "veiling_participant_test_bids";
+  const stateTable = isProduction ? "veiling_lot_state" : "veiling_participant_test_lot_state";
+  const outboxTable = isProduction ? "veiling_outbox" : "veiling_participant_test_outbox";
+  const settingsTable = isProduction ? "veiling_settings" : "veiling_participant_test_settings";
+  const winnersTable = isProduction ? "veiling_winners" : "veiling_participant_test_winners";
   const [{ data: rows, error }, { data: bidders }, { data: bids }, { data: outbox }, { data: registrations }, { data: accountBids }, { data: accountStates }, { data: accountOutbox }, { data: testSettings }, { data: testWinners }, { data: categories }] = await Promise.all([
     admin.from("veiling_test_lots").select("id,lot_number,title,category,description,sponsor,sponsor_website,sponsor_facebook,sponsor_instagram,start_bid,retail_value,current_bid,current_bidder_id,bid_count,active,closes_at,image_url,image_urls").order("lot_number"),
     admin.from("veiling_test_bidders").select("id,name,email,created_at").order("created_at", { ascending: false }).limit(100),
     admin.from("veiling_test_bids").select("id,lot_id,bidder_id,amount,created_at").order("created_at", { ascending: false }).limit(50),
     admin.from("veiling_test_outbox").select("id,event_type,bidder_id,lot_id,delivered,created_at").order("created_at", { ascending: false }).limit(50),
     admin.from("veiling_preregistrations").select("id,name,email,status,created_at,confirmed_at").order("created_at", { ascending: false }).limit(500),
-    admin.from("veiling_participant_test_bids").select("id,lot_id,participant_id,amount,created_at").order("created_at", { ascending: false }).limit(200),
-    admin.from("veiling_participant_test_lot_state").select("lot_id,current_bidder_id,current_bid"),
-    admin.from("veiling_participant_test_outbox").select("id,participant_id,lot_id,created_at").order("created_at", { ascending: false }).limit(100),
-    admin.from("veiling_participant_test_settings").select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
-    admin.from("veiling_participant_test_winners").select("lot_id,participant_id,amount,notified").order("lot_id"),
+    admin.from(bidTable).select("id,lot_id,participant_id,amount,created_at").order("created_at", { ascending: false }).limit(500),
+    admin.from(stateTable).select("lot_id,current_bidder_id,current_bid"),
+    isProduction
+      ? admin.from(outboxTable).select("id,participant_id,lot_id,created_at").eq("event_type", "outbid").order("created_at", { ascending: false }).limit(200)
+      : admin.from(outboxTable).select("id,participant_id,lot_id,created_at").order("created_at", { ascending: false }).limit(100),
+    admin.from(settingsTable).select("bidding_enabled,closed_at").eq("id", true).maybeSingle(),
+    admin.from(winnersTable).select("lot_id,participant_id,amount,notified").order("lot_id"),
     admin.from("veiling_test_categories").select("id,name").order("name"),
   ]);
 
@@ -50,8 +58,7 @@ export default async function VeilingAdminPage() {
         <div className="flex flex-wrap gap-3"><Link href="/veiling" target="_blank" className="rounded-xl border border-primary bg-white px-5 py-3 font-bold text-primary">Bezoekerspagina ↗</Link>{!isProduction && <Link href="/admin/veiling/voorbeeld" className="rounded-xl bg-primary px-5 py-3 font-bold text-white">Oude testbiedingen →</Link>}</div>
       </div>
       {error && <p className="mt-4 rounded-xl bg-red-50 p-4 text-red-800">Kon de kavels niet ophalen. Controleer de databaseverbinding.</p>}
-      {!isProduction && <>
-      <VeilingTestStatus
+      {isProduction ? <VeilingLiveStatus
         initialEnabled={Boolean(testSettings?.bidding_enabled)}
         initialClosedAt={testSettings?.closed_at || null}
         initialWinners={(testWinners || []).map(winner => {
@@ -63,18 +70,31 @@ export default async function VeilingAdminPage() {
             participant_email: participant?.email || "", amount: Number(winner.amount), notified: Boolean(winner.notified),
           };
         })}
-      />
-      </>}
+      /> : <VeilingTestStatus
+        initialEnabled={Boolean(testSettings?.bidding_enabled)}
+        initialClosedAt={testSettings?.closed_at || null}
+        initialWinners={(testWinners || []).map(winner => {
+          const participant = (registrations || []).find(item => item.id === winner.participant_id);
+          const lot = (rows || []).find(item => Number(item.id) === Number(winner.lot_id));
+          return {
+            lot_id: Number(winner.lot_id), lot_number: Number(lot?.lot_number || 0),
+            title: lot?.title || "Kavel", participant_name: participant?.name || "Onbekend",
+            participant_email: participant?.email || "", amount: Number(winner.amount), notified: Boolean(winner.notified),
+          };
+        })}
+      />}
       <Lotbeheer initialLots={lots} initialCategories={(categories || []) as { id: number; name: string }[]} />
       <Vooraanmeldingen registrations={(registrations || []) as never[]} />
-      {!isProduction && <>
       <Deelnemersbiedingen
         initialRegistrations={(registrations || []).filter(item => item.status === "confirmed") as never[]}
         initialLots={(rows || []).map(item => ({ id: item.id, lot_number: item.lot_number, title: item.title }))}
         initialBids={(accountBids || []) as never[]}
         initialStates={(accountStates || []) as never[]}
         initialOutbox={(accountOutbox || []) as never[]}
+        testMode={!isProduction}
+        endpoint={isProduction ? "/api/admin/veiling/overview" : "/api/admin/veiling-participant-test/overview"}
       />
+      {!isProduction && <>
       <VeilingOverzicht bidders={bidders || []} bids={bids || []} lots={rows || []} outbox={outbox || []} />
       <Testbiedingen initialBidders={bidders || []} lots={(rows || []).map(lot => ({ id: lot.id, lot_number: lot.lot_number, title: lot.title, current_bid: lot.current_bid, active: lot.active, closes_at: lot.closes_at }))} />
       <Emailtest />

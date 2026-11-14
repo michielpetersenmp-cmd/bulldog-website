@@ -70,6 +70,18 @@ export function getVeilingLoginTemplate(name: string, loginUrl: string, testMode
   };
 }
 
+export function getVeilingStartedTemplate(name: string, auctionUrl: string, testMode: boolean) {
+  const safeName = escapeHtml(name);
+  const safeUrl = escapeHtml(auctionUrl);
+  const testNotice = testMode
+    ? '<div style="border:2px solid #f7c84b;background:#fff9df;padding:12px;border-radius:9px;font-weight:700">TESTMODUS — deze mail is alleen naar de eigen mailbox van de stichting gestuurd.</div>'
+    : "";
+  return {
+    subject: testMode ? "[TEST] De Bulldogveiling is begonnen" : "De Bulldogveiling is begonnen",
+    html: `<!doctype html><html lang="nl"><body style="margin:0;background:#f4f2ed;font-family:Arial,sans-serif;color:#17324a"><div style="max-width:620px;margin:0 auto;padding:24px 14px"><div style="background:#123d63;color:#fff;padding:22px;border-radius:16px 16px 0 0"><p style="margin:0;color:#f7c84b;font-weight:700">STICHTING BULLDOG STEUNFONDS NEDERLAND</p><h1 style="margin:8px 0 0;font-size:28px">De veiling is begonnen!</h1></div><div style="background:#fff;padding:26px;border-radius:0 0 16px 16px">${testNotice}<p style="font-size:17px;line-height:1.6">Beste ${safeName},</p><p style="font-size:16px;line-height:1.6">De Bulldogveiling is nu begonnen. Je kunt vanaf nu de kavels bekijken en je bod uitbrengen. Met ieder bod help je bulldogs die noodzakelijke medische zorg nodig hebben.</p><p style="font-size:14px;line-height:1.6;color:#475569">Biedingen gaan in hele euro's en moeten minimaal € 1 hoger zijn dan het huidige bod.</p><p style="margin:28px 0"><a href="${safeUrl}" style="display:inline-block;background:#123d63;color:#fff;text-decoration:none;padding:14px 22px;border-radius:9px;font-weight:700">Bekijk de veiling en bied mee</a></p><p style="font-size:16px;line-height:1.6;margin-top:30px">Met vriendelijke groet,<br><strong>Stichting Bulldog Steunfonds Nederland</strong></p></div></div></body></html>`,
+  };
+}
+
 
 export function getVeilingOutbidTemplate(
   name: string,

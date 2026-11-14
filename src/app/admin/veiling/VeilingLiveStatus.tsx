@@ -17,6 +17,7 @@ export default function VeilingLiveStatus({ initialEnabled, initialClosedAt, ini
   const [enabled, setEnabled] = useState(initialEnabled);
   const [closedAt, setClosedAt] = useState(initialClosedAt);
   const [winners, setWinners] = useState(initialWinners);
+  const [startMailFailures, setStartMailFailures] = useState(0);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -36,6 +37,7 @@ export default function VeilingLiveStatus({ initialEnabled, initialClosedAt, ini
       setEnabled(Boolean(result.biddingEnabled));
       setWinners(result.items || []);
       setClosedAt(action === "close" ? new Date().toISOString() : null);
+      if (action === "open") setStartMailFailures(Number(result.failedCount || 0));
       setMessage(action === "open"
         ? `De veiling is geopend. ${result.sentCount} startmail(s) verzonden${result.failedCount ? ` en ${result.failedCount} nog niet verzonden` : ""}.`
         : `De veiling is afgesloten. ${result.winnerCount} winnaar(s) vastgelegd en ${result.sentCount} winnaar-mail(s) verzonden${result.failedCount ? `; ${result.failedCount} mail(s) kunnen opnieuw worden geprobeerd` : ""}.`);
@@ -48,7 +50,7 @@ export default function VeilingLiveStatus({ initialEnabled, initialClosedAt, ini
     <div className="flex flex-wrap items-center justify-between gap-4">
       <div><p className="text-xs font-extrabold uppercase tracking-widest text-amber-700">Echte veiling</p><h2 className="mt-1 text-2xl font-extrabold text-primary">{enabled ? "Bieden staat open" : closedAt ? "Veiling is afgesloten" : "Bieden staat nog gesloten"}</h2><p className="mt-1 text-sm text-slate-600">{enabled ? "Bevestigde deelnemers kunnen nu echte biedingen plaatsen." : closedAt ? `Bieden is gesloten sinds ${new Date(closedAt).toLocaleString("nl-NL")}.` : "Open de veiling morgen met deze knop. Pas dan kunnen deelnemers bieden."}</p></div>
       {enabled
-        ? <button disabled={busy} onClick={() => change("close")} className="rounded-xl bg-red-700 px-5 py-3 font-bold text-white disabled:opacity-60">{busy ? "Afsluiten..." : "Echte veiling afsluiten"}</button>
+        ? <div className="flex flex-wrap gap-2">{startMailFailures > 0 && <button disabled={busy} onClick={() => change("open")} className="rounded-xl bg-amber-600 px-5 py-3 font-bold text-white disabled:opacity-60">Startmails opnieuw proberen</button>}<button disabled={busy} onClick={() => change("close")} className="rounded-xl bg-red-700 px-5 py-3 font-bold text-white disabled:opacity-60">{busy ? "Afsluiten..." : "Echte veiling afsluiten"}</button></div>
         : !closedAt
           ? <button disabled={busy} onClick={() => change("open")} className="rounded-xl bg-green-700 px-5 py-3 font-bold text-white disabled:opacity-60">{busy ? "Openen en mailen..." : "Echte veiling openen"}</button>
           : winners.some(winner => !winner.notified) && <button disabled={busy} onClick={() => change("close")} className="rounded-xl bg-amber-600 px-5 py-3 font-bold text-white disabled:opacity-60">{busy ? "Opnieuw proberen..." : "Winnaarmails opnieuw proberen"}</button>}

@@ -7,11 +7,18 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-async function inBatches<T>(items: T[], worker: (item: T) => Promise<boolean>, size = 4) {
+function wait(milliseconds: number) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+async function inBatches<T>(items: T[], worker: (item: T) => Promise<boolean>, size = 1) {
   let sentCount = 0;
   for (let index = 0; index < items.length; index += size) {
     const results = await Promise.all(items.slice(index, index + size).map(worker));
     sentCount += results.filter(Boolean).length;
+    // MijnDomein/Soverin begrenst een korte reeks gelijktijdige SMTP-verbindingen.
+    // Rustig na elkaar verzenden voorkomt dat de resterende deelnemers worden geweigerd.
+    if (index + size < items.length) await wait(900);
   }
   return sentCount;
 }
@@ -47,7 +54,13 @@ export async function POST(request: Request) {
         await sendVeilingParticipantMail(participant.email, getVeilingStartedTemplate(participant.name, `${origin}/veiling`, false));
         await admin.from("veiling_outbox").update({ delivered: true, delivered_at: new Date().toISOString() }).eq("id", item.id);
         return true;
-      } catch { return false; }
+      } catch (error) {
+        console.error("Startmail verzenden mislukt", {
+          participantId: item.participant_id,
+          error: error instanceof Error ? error.message : "Onbekende SMTP-fout",
+        });
+        return false;
+      }
     });
     return NextResponse.json({ ok: true, biddingEnabled: true, sentCount, failedCount: pendingItems.length - sentCount, items: [] });
   }

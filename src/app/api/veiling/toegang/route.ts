@@ -8,8 +8,12 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const token = typeof body?.token === "string" ? body.token : "";
+  const email = typeof body?.email === "string" ? body.email.trim().toLowerCase().slice(0, 254) : "";
   if (!/^[a-f0-9]{64}$/.test(token)) {
     return NextResponse.json({ error: "Deze inloglink is ongeldig. Vraag een nieuwe link aan." }, { status: 400 });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "Vul het e-mailadres in waarmee je je hebt aangemeld." }, { status: 400 });
   }
 
   const admin = getSupabaseAdmin();
@@ -23,6 +27,17 @@ export async function POST(request: Request) {
 
   if (error || !data) {
     return NextResponse.json({ error: "Deze inloglink is verlopen of al gebruikt. Vraag een nieuwe link aan." }, { status: 410 });
+  }
+
+  // Een extra handmatige controle voorkomt dat een automatische linkscanner uit
+  // een mailprogramma de eenmalige token kan verbruiken.
+  const { data: participant, error: participantError } = await admin
+    .from("veiling_preregistrations")
+    .select("email,status")
+    .eq("id", data.participant_id)
+    .maybeSingle();
+  if (participantError || !participant || participant.status !== "confirmed" || participant.email.toLowerCase() !== email) {
+    return NextResponse.json({ error: "Dit e-mailadres hoort niet bij deze inloglink." }, { status: 403 });
   }
 
   const { data: consumed, error: usedError } = await admin

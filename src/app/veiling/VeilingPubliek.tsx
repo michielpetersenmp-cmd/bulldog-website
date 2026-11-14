@@ -149,6 +149,10 @@ export default function VeilingPubliek({ lots, loggedIn, biddingEnabled: initial
             <label className="hidden" aria-hidden="true">Website<input name="website" tabIndex={-1} autoComplete="off" /></label>
             <button disabled={sending} className="mt-5 w-full rounded-xl bg-amber-400 px-5 py-3 font-extrabold text-[#183651] disabled:opacity-60">{sending ? "Aanmelden..." : "Aanmelden voor de veiling"}</button>
             {result && <p role="status" className={"mt-4 whitespace-pre-line rounded-xl p-3 text-sm font-semibold leading-relaxed " + (result.type === "ok" ? "bg-green-50 text-green-800" : "bg-red-50 text-red-800")}>{result.text}</p>}
+            <div className="mt-5 border-t border-slate-200 pt-5 text-center">
+              <p className="text-sm font-semibold text-slate-600">Al aangemeld en je e-mailadres bevestigd?</p>
+              <a href="/veiling/inloggen" className="mt-3 block w-full rounded-xl border-2 border-[#183651] px-5 py-3 font-extrabold text-[#183651]">Inloggen bij Mijn veiling</a>
+            </div>
             <p className="mt-4 text-xs leading-relaxed text-slate-500">We gebruiken je gegevens alleen voor deelname en berichten over deze veiling.</p>
           </form>
         </div>
